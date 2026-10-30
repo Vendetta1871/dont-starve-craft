@@ -1,0 +1,10 @@
+{
+  "type": "dontstarve:islands",
+  "generator": {
+    "type": "dontstarve:islands",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "dontstarve:the_wilds"
+    }
+  }
+}

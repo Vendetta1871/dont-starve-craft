@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "dontstarve"
+version = "0.1.0"
+displayName = "Don't Starve Craft"
+description = '''
+Port of Don't Starve to Minecraft. A marble "П" portal, lit by sacrifice,
+sends you naked to a Don't Starve island floating in the void. Loot it,
+craft your way out, and bring the spoils back to the overworld.
+'''
+authors = "sweetclit"
+
+[[dependencies.dontstarve]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.dontstarve]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "BOTH"
