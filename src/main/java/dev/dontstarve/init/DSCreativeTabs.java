@@ -22,6 +22,13 @@ public final class DSCreativeTabs {
                         output.accept(DSBlocks.MARBLE_BRICKS.get());
                         output.accept(DSBlocks.MARBLE_PORTAL.get());
                         output.accept(DSBlocks.GRAVE.get());
+                        output.accept(DSBlocks.RESURRECTION_STATUE.get());
+                        output.accept(DSItems.CUTGRASS.get());
+                        output.accept(DSItems.TWIGS.get());
+                        output.accept(DSItems.BOARDS.get());
+                        output.accept(DSItems.SPIDERGLAND.get());
+                        output.accept(DSItems.BEARDHAIR.get());
+                        output.accept(DSItems.REVIVER.get());
                     })
                     .build());
 

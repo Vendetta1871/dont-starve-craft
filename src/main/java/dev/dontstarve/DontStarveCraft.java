@@ -6,6 +6,7 @@ import dev.dontstarve.init.DSCreativeTabs;
 import dev.dontstarve.init.DSDataComponents;
 import dev.dontstarve.init.DSItems;
 import dev.dontstarve.portal.SacrificeHandler;
+import dev.dontstarve.revive.ReviveHandler;
 import dev.dontstarve.survive.DeathHandler;
 import dev.dontstarve.survive.GhostState;
 import dev.dontstarve.world.IslandChunkGenerator;
@@ -44,6 +45,9 @@ public final class DontStarveCraft {
         NeoForge.EVENT_BUS.addListener(DeathHandler::onChangeTarget);
         NeoForge.EVENT_BUS.addListener(DeathHandler::onPlayerRespawn);
         NeoForge.EVENT_BUS.addListener(DeathHandler::onServerTick);
+
+        NeoForge.EVENT_BUS.addListener(ReviveHandler::onInteractWithGhost);
+        NeoForge.EVENT_BUS.addListener(ReviveHandler::onItemCrafted);
     }
 
     public static ResourceLocation rl(String path) {

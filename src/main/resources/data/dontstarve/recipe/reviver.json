@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "dontstarve:cutgrass" },
+    { "item": "dontstarve:cutgrass" },
+    { "item": "dontstarve:cutgrass" },
+    { "item": "dontstarve:spidergland" }
+  ],
+  "result": { "id": "dontstarve:reviver", "count": 1 }
+}

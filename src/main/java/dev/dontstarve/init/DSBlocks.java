@@ -1,6 +1,7 @@
 package dev.dontstarve.init;
 
 import dev.dontstarve.DontStarveCraft;
+import dev.dontstarve.revive.ResurrectionStatueBlock;
 import dev.dontstarve.grave.GraveBlock;
 import dev.dontstarve.portal.MarbleBlock;
 import dev.dontstarve.portal.MarblePortalBlock;
@@ -42,6 +43,13 @@ public final class DSBlocks {
                             .instrument(NoteBlockInstrument.BASEDRUM)
                             .strength(1.5F, 6.0F)
                             .sound(SoundType.MUD)));
+
+    public static final DeferredBlock<ResurrectionStatueBlock> RESURRECTION_STATUE =
+            BLOCKS.register("resurrectionstatue", () -> new ResurrectionStatueBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.QUARTZ)
+                            .strength(1.5F, 4.0F)
+                            .sound(SoundType.BONE_BLOCK)));
 
     private static BlockBehaviour.Properties marbleProps() {
         return BlockBehaviour.Properties.of()

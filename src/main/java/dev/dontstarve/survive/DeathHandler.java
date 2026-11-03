@@ -103,9 +103,10 @@ public final class DeathHandler {
         if (!(event.getEntity() instanceof ServerPlayer player) || !GhostState.isGhost(player)) {
             return;
         }
-        // Graves are the one thing a ghost may interact with (to read the epitaph);
-        // future revive blocks (effigy) will be allowed here too.
-        if (event.getLevel().getBlockState(event.getPos()).is(DSBlocks.GRAVE.get())) {
+        // Graves and Meat Effigies are the things a ghost may interact with
+        // (effigy = the DST resurrection path; graves are read-only for the dead).
+        BlockState target = event.getLevel().getBlockState(event.getPos());
+        if (target.is(DSBlocks.GRAVE.get()) || target.is(DSBlocks.RESURRECTION_STATUE.get())) {
             return;
         }
         event.setCanceled(true);
