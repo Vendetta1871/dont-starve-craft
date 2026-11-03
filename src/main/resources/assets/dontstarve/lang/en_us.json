@@ -5,6 +5,11 @@
   "block.dontstarve.marble_portal": "Marble Portal",
   "block.dontstarve.grave": "Grave",
   "block.dontstarve.resurrectionstatue": "Meat Effigy",
+  "block.dontstarve.moonrock_cluster": "Moonrock Cluster",
+  "block.dontstarve.moon_crystal": "Moon Crystal",
+  "block.dontstarve.sky_portal": "Sky Portal",
+  "item.dontstarve.moonrocknugget": "Moon Rock",
+  "item.dontstarve.moonrockidol": "Moon Rock Idol",
   "item.dontstarve.cutgrass": "Cut Grass",
   "item.dontstarve.twigs": "Twigs",
   "item.dontstarve.boards": "Boards",
@@ -24,5 +29,8 @@
   "message.dontstarve.effigy_attuned": "You offer blood to the effigy. It will call you back.",
   "message.dontstarve.effigy_revived": "%s has clawed their way back from the beyond.",
   "message.dontstarve.reviver_used": "%1$s presses a Telltale Heart to %2$s — it beats again!",
-  "message.dontstarve.craft_blood_cost": "The crafting drinks your blood."
+  "message.dontstarve.craft_blood_cost": "The crafting drinks your blood.",
+  "message.dontstarve.skyportal_needs_idol": "The frame is cold. A Moon Rock Idol would wake it.",
+  "message.dontstarve.skyportal_lit": "The idol melts into starlight. The sky portal is open.",
+  "message.dontstarve.escaped": "%s came back from the islands through a sky portal."
 }

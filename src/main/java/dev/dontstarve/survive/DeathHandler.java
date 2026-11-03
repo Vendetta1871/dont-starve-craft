@@ -3,6 +3,8 @@ package dev.dontstarve.survive;
 import dev.dontstarve.DSRefs;
 import dev.dontstarve.grave.GraveBlockEntity;
 import dev.dontstarve.init.DSBlocks;
+import dev.dontstarve.portal.ReturnPoints;
+import dev.dontstarve.survive.GhostState;
 import dev.dontstarve.world.IslandState;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.TriState;
@@ -202,13 +203,13 @@ public final class DeathHandler {
         int index = state.advance();
         IslandState.pregenArrival(islands, index);
 
-        BlockPos spawn = overworld.getLevelData().getSpawnPos();
-        Vec3 exit = Vec3.atBottomCenterOf(
-                overworld.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, spawn));
         for (ServerPlayer player : List.copyOf(islands.players())) {
             GhostState.clear(player);
-            player.changeDimension(new DimensionTransition(overworld, exit, Vec3.ZERO,
-                    player.getYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND));
+            ReturnPoints.Target target = ReturnPoints.of(overworld, player.getUUID());
+            DimensionTransition.PostDimensionTransition post = target.portalCooldown()
+                    ? moved -> moved.setPortalCooldown() : DimensionTransition.DO_NOTHING;
+            player.changeDimension(new DimensionTransition(overworld, target.position(), Vec3.ZERO,
+                    player.getYRot(), player.getXRot(), post));
         }
         state.setWipeSecondsLeft(-1);
         broadcast(server, "message.dontstarve.wipe_done");

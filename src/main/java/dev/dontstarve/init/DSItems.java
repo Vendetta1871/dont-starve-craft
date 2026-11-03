@@ -34,6 +34,19 @@ public final class DSItems {
     public static final DeferredItem<Item> REVIVER = ITEMS.registerItem("reviver",
             Item::new, new Item.Properties().stacksTo(20));
 
+    // Moon escape line: Moon Rock (canonical DST id) -> Moon Rock Idol (key)
+    // -> Sky Portal (our escape structure).
+    public static final DeferredItem<Item> MOONROCKNUGGET = ITEMS.registerItem("moonrocknugget",
+            Item::new, new Item.Properties().stacksTo(20));
+    public static final DeferredItem<Item> MOONROCKIDOL = ITEMS.registerItem("moonrockidol",
+            Item::new, new Item.Properties().stacksTo(20));
+    public static final DeferredItem<BlockItem> MOONROCK_CLUSTER =
+            ITEMS.registerSimpleBlockItem(DSBlocks.MOONROCK_CLUSTER);
+    public static final DeferredItem<BlockItem> MOON_CRYSTAL =
+            ITEMS.registerSimpleBlockItem(DSBlocks.MOON_CRYSTAL);
+    public static final DeferredItem<BlockItem> SKY_PORTAL =
+            ITEMS.registerSimpleBlockItem(DSBlocks.SKY_PORTAL);
+
     // The portal block is normally never obtained as an item; it is registered
     // for creative testing only.
     public static final DeferredItem<BlockItem> MARBLE_PORTAL = ITEMS.registerItem(

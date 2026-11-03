@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.dontstarve.init.DSBlocks;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.util.Mth;
@@ -60,13 +61,67 @@ public final class IslandChunkGenerator extends ChunkGenerator {
                 if (surface < 0) {
                     continue;
                 }
-                for (int y = 0; y <= surface; y++) {
+                long index = Math.round((double) wx / IslandState.SPACING);
+                double meteorDist = distanceToMeteorite(index, wx, wz);
+                int top = meteorDist <= 1.0 ? surface + 3 : surface;
+                for (int y = 0; y <= top; y++) {
+                    BlockState meteorite = meteoriteBlock(meteorDist, wx, wz, y, surface);
+                    BlockState state = meteorite != null ? meteorite
+                            : (y <= surface ? columnBlock(wx, wz, y, surface) : null);
+                    if (state == null) {
+                        continue;
+                    }
                     cursor.set(wx, y, wz);
-                    chunk.setBlockState(cursor, columnBlock(wx, wz, y, surface), true);
+                    chunk.setBlockState(cursor, state, true);
                 }
             }
         }
         return CompletableFuture.completedFuture(chunk);
+    }
+
+    /**
+     * Every island carries one moon meteorite — the only source of Moon Rock,
+     * and therefore of the escape route. Its center is deterministic per island
+     * index (golden-angle spiral, 40-64 blocks from the plaza, clear of the
+     * beach ring).
+     */
+    private static BlockPos meteoriteCenter(long islandIndex) {
+        double angle = islandIndex * 2.39996323;
+        double dist = 40.0 + hashNoise((int) (islandIndex * 7919L), 1337) * 24.0;
+        return new BlockPos((int) Math.round(islandIndex * IslandState.SPACING + Math.cos(angle) * dist),
+                0, (int) Math.round(Math.sin(angle) * dist));
+    }
+
+    private static double distanceToMeteorite(long islandIndex, int wx, int wz) {
+        BlockPos center = meteoriteCenter(islandIndex);
+        double dx = wx - center.getX();
+        double dz = wz - center.getZ();
+        return Math.sqrt(dx * dx + dz * dz);
+    }
+
+    /** Moonrock debris of the meteorite, or null to keep natural terrain. */
+    @Nullable
+    private static BlockState meteoriteBlock(double dist, int wx, int wz, int y, int surface) {
+        if (dist > 4.5) {
+            return null;
+        }
+        if (dist <= 1.0) {
+            // Impact core: a moonrock stump with a glowing crystal tip.
+            if (y >= surface - 1 && y <= surface + 2) {
+                return DSBlocks.MOONROCK_CLUSTER.get().defaultBlockState();
+            }
+            if (y == surface + 3) {
+                return DSBlocks.MOON_CRYSTAL.get().defaultBlockState();
+            }
+            return null;
+        }
+        if (dist <= 3.0 && (y == surface || y == surface - 1)) {
+            return DSBlocks.MOONROCK_CLUSTER.get().defaultBlockState();
+        }
+        if (dist <= 4.5 && y == surface && hashNoise(wx * 3 + 17, wz * 3 + 29) < 0.5) {
+            return DSBlocks.MOONROCK_CLUSTER.get().defaultBlockState();
+        }
+        return null;
     }
 
     /** Y of the top solid block of the island column, or -1 for void. */

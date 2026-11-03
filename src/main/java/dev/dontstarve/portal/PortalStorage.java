@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +30,8 @@ public final class PortalStorage extends SavedData {
     private static final Codec<List<ItemStack>> LIST_CODEC = ItemStack.OPTIONAL_CODEC.listOf();
 
     private final Map<String, List<ItemStack>> byPortal = new HashMap<>();
+    /** Which portal each player entered the islands through (for the way back). */
+    private final Map<UUID, String> entryByPlayer = new HashMap<>();
 
     public static PortalStorage get(ServerLevel overworld) {
         return overworld.getDataStorage().computeIfAbsent(
@@ -42,7 +46,22 @@ public final class PortalStorage extends SavedData {
         stealAll(inventory.armor, list);
         stealAll(inventory.offhand, list);
         player.inventoryMenu.broadcastChanges();
+        entryByPlayer.put(player.getUUID(), key(anchor));
         setDirty();
+    }
+
+    /** The frame the given player entered through, or null if unknown. */
+    @Nullable
+    public BlockPos entryOf(UUID player) {
+        String raw = entryByPlayer.get(player);
+        if (raw == null) {
+            return null;
+        }
+        String[] parts = raw.split(",");
+        if (parts.length != 3) {
+            return null;
+        }
+        return new BlockPos(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
 
     /** Removes and returns everything stored for the given portal. */
@@ -81,6 +100,14 @@ public final class PortalStorage extends SavedData {
             portals.add(entryTag);
         }
         tag.put("portals", portals);
+        ListTag entries = new ListTag();
+        for (Map.Entry<UUID, String> entry : entryByPlayer.entrySet()) {
+            CompoundTag entryTag = new CompoundTag();
+            entryTag.putUUID("player", entry.getKey());
+            entryTag.putString("portal", entry.getValue());
+            entries.add(entryTag);
+        }
+        tag.put("entries", entries);
         return tag;
     }
 
@@ -93,6 +120,10 @@ public final class PortalStorage extends SavedData {
                     ? LIST_CODEC.decode(ops, compound.get("items")).result()
                             .map(com.mojang.datafixers.util.Pair::getFirst).orElse(List.of())
                     : List.of();            storage.byPortal.put(compound.getString("portal"), new ArrayList<>(items));
+        }
+        for (Tag entryTag : tag.getList("entries", Tag.TAG_COMPOUND)) {
+            CompoundTag compound = (CompoundTag) entryTag;
+            storage.entryByPlayer.put(compound.getUUID("player"), compound.getString("portal"));
         }
         return storage;
     }

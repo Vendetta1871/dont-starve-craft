@@ -5,6 +5,11 @@
   "block.dontstarve.marble_portal": "Мраморный портал",
   "block.dontstarve.grave": "Могила",
   "block.dontstarve.resurrectionstatue": "Мясной идол",
+  "block.dontstarve.moonrock_cluster": "Лунные обломки",
+  "block.dontstarve.moon_crystal": "Лунный кристалл",
+  "block.dontstarve.sky_portal": "Небесный портал",
+  "item.dontstarve.moonrocknugget": "Лунный камень",
+  "item.dontstarve.moonrockidol": "Лунный идол",
   "item.dontstarve.cutgrass": "Срезанная трава",
   "item.dontstarve.twigs": "Ветки",
   "item.dontstarve.boards": "Доски",
@@ -24,5 +29,8 @@
   "message.dontstarve.effigy_attuned": "Ты предлагаешь идолу кровь. Он вернёт тебя.",
   "message.dontstarve.effigy_revived": "%s вернулся с того света.",
   "message.dontstarve.reviver_used": "%1$s прижимает Живое сердце к %2$s — оно снова бьётся!",
-  "message.dontstarve.craft_blood_cost": "Ремесло пьёт твою кровь."
+  "message.dontstarve.craft_blood_cost": "Ремесло пьёт твою кровь.",
+  "message.dontstarve.skyportal_needs_idol": "Он холоден. Разбудить его мог бы Лунный идол.",
+  "message.dontstarve.skyportal_lit": "Идол растворяется в лунном свете. Небесный портал открыт.",
+  "message.dontstarve.escaped": "%s вернулся с островов через Небесный портал."
 }

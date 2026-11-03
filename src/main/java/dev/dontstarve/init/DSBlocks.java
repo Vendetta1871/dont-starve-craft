@@ -5,6 +5,7 @@ import dev.dontstarve.revive.ResurrectionStatueBlock;
 import dev.dontstarve.grave.GraveBlock;
 import dev.dontstarve.portal.MarbleBlock;
 import dev.dontstarve.portal.MarblePortalBlock;
+import dev.dontstarve.portal.SkyPortalBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -50,6 +51,33 @@ public final class DSBlocks {
                             .mapColor(MapColor.QUARTZ)
                             .strength(1.5F, 4.0F)
                             .sound(SoundType.BONE_BLOCK)));
+
+    // Moon meteorite debris. Deliberately hand-mineable: the escape route must
+    // work for a player who arrived with nothing.
+    public static final DeferredBlock<Block> MOONROCK_CLUSTER =
+            BLOCKS.register("moonrock_cluster", () -> new Block(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.QUARTZ)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .strength(1.2F, 3.0F)
+                            .sound(SoundType.CALCITE)));
+
+    public static final DeferredBlock<Block> MOON_CRYSTAL =
+            BLOCKS.register("moon_crystal", () -> new Block(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.QUARTZ)
+                            .strength(1.2F, 3.0F)
+                            .sound(SoundType.AMETHYST)
+                            .lightLevel(state -> 4)));
+
+    public static final DeferredBlock<SkyPortalBlock> SKY_PORTAL =
+            BLOCKS.register("sky_portal", () -> new SkyPortalBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.QUARTZ)
+                            .strength(3.0F, -1.0F)
+                            .sound(SoundType.AMETHYST)
+                            .lightLevel(state -> state.getValue(SkyPortalBlock.LIT) ? 7 : 0)
+                            .noOcclusion()));
 
     private static BlockBehaviour.Properties marbleProps() {
         return BlockBehaviour.Properties.of()

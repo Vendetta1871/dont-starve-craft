@@ -29,6 +29,11 @@ public final class DSCreativeTabs {
                         output.accept(DSItems.SPIDERGLAND.get());
                         output.accept(DSItems.BEARDHAIR.get());
                         output.accept(DSItems.REVIVER.get());
+                        output.accept(DSItems.MOONROCKNUGGET.get());
+                        output.accept(DSItems.MOONROCKIDOL.get());
+                        output.accept(DSBlocks.MOONROCK_CLUSTER.get());
+                        output.accept(DSBlocks.MOON_CRYSTAL.get());
+                        output.accept(DSBlocks.SKY_PORTAL.get());
                     })
                     .build());
 

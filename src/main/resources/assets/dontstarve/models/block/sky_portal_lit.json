@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "minecraft:block/respawn_anchor_side2",
+    "end": "minecraft:block/respawn_anchor_top"
+  }
+}

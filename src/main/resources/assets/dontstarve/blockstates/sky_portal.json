@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=false": { "model": "dontstarve:block/sky_portal" },
+    "lit=true": { "model": "dontstarve:block/sky_portal_lit" }
+  }
+}
