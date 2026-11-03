@@ -1,6 +1,7 @@
 package dev.dontstarve.init;
 
 import dev.dontstarve.DontStarveCraft;
+import dev.dontstarve.grave.GraveBlock;
 import dev.dontstarve.portal.MarbleBlock;
 import dev.dontstarve.portal.MarblePortalBlock;
 import net.minecraft.world.level.block.Block;
@@ -33,6 +34,14 @@ public final class DSBlocks {
                             .lightLevel(state -> 11)
                             .sound(SoundType.AMETHYST)
                             .noLootTable()));
+
+    public static final DeferredBlock<GraveBlock> GRAVE =
+            BLOCKS.register("grave", () -> new GraveBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.STONE)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .strength(1.5F, 6.0F)
+                            .sound(SoundType.MUD)));
 
     private static BlockBehaviour.Properties marbleProps() {
         return BlockBehaviour.Properties.of()

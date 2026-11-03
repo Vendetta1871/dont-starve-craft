@@ -13,6 +13,7 @@ public final class DSItems {
     public static final DeferredItem<BlockItem> MARBLE = ITEMS.registerSimpleBlockItem(DSBlocks.MARBLE);
     public static final DeferredItem<BlockItem> POLISHED_MARBLE = ITEMS.registerSimpleBlockItem(DSBlocks.POLISHED_MARBLE);
     public static final DeferredItem<BlockItem> MARBLE_BRICKS = ITEMS.registerSimpleBlockItem(DSBlocks.MARBLE_BRICKS);
+    public static final DeferredItem<BlockItem> GRAVE = ITEMS.registerSimpleBlockItem(DSBlocks.GRAVE);
 
     // The portal block is normally never obtained as an item; it is registered
     // for creative testing only.

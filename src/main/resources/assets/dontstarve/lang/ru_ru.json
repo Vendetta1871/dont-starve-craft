@@ -3,5 +3,12 @@
   "block.dontstarve.polished_marble": "Полированный мрамор",
   "block.dontstarve.marble_bricks": "Мраморный кирпич",
   "block.dontstarve.marble_portal": "Мраморный портал",
-  "itemGroup.dontstarve": "Don't Starve"
+  "block.dontstarve.grave": "Могила",
+  "itemGroup.dontstarve": "Don't Starve",
+  "death.dontstarve.ghost": "%s погиб. Его дух остаётся на острове...",
+  "message.dontstarve.ghost_no_touch": "Призрачные руки проходят сквозь твои вещи.",
+  "message.dontstarve.wipe_start": "Все выжившие погибли! Остров рухнет через %s с — вернитесь, или начните заново.",
+  "message.dontstarve.wipe_countdown": "Остров рухнет через %s...",
+  "message.dontstarve.wipe_cancelled": "Живая душа снова ступила на остров — гибель отвращена.",
+  "message.dontstarve.wipe_done": "Старый остров потерян. Появился новый остров."
 }

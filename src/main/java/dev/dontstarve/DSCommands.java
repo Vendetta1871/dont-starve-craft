@@ -9,9 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.status.ChunkStatus;import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 /**
  * Operator commands used to drive the island lifecycle during development:
@@ -48,13 +47,7 @@ public final class DSCommands {
         }
         int index = IslandState.get(overworld).advance();
         BlockPos center = IslandState.islandCenter(index);
-        ChunkPos spawnChunk = new ChunkPos(center);
-        // Pre-generate a 5x5 chunk area around the arrival plaza so the player
-        // never falls through ungenerated chunks on arrival.
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dz = -2; dz <= 2; dz++) {
-                islands.getChunk(spawnChunk.x + dx, spawnChunk.z + dz, ChunkStatus.FULL, true);
-            }        }
+        IslandState.pregenArrival(islands, index);
         ctx.getSource().sendSuccess(() -> Component.literal("Island " + index
                         + " created at " + center.toShortString() + ", arrival area pre-generated")
                         .withStyle(ChatFormatting.GREEN),

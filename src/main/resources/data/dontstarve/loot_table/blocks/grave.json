@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "dontstarve:grave"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:copy_components",
+          "source": "block_entity",
+          "include": [
+            "minecraft:container",
+            "dontstarve:grave_xp"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -21,6 +21,7 @@ public final class DSCreativeTabs {
                         output.accept(DSBlocks.POLISHED_MARBLE.get());
                         output.accept(DSBlocks.MARBLE_BRICKS.get());
                         output.accept(DSBlocks.MARBLE_PORTAL.get());
+                        output.accept(DSBlocks.GRAVE.get());
                     })
                     .build());
 

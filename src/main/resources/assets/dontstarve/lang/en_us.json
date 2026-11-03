@@ -3,5 +3,12 @@
   "block.dontstarve.polished_marble": "Polished Marble",
   "block.dontstarve.marble_bricks": "Marble Bricks",
   "block.dontstarve.marble_portal": "Marble Portal",
-  "itemGroup.dontstarve": "Don't Starve"
+  "block.dontstarve.grave": "Grave",
+  "itemGroup.dontstarve": "Don't Starve",
+  "death.dontstarve.ghost": "%s has died. Their spirit lingers on the island...",
+  "message.dontstarve.ghost_no_touch": "Your ghostly hands pass through your belongings.",
+  "message.dontstarve.wipe_start": "All survivors have perished! The island collapses in %s seconds — find a way back, or start anew.",
+  "message.dontstarve.wipe_countdown": "The island collapses in %s...",
+  "message.dontstarve.wipe_cancelled": "A living soul walks the island again — the collapse is averted.",
+  "message.dontstarve.wipe_done": "The old island is lost. A new island has risen."
 }
