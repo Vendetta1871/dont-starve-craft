@@ -1,0 +1,14 @@
+// SLOW (~3 minutes): the full all-ghost wipe — countdown, island advance,
+// and ejection of the spirits back into the overworld.
+#wait-player {P} 180
+ds island next
+ds island current
+execute in dontstarve:islands run tp {P} {X} 80 {Z}
+#sleep 3
+ds ghost {P} on
+#expect-log All survivors have perished 60
+#expect-log The island collapses in 10\.\.\. 130
+#expect-log The old island is lost 60
+#sleep 3
+ds ghost {P} check
+#expect ghost=False dimension=minecraft:overworld

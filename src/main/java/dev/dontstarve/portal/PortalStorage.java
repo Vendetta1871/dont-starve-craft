@@ -64,9 +64,14 @@ public final class PortalStorage extends SavedData {
         return new BlockPos(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
 
+    /** Puts one stack into the vault of the given frame (admin/test helper). */
+    public void put(BlockPos anchor, ItemStack stack) {
+        byPortal.computeIfAbsent(key(anchor), k -> new ArrayList<>()).add(stack.copy());
+        setDirty();
+    }
+
     /** Removes and returns everything stored for the given portal. */
-    public List<ItemStack> take(BlockPos anchor) {
-        List<ItemStack> removed = byPortal.remove(key(anchor));
+    public List<ItemStack> take(BlockPos anchor) {        List<ItemStack> removed = byPortal.remove(key(anchor));
         if (removed != null) {
             setDirty();
         }

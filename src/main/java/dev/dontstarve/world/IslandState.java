@@ -52,6 +52,12 @@ public final class IslandState extends SavedData {
     }
 
     /** Abandons the current island and activates the next one. */
+    /** Jumps to an arbitrary island index (used by /ds island goto and tests). */
+    public void setIndex(int index) {
+        islandIndex = index;
+        setDirty();
+    }
+
     public int advance() {
         islandIndex++;
         setDirty();

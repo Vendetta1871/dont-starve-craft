@@ -11,7 +11,7 @@ Port of Don't Starve to Minecraft. A marble "П" portal, lit by sacrifice,
 sends you naked to a Don't Starve island floating in the void. Loot it,
 craft your way out, and bring the spoils back to the overworld.
 '''
-authors = "sweetclit"
+authors = "Vendetta1871"
 
 [[dependencies.dontstarve]]
 modId = "neoforge"

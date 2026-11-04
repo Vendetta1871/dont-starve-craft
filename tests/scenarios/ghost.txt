@@ -1,0 +1,26 @@
+// Ghost perks and the all-ghost wipe countdown (needs a real online player).
+// NOTE: this scenario leaves the player where the wipe logic put them.
+#wait-player {P} 180
+ds island next
+ds island current
+#expect Current island
+// Send them to the islands and turn them into a ghost.
+execute in dontstarve:islands run tp {P} {X} 80 {Z}
+#sleep 3
+ds ghost {P} check
+#expect ghost=False dimension=minecraft:overworld
+ds ghost {P} on
+#expect is now a ghost
+data get entity {P} Abilities
+#expect mayfly: 1
+data get entity {P} ActiveEffects
+#expect minecraft:invisibility
+ds ghost {P} check
+#expect ghost=True dimension=dontstarve:islands
+// All island players are ghosts now: the collapse countdown starts.
+#expect-log All survivors have perished 60
+// A living soul walks the island again: the countdown is averted.
+ds ghost {P} off
+#expect-log A living soul walks the island again 60
+ds ghost {P} check
+#expect ghost=False dimension=dontstarve:islands

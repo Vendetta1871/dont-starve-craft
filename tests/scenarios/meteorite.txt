@@ -1,0 +1,17 @@
+// Every island carries one deterministic moon meteorite: hand-mineable Moon Rock
+// plus a crystal core, the raw material of the escape route.
+// Island 900 keeps the test off the islands real runs will use.
+ds island goto 900
+#expect Current island 900 centered at 7372800, 0, 0
+execute in dontstarve:islands run forceload add {X-112} {Z-112} {X+112} {Z+112}
+#sleep 2
+// The plaza floor is deterministic polished marble at y=74.
+execute in dontstarve:islands run setblock {X} 74 {Z} minecraft:diamond_block keep
+#expect Could not set the block
+execute in dontstarve:islands run setblock {X} 74 {Z} dontstarve:polished_marble
+// Count meteorite blocks around the computed center (island 900: x=7372805, z=-44).
+execute in dontstarve:islands run fill 7372787 66 -62 7372823 88 -26 minecraft:air replace dontstarve:moonrock_cluster
+#expect Successfully filled ([5-9][0-9]|[0-9]{3,}) block
+execute in dontstarve:islands run fill 7372787 66 -62 7372823 88 -26 minecraft:air replace dontstarve:moon_crystal
+#expect Successfully filled [1-9] block
+execute in dontstarve:islands run forceload remove all

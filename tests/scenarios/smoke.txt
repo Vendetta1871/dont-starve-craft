@@ -1,0 +1,34 @@
+// Boot, registration, and command wiring.
+ds island current
+#expect Current island \d+ centered at 0, 0, 0
+ds check block dontstarve:marble
+#expect OK block
+ds check block dontstarve:grave
+#expect OK block
+ds check block dontstarve:resurrectionstatue
+#expect OK block
+ds check block dontstarve:sky_portal
+#expect OK block
+ds check item dontstarve:moonrocknugget
+#expect OK item
+ds check item dontstarve:moonrockidol
+#expect OK item
+ds check item dontstarve:reviver
+#expect OK item
+ds check item dontstarve:cutgrass
+#expect OK item
+ds check recipe dontstarve:reviver
+#expect OK recipe
+ds check recipe dontstarve:resurrectionstatue
+#expect OK recipe
+ds check recipe dontstarve:moonrockidol
+#expect OK recipe
+ds check recipe dontstarve:sky_portal
+#expect OK recipe
+ds check tag dontstarve:marble
+#expect OK tag dontstarve:marble \(3 blocks\)
+// Negative controls: the checker must actually look things up.
+ds check item dontstarve:not_a_real_item
+#expect MISSING item
+ds check recipe dontstarve:not_a_real_recipe
+#expect MISSING recipe

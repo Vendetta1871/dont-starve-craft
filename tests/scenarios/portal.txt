@@ -1,0 +1,34 @@
+// Marble portal: a П-frame of marble-tagged blocks lights up when a mob dies
+// nearby (sacrifice), and the per-frame vault keeps confiscated items.
+// Frame: 4 wide x 5 tall (interior 2x3), legs at x=100/x=103, top bar y=74,
+// interior (101..102, 70..73, 100), anchor (topMin) = 100 74 100.
+execute in minecraft:overworld run forceload add -16 -16 112 112
+#sleep 2
+// Carve the hillside (solid ground stays under the feet), then build the frame.
+execute in minecraft:overworld run fill 99 70 99 104 76 101 minecraft:air
+execute in minecraft:overworld run fill 100 74 100 103 74 100 dontstarve:marble
+#expect Successfully filled 4 block
+execute in minecraft:overworld run fill 100 70 100 100 73 100 dontstarve:marble
+#expect Successfully filled 4 block
+execute in minecraft:overworld run fill 103 70 100 103 73 100 dontstarve:marble
+#expect Successfully filled 4 block
+// No sacrifice yet: the interior stays empty.
+execute in minecraft:overworld run fill 101 70 100 102 73 100 minecraft:bedrock replace dontstarve:marble_portal
+#expect No blocks were filled
+// Sacrifice a zombie 2 blocks away: death within 8 blocks lights the frame.
+// (Passive mobs despawn with no players nearby, so: persisted, immobile zombie.)
+execute in minecraft:overworld run summon minecraft:zombie 101 70 104 {NoAI:true,PersistenceRequired:true}
+execute in minecraft:overworld positioned 101 70 102 run kill @e[type=zombie,distance=..9]
+#expect Killed Zombie
+#sleep 1
+execute in minecraft:overworld run fill 101 70 100 102 73 100 minecraft:bedrock replace dontstarve:marble_portal
+#expect Successfully filled 8 block
+// Vault round-trip: put stands in for confiscation, take for the frame eject.
+ds vault put 100 74 100 minecraft:golden_apple
+#expect Stored 1
+ds vault take 100 74 100
+#expect Ejected 1 stacks
+// Vault is empty now: taking again ejects nothing.
+ds vault take 100 74 100
+#expect Ejected 0 stacks
+execute in minecraft:overworld run forceload remove all

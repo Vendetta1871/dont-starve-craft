@@ -1,0 +1,21 @@
+// Grave: container block entity + contents/XP survive breaking (copy_components).
+execute in dontstarve:islands run forceload add 16 -16 16 16
+execute in dontstarve:islands run setblock 0 75 0 dontstarve:grave
+#expect Changed the block
+execute in dontstarve:islands run data modify block 0 75 0 Items set value [{Slot:0b,id:"minecraft:golden_apple",count:5}]
+execute in dontstarve:islands run data modify block 0 75 0 GraveXp set value 120
+execute in dontstarve:islands run data get block 0 75 0
+#expect golden_apple
+#expect GraveXp: 120
+// Break it: the dropped grave item must carry the contents and the sealed XP.
+// (setblock never drops loot, so the mining loot table is fired directly.)
+execute in dontstarve:islands run loot spawn 0 76 0 mine 0 75 0
+#expect Dropped 1
+#sleep 1
+execute in dontstarve:islands positioned 0 76 0 run data get entity @e[type=item,distance=..4,limit=1] Item
+#expect minecraft:container
+#expect dontstarve:grave_xp.*120|120.*grave_xp
+#expect golden_apple
+// Clean up the dropped grave item.
+execute in dontstarve:islands positioned 0 76 0 run kill @e[type=item,distance=..4]
+execute in dontstarve:islands run forceload remove all
