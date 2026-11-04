@@ -6,11 +6,15 @@ import net.celestiald.dontstarve.grave.GraveBlock;
 import net.celestiald.dontstarve.portal.MarbleBlock;
 import net.celestiald.dontstarve.portal.MarblePortalBlock;
 import net.celestiald.dontstarve.portal.SkyPortalBlock;
+import net.celestiald.dontstarve.world.CutGrassBlock;
+import net.celestiald.dontstarve.world.DSSaplingBlock;
+import net.celestiald.dontstarve.world.SpiderDenBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -78,6 +82,33 @@ public final class DSBlocks {
                             .sound(SoundType.AMETHYST)
                             .lightLevel(state -> state.getValue(SkyPortalBlock.LIT) ? 7 : 0)
                             .noOcclusion()));
+
+    // Island flora and fauna — the DS survival kit's raw sources.
+    public static final DeferredBlock<CutGrassBlock> CUT_GRASS =
+            BLOCKS.register("cut_grass", () -> new CutGrassBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.PLANT)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.GRASS)
+                            .offsetType(BlockBehaviour.OffsetType.XZ)
+                            .pushReaction(PushReaction.DESTROY)));
+
+    public static final DeferredBlock<DSSaplingBlock> SAPLING =
+            BLOCKS.register("sapling", () -> new DSSaplingBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.PLANT)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.GRASS)
+                            .pushReaction(PushReaction.DESTROY)));
+
+    public static final DeferredBlock<SpiderDenBlock> SPIDER_DEN =
+            BLOCKS.register("spider_den", () -> new SpiderDenBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                            .strength(2.0F, 4.0F)
+                            .sound(SoundType.WOOL)));
 
     private static BlockBehaviour.Properties marbleProps() {
         return BlockBehaviour.Properties.of()

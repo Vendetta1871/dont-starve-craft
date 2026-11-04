@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "dontstarve:cutgrass" },
+    { "item": "dontstarve:cutgrass" },
+    { "item": "dontstarve:twigs" },
+    { "item": "dontstarve:twigs" }
+  ],
+  "result": { "id": "dontstarve:torch", "count": 1 }
+}

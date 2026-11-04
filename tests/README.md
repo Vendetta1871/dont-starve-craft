@@ -42,6 +42,7 @@ indices (`ds island goto 900`).
 | `grave.txt` | Grave stores items + XP; contents survive breaking via `copy_components` |
 | `meteorite.txt` | Deterministic plaza floor; one moon meteorite per island (island 900) |
 | `portal.txt` | П-frame lights on mob sacrifice; vault put/take round-trip |
+| `island.txt` | Grass/gravel scatter, DS trees, den spawns a spider, hound waves, tuft loot (island 910) |
 | `ghost.txt` | PLAYER: ghost perks (invisibility, mayfly); all-ghost countdown starts and is averted |
 | `wipe.txt` | PLAYER, SLOW: full all-ghost wipe — countdown, island advance, ejection home |
 
@@ -49,5 +50,6 @@ indices (`ds island goto 900`).
 
 `/ds island goto <n>` jumps the active island; `/ds vault put|take <pos> [item]`
 stands in for a player being confiscated / ejecting; `/ds ghost <player>
-on|off|check` drives the ghost flow. They exist for these scenarios and manual
+on|off|check` drives the ghost flow; `/ds hound now <wave>` releases a hound
+wave at once. They exist for these scenarios and manual
 probing, not for gameplay.

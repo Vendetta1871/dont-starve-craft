@@ -34,6 +34,10 @@ public final class DSCreativeTabs {
                         output.accept(DSBlocks.MOONROCK_CLUSTER.get());
                         output.accept(DSBlocks.MOON_CRYSTAL.get());
                         output.accept(DSBlocks.SKY_PORTAL.get());
+                        output.accept(DSBlocks.CUT_GRASS.get());
+                        output.accept(DSBlocks.SAPLING.get());
+                        output.accept(DSBlocks.SPIDER_DEN.get());
+                        output.accept(DSItems.TORCH.get());
                     })
                     .build());
 

@@ -14,12 +14,15 @@ import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.BiomeManager;import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -73,6 +76,14 @@ public final class IslandChunkGenerator extends ChunkGenerator {
                     }
                     cursor.set(wx, y, wz);
                     chunk.setBlockState(cursor, state, true);
+                }
+                // Surface flora: DS grass tufts and gravel patches (flint source).
+                if (surface >= 0 && isGrassSurface(wx, wz, surface)) {
+                    BlockState scatter = scatterBlock(wx, wz, surface);
+                    if (scatter != null) {
+                        cursor.set(wx, surface + 1, wz);
+                        chunk.setBlockState(cursor, scatter, true);
+                    }
                 }
             }
         }
@@ -164,6 +175,119 @@ public final class IslandChunkGenerator extends ChunkGenerator {
         hash = (hash ^ (hash >>> 12)) * 1274126177L;
         hash ^= hash >>> 16;
         return (hash & 0xFFFF) / 65536.0;
+    }
+
+    private static boolean isGrassSurface(int wx, int wz, int surface) {
+        return columnBlock(wx, wz, surface, surface).is(Blocks.GRASS_BLOCK);
+    }
+
+    /**
+     * Single-block surface scatter: DS cut grass tufts (the cutgrass source)
+     * and gravel patches (our flint source, DS boulders' stand-in).
+     */
+    @Nullable
+    private static BlockState scatterBlock(int wx, int wz, int surface) {
+        double radius = radiusToCenter(wx, wz);
+        if (radius < 10.0 || radius > IslandState.RADIUS - 4.0) {
+            return null; // keep the plaza and the beach shore clean
+        }
+        double roll = hashNoise(wx * 5 + 11, wz * 5 + 23);
+        if (roll < 0.14) {
+            return DSBlocks.CUT_GRASS.get().defaultBlockState();
+        }
+        if (roll > 0.965) {
+            return Blocks.GRAVEL.defaultBlockState();
+        }
+        return null;
+    }
+
+    private static double radiusToCenter(int wx, int wz) {
+        long index = Math.round((double) wx / IslandState.SPACING);
+        double dx = wx - index * (double) IslandState.SPACING;
+        return Math.sqrt(dx * dx + (double) wz * wz);
+    }
+
+    /**
+     * Trees and spider dens live here rather than in fillFromNoise because
+     * their canopies cross chunk borders; the decoration stage can see the
+     * neighbouring chunks. Placement is deterministic per grid cell, so every
+     * chunk decorates exactly its own candidates.
+     */
+    @Override
+    public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureManager structures) {
+        ChunkPos chunkPos = chunk.getPos();
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        // Trees: one candidate per 7x7 cell, kept fully inside the chunk.
+        int cell = 7;
+        int startX = chunkPos.getMinBlockX();
+        int startZ = chunkPos.getMinBlockZ();
+        int firstCellX = Math.floorDiv(startX, cell);
+        int firstCellZ = Math.floorDiv(startZ, cell);
+        for (int cx = firstCellX; cx * cell < startX + 16; cx++) {
+            for (int cz = firstCellZ; cz * cell < startZ + 16; cz++) {
+                int jitterX = (int) (hashNoise(cx * 31 + 7, cz * 13 + 3) * cell);
+                int jitterZ = (int) (hashNoise(cx * 17 + 91, cz * 29 + 5) * cell);
+                int wx = cx * cell + jitterX;
+                int wz = cz * cell + jitterZ;
+                if (wx < startX || wx >= startX + 16 || wz < startZ || wz >= startZ + 16) {
+                    continue; // belongs to (and is placed by) the other chunk
+                }
+                if (hashNoise(cx * 53 + 1, cz * 71 + 2) > 0.45) {
+                    continue; // ~45 % of cells grow a tree
+                }
+                placeSaplingOrTree(level, cursor, wx, wz);
+            }
+        }
+        // Spider dens: sparse landmark grid, away from the plaza.
+        int denCell = 48;
+        for (int cx = Math.floorDiv(startX, denCell); cx * denCell < startX + 16; cx++) {
+            for (int cz = Math.floorDiv(startZ, denCell); cz * denCell < startZ + 16; cz++) {
+                if (hashNoise(cx * 977 + 13, cz * 613 + 29) > 0.4) {
+                    continue;
+                }
+                int wx = cx * denCell + (int) (hashNoise(cx * 3 + 1, cz * 3 + 2) * denCell);
+                int wz = cz * denCell + (int) (hashNoise(cx * 5 + 3, cz * 5 + 4) * denCell);
+                double radius = radiusToCenter(wx, wz);
+                if (radius < 30.0 || radius > IslandState.RADIUS - 10.0) {
+                    continue;
+                }
+                int surface = islandSurfaceHeight(wx, wz);
+                if (surface < 0 || !columnBlock(wx, wz, surface, surface).is(Blocks.GRASS_BLOCK)) {
+                    continue;
+                }
+                cursor.set(wx, surface + 1, wz);
+                if (level.getBlockState(cursor).isAir()) {
+                    level.setBlock(cursor, DSBlocks.SPIDER_DEN.get().defaultBlockState(),
+                            Block.UPDATE_KNOWN_SHAPE);
+                }
+            }
+        }
+    }
+
+    /** Mature tree most of the time, a sapling otherwise (DST forests regrow). */
+    private void placeSaplingOrTree(WorldGenLevel level, BlockPos.MutableBlockPos cursor, int wx, int wz) {
+        int surface = islandSurfaceHeight(wx, wz);
+        if (surface < 0 || !columnBlock(wx, wz, surface, surface).is(Blocks.GRASS_BLOCK)) {
+            return;
+        }
+        double radius = radiusToCenter(wx, wz);
+        if (radius < 14.0 || radius > IslandState.RADIUS - 6.0) {
+            return;
+        }
+        // Keep the canopy inside this chunk: decoration may not touch neighbours.
+        if (wx % 16 < 3 || wx % 16 > 12 || wz % 16 < 3 || wz % 16 > 12) {
+            return;
+        }
+        cursor.set(wx, surface + 1, wz);
+        if (!level.getBlockState(cursor).isAir()) {
+            return;
+        }
+        if (hashNoise(wx * 13 + 5, wz * 13 + 9) < 0.75) {
+            DSSaplingBlock.growTree(level, level, cursor.immutable(),
+                    RandomSource.create(wx * 31L + wz * 7919L));
+        } else {
+            level.setBlock(cursor, DSBlocks.SAPLING.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE);
+        }
     }
 
     @Override

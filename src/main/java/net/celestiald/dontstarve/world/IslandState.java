@@ -30,6 +30,12 @@ public final class IslandState extends SavedData {
     private int islandIndex = 0;
     /** All-ghost wipe countdown in seconds; -1 means inactive. */
     private int wipeSecondsLeft = -1;
+    /** islands-level game time when the current island went active (hound clock). */
+    private long runStartGameTime = -1;
+    /** Hound waves already sent against the current island. */
+    private int houndWavesSent = 0;
+    /** Whether the warning howl for the next wave has already been broadcast. */
+    private boolean houndWarned = false;
 
     public static IslandState get(ServerLevel overworld) {
         return overworld.getDataStorage().computeIfAbsent(
@@ -52,16 +58,59 @@ public final class IslandState extends SavedData {
     }
 
     /** Abandons the current island and activates the next one. */
+    private void onIslandChanged() {
+        runStartGameTime = -1; // first tick of HoundWave re-anchors it
+        houndWavesSent = 0;
+        houndWarned = false;
+    }
+
     /** Jumps to an arbitrary island index (used by /ds island goto and tests). */
     public void setIndex(int index) {
         islandIndex = index;
+        onIslandChanged();
         setDirty();
     }
 
+    /** Abandons the current island and activates the next one. */
     public int advance() {
         islandIndex++;
+        onIslandChanged();
         setDirty();
         return islandIndex;
+    }
+
+    /** Game time (islands level) the current run started at; -1 = not anchored. */
+    public long runStartGameTime() {
+        return runStartGameTime;
+    }
+
+    public void setRunStartGameTime(long time) {
+        if (time != runStartGameTime) {
+            runStartGameTime = time;
+            setDirty();
+        }
+    }
+
+    public int houndWavesSent() {
+        return houndWavesSent;
+    }
+
+    public boolean houndWarned() {
+        return houndWarned;
+    }
+
+    public void setHoundWarned(boolean warned) {
+        if (warned != houndWarned) {
+            houndWarned = warned;
+            setDirty();
+        }
+    }
+
+    public void setHoundWavesSent(int waves) {
+        if (waves != houndWavesSent) {
+            houndWavesSent = waves;
+            setDirty();
+        }
     }
 
     public static BlockPos islandCenter(int index) {
@@ -90,6 +139,9 @@ public final class IslandState extends SavedData {
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
         tag.putInt("island_index", islandIndex);
         tag.putInt("wipe_seconds_left", wipeSecondsLeft);
+        tag.putLong("run_start_game_time", runStartGameTime);
+        tag.putInt("hound_waves_sent", houndWavesSent);
+        tag.putBoolean("hound_warned", houndWarned);
         return tag;
     }
 
@@ -98,6 +150,9 @@ public final class IslandState extends SavedData {
         state.islandIndex = tag.getInt("island_index");
         state.wipeSecondsLeft = tag.contains("wipe_seconds_left")
                 ? tag.getInt("wipe_seconds_left") : -1;
+        state.runStartGameTime = tag.getLong("run_start_game_time");
+        state.houndWavesSent = tag.getInt("hound_waves_sent");
+        state.houndWarned = tag.getBoolean("hound_warned");
         return state;
     }
 

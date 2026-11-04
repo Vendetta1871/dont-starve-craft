@@ -31,7 +31,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  * in the headless test scenarios: {@code /ds island current|next|goto <n>},
  * the vault helpers {@code /ds vault put|take <pos> [item]} that stand in for
  * a player walking into the portal or right-clicking the frame, and
- * {@code /ds ghost <player> on|off|check} for the ghost/wipe flow.
+ * {@code /ds ghost <player> on|off|check} for the ghost/wipe flow and
+ * {@code /ds hound now <wave>} to release a hound wave on demand.
  */
 public final class DSCommands {
 
@@ -58,6 +59,10 @@ public final class DSCommands {
                                 .then(Commands.literal("on").executes(ctx -> ghost(ctx, true)))
                                 .then(Commands.literal("off").executes(ctx -> ghost(ctx, false)))
                                 .then(Commands.literal("check").executes(DSCommands::ghostCheck))))
+                .then(Commands.literal("hound")
+                        .then(Commands.literal("now")
+                                .then(Commands.argument("wave", IntegerArgumentType.integer(1, 10))
+                                        .executes(DSCommands::houndNow))))
                 .then(Commands.literal("check")
                         .then(Commands.literal("item")
                                 .then(Commands.argument("id", ResourceLocationArgument.id())
@@ -195,6 +200,21 @@ public final class DSCommands {
         var tag = ctx.getSource().registryAccess().registryOrThrow(Registries.BLOCK).getTag(tagKey);
         return report(ctx, tag.isPresent(), "tag " + id + " ("
                 + tag.map(t -> String.valueOf(t.size())).orElse("0") + " blocks)");
+    }
+
+    private static int houndNow(CommandContext<CommandSourceStack> ctx) {
+        MinecraftServer server = ctx.getSource().getServer();
+        ServerLevel islands = server.getLevel(DSRefs.ISLANDS);
+        ServerLevel overworld = server.getLevel(Level.OVERWORLD);
+        if (islands == null || overworld == null) {
+            return 0;
+        }
+        int wave = IntegerArgumentType.getInteger(ctx, "wave");
+        int spawned = net.celestiald.dontstarve.survive.HoundWave.forceWave(
+                islands, IslandState.get(overworld), wave);
+        ctx.getSource().sendSuccess(() -> Component.literal(
+                "Hound wave " + wave + " released: " + spawned + " hound(s)"), true);
+        return 1;
     }
 
     private static int report(CommandContext<CommandSourceStack> ctx, boolean present, String what) {

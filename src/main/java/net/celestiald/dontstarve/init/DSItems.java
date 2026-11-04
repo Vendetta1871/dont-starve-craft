@@ -3,6 +3,7 @@ package net.celestiald.dontstarve.init;
 import net.celestiald.dontstarve.DontStarveCraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -30,6 +31,10 @@ public final class DSItems {
     public static final DeferredItem<Item> BEARDHAIR = ITEMS.registerItem("beardhair",
             Item::new, new Item.Properties().stacksTo(20));
 
+    /** DS torch (2 cut grass + 2 twigs): places a vanilla torch. */
+    public static final DeferredItem<BlockItem> TORCH = ITEMS.registerItem("torch",
+            properties -> new BlockItem(Blocks.TORCH, properties), new Item.Properties());
+
     /** Telltale Heart: a living player revives a ghost with it at 25 % HP. */
     public static final DeferredItem<Item> REVIVER = ITEMS.registerItem("reviver",
             Item::new, new Item.Properties().stacksTo(20));
@@ -46,6 +51,12 @@ public final class DSItems {
             ITEMS.registerSimpleBlockItem(DSBlocks.MOON_CRYSTAL);
     public static final DeferredItem<BlockItem> SKY_PORTAL =
             ITEMS.registerSimpleBlockItem(DSBlocks.SKY_PORTAL);
+    public static final DeferredItem<BlockItem> CUT_GRASS =
+            ITEMS.registerSimpleBlockItem(DSBlocks.CUT_GRASS);
+    public static final DeferredItem<BlockItem> SAPLING =
+            ITEMS.registerSimpleBlockItem(DSBlocks.SAPLING);
+    public static final DeferredItem<BlockItem> SPIDER_DEN =
+            ITEMS.registerSimpleBlockItem(DSBlocks.SPIDER_DEN);
 
     // The portal block is normally never obtained as an item; it is registered
     // for creative testing only.

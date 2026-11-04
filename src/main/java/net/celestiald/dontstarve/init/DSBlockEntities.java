@@ -3,6 +3,7 @@ package net.celestiald.dontstarve.init;
 import net.celestiald.dontstarve.DontStarveCraft;
 import net.celestiald.dontstarve.grave.GraveBlockEntity;
 import net.celestiald.dontstarve.revive.ResurrectionStatueBlockEntity;
+import net.celestiald.dontstarve.world.SpiderDenBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -20,6 +21,11 @@ public final class DSBlockEntities {
             BLOCK_ENTITIES.register("resurrectionstatue",
                     () -> BlockEntityType.Builder.of(ResurrectionStatueBlockEntity::new,
                             DSBlocks.RESURRECTION_STATUE.get()).build(null));
+
+    public static final Supplier<BlockEntityType<SpiderDenBlock.SpiderDenBlockEntity>> SPIDER_DEN =
+            BLOCK_ENTITIES.register("spider_den",
+                    () -> BlockEntityType.Builder.of(SpiderDenBlock.SpiderDenBlockEntity::new,
+                            DSBlocks.SPIDER_DEN.get()).build(null));
 
     private DSBlockEntities() {
     }

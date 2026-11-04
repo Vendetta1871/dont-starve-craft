@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 export JAVA_HOME="${DST_JAVA_HOME:-/usr/lib/jvm/java-21-openjdk}"
 port=${1:-25699}
 status=0
-for scenario in smoke grave meteorite portal; do
+for scenario in smoke grave meteorite portal island; do
     echo "=== $scenario ==="
     python3 tests/servertest.py . "tests/scenarios/$scenario.txt" --port "$port" 2>&1 |
         grep -E '^(PASS|FAIL|===|SERVER|port|!!)'

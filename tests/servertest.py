@@ -73,6 +73,8 @@ def main():
     with open(os.path.join(run, 'eula.txt'), 'w') as f:
         f.write('eula=true\n')
     game_port = port - 100
+    # spawn-animals must stay true: hound waves are wolf-based (Animal), and
+    # the server discards all Animals when it is false.
     with open(os.path.join(run, 'server.properties'), 'w') as f:
         f.write(f"""enable-rcon=true
 rcon.password={RCON_PASSWORD}
@@ -86,7 +88,7 @@ simulation-distance=6
 motd=dst-test
 max-tick-time=-1
 spawn-npcs=false
-spawn-animals=false
+spawn-animals=true
 """)
     log_path = os.path.join(run, 'test-server.log')
     log = open(log_path, 'w')
