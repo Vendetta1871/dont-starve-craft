@@ -1,0 +1,5470 @@
+{
+  "alterguardian_phase1": [
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    }
+  ],
+  "alterguardian_phase1_lunarrift": [
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.34,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.34,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    }
+  ],
+  "alterguardian_phase2": [
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    }
+  ],
+  "alterguardian_phase3": [
+    {
+      "chance": 1,
+      "item": "chesspiece_guardianphase3_sketch"
+    },
+    {
+      "chance": 1,
+      "item": "alterguardianhatshard"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    }
+  ],
+  "alterguardian_phase3dead": [
+    {
+      "chance": 1,
+      "item": "alterguardianhat"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.33,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.66,
+      "item": "moonrocknugget"
+    }
+  ],
+  "alterguardian_phase4_lunarrift": [
+    {
+      "chance": 1,
+      "item": "lunar_seed"
+    },
+    {
+      "chance": 1,
+      "item": "lunar_seed"
+    },
+    {
+      "chance": 1,
+      "item": "lunar_seed"
+    },
+    {
+      "chance": 1,
+      "item": "lunar_seed"
+    },
+    {
+      "chance": 1,
+      "item": "lunar_seed"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.7,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.3,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 1,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 0.7,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 0.5,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_wagboss_lunar_sketch"
+    }
+  ],
+  "ancient_altar": [
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    }
+  ],
+  "antlion": [
+    {
+      "chance": 1,
+      "item": "townportal_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_antlion_sketch"
+    },
+    {
+      "chance": 1,
+      "item": "antlionhat_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 1,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 1,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 1,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 1,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 1,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 0.5,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 0.5,
+      "item": "townportaltalisman"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    }
+  ],
+  "archive_statues": [
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.05,
+      "item": "moonrocknugget"
+    }
+  ],
+  "atrium_statue_loot": [
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 0.25,
+      "item": "thulecite"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite_pieces"
+    }
+  ],
+  "bat": [
+    {
+      "chance": 0.25,
+      "item": "batwing"
+    },
+    {
+      "chance": 0.15,
+      "item": "guano"
+    },
+    {
+      "chance": 0.1,
+      "item": "monstermeat"
+    }
+  ],
+  "bat_acidinfused": [
+    {
+      "chance": 0.5,
+      "item": "batwing"
+    },
+    {
+      "chance": 0.3,
+      "item": "guano"
+    },
+    {
+      "chance": 0.2,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.2,
+      "item": "nitre"
+    }
+  ],
+  "bat_boss": [
+    {
+      "chance": 1,
+      "item": "bat_bosscorpsehat"
+    }
+  ],
+  "bat_boss_acidinfused": [
+    {
+      "chance": 1,
+      "item": "bat_bosscorpsehat"
+    }
+  ],
+  "bat_boss_shadow": [
+    {
+      "chance": 1,
+      "item": "atrium_ritual_organ_bat"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.33,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_batboss_shadow_sketch"
+    }
+  ],
+  "bearger": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "bearger_fur"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_bearger_sketch"
+    }
+  ],
+  "beefalo": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "beefalowool"
+    },
+    {
+      "chance": 1,
+      "item": "beefalowool"
+    },
+    {
+      "chance": 1,
+      "item": "beefalowool"
+    },
+    {
+      "chance": 0.33,
+      "item": "horn"
+    }
+  ],
+  "beequeen": [
+    {
+      "chance": 1,
+      "item": "royal_jelly"
+    },
+    {
+      "chance": 1,
+      "item": "royal_jelly"
+    },
+    {
+      "chance": 1,
+      "item": "royal_jelly"
+    },
+    {
+      "chance": 1,
+      "item": "royal_jelly"
+    },
+    {
+      "chance": 1,
+      "item": "royal_jelly"
+    },
+    {
+      "chance": 1,
+      "item": "royal_jelly"
+    },
+    {
+      "chance": 0.5,
+      "item": "royal_jelly"
+    },
+    {
+      "chance": 1,
+      "item": "honeycomb"
+    },
+    {
+      "chance": 0.5,
+      "item": "honeycomb"
+    },
+    {
+      "chance": 1,
+      "item": "honey"
+    },
+    {
+      "chance": 1,
+      "item": "honey"
+    },
+    {
+      "chance": 1,
+      "item": "honey"
+    },
+    {
+      "chance": 0.5,
+      "item": "honey"
+    },
+    {
+      "chance": 1,
+      "item": "stinger"
+    },
+    {
+      "chance": 1,
+      "item": "hivehat"
+    },
+    {
+      "chance": 1,
+      "item": "bundlewrap_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_beequeen_sketch"
+    }
+  ],
+  "bird_mutant": [
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    }
+  ],
+  "bird_mutant_rift": [
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    }
+  ],
+  "bishop": [
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "purplegem"
+    }
+  ],
+  "bishop_nightmare": [
+    {
+      "chance": 1,
+      "item": "purplegem"
+    },
+    {
+      "chance": 0.6,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite_pieces"
+    }
+  ],
+  "boatfragment": [
+    {
+      "chance": 1,
+      "item": "boards"
+    }
+  ],
+  "brokenhound_loot": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonrocknugget"
+    }
+  ],
+  "brokenwerepig_loot": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.5,
+      "item": "pigskin"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonrocknugget"
+    }
+  ],
+  "buzzard": [
+    {
+      "chance": 1,
+      "item": "drumstick"
+    },
+    {
+      "chance": 0.33,
+      "item": "smallmeat"
+    },
+    {
+      "chance": 0.33,
+      "item": "feather_crow"
+    }
+  ],
+  "buzzard_lunar": [
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonglass"
+    }
+  ],
+  "carrat": [
+    {
+      "chance": 1,
+      "item": "plantmeat"
+    },
+    {
+      "chance": 0.33,
+      "item": "carrot_seeds"
+    }
+  ],
+  "catcoon": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.33,
+      "item": "coontail"
+    }
+  ],
+  "catcoonden": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "twigs"
+    },
+    {
+      "chance": 1,
+      "item": "twigs"
+    }
+  ],
+  "cave_vent_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.05,
+      "item": "bluegem"
+    },
+    {
+      "chance": 0.05,
+      "item": "redgem"
+    }
+  ],
+  "cave_vent_rock_low": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    }
+  ],
+  "cave_vent_rock_med": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    }
+  ],
+  "cavein_boulder": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.4,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.1,
+      "item": "flint"
+    }
+  ],
+  "chargedlightninggoat": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "goatmilk"
+    },
+    {
+      "chance": 0.25,
+      "item": "lightninggoathorn"
+    }
+  ],
+  "charlie_boss": [
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.75,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.75,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_charlie_boss_sketch"
+    }
+  ],
+  "charlie_boss_runner": [
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    }
+  ],
+  "charliearena_spike": [
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    }
+  ],
+  "chess_junk": [
+    {
+      "chance": 1,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 0.55,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 0.25,
+      "item": "trinket_1"
+    },
+    {
+      "chance": 0.25,
+      "item": "gears"
+    },
+    {
+      "chance": 0.25,
+      "item": "redgem"
+    },
+    {
+      "chance": 0.05,
+      "item": "greengem"
+    },
+    {
+      "chance": 0.05,
+      "item": "yellowgem"
+    },
+    {
+      "chance": 0.05,
+      "item": "purplegem"
+    },
+    {
+      "chance": 0.05,
+      "item": "orangegem"
+    },
+    {
+      "chance": 0.01,
+      "item": "thulecite"
+    }
+  ],
+  "chest_mimic": [
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.75,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.5,
+      "item": "houndstooth"
+    }
+  ],
+  "ck_cannontower": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.75,
+      "item": "kelp"
+    },
+    {
+      "chance": 0.75,
+      "item": "barnacle"
+    },
+    {
+      "chance": 0.75,
+      "item": "cannonball_rock_item"
+    }
+  ],
+  "clayhound": [
+    {
+      "chance": 0.2,
+      "item": "redpouch"
+    },
+    {
+      "chance": 0.1,
+      "item": "houndstooth"
+    }
+  ],
+  "claywarg": [
+    {
+      "chance": 1,
+      "item": "redpouch"
+    },
+    {
+      "chance": 1,
+      "item": "redpouch"
+    },
+    {
+      "chance": 1,
+      "item": "redpouch"
+    },
+    {
+      "chance": 1,
+      "item": "redpouch"
+    },
+    {
+      "chance": 0.5,
+      "item": "redpouch"
+    },
+    {
+      "chance": 0.5,
+      "item": "redpouch"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.66,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.33,
+      "item": "houndstooth"
+    }
+  ],
+  "cookiecutter": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "cookiecuttershell"
+    },
+    {
+      "chance": 0.25,
+      "item": "cookiecuttershell"
+    }
+  ],
+  "crabking": [
+    {
+      "chance": 1,
+      "item": "trident_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_crabking_sketch"
+    },
+    {
+      "chance": 1,
+      "item": "boat_bumper_crabking_kit"
+    },
+    {
+      "chance": 1,
+      "item": "barnacle"
+    },
+    {
+      "chance": 1,
+      "item": "barnacle"
+    },
+    {
+      "chance": 0.25,
+      "item": "barnacle"
+    },
+    {
+      "chance": 0.25,
+      "item": "barnacle"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.5,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "messagebottle"
+    },
+    {
+      "chance": 1,
+      "item": "messagebottle"
+    },
+    {
+      "chance": 0.5,
+      "item": "messagebottle"
+    },
+    {
+      "chance": 0.25,
+      "item": "messagebottle"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave3"
+    },
+    {
+      "chance": 0.5,
+      "item": "singingshell_octave3"
+    },
+    {
+      "chance": 0.25,
+      "item": "singingshell_octave3"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave4"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave4"
+    },
+    {
+      "chance": 0.5,
+      "item": "singingshell_octave4"
+    },
+    {
+      "chance": 0.25,
+      "item": "singingshell_octave4"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave5"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave5"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave5"
+    },
+    {
+      "chance": 0.5,
+      "item": "singingshell_octave5"
+    },
+    {
+      "chance": 0.25,
+      "item": "singingshell_octave5"
+    }
+  ],
+  "crabking_claw": [
+    {
+      "chance": 1,
+      "item": "meat"
+    }
+  ],
+  "crabking_mob": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.25,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.25,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "flint"
+    },
+    {
+      "chance": 0.15,
+      "item": "flint"
+    }
+  ],
+  "crabking_mob_knight": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.5,
+      "item": "meat"
+    },
+    {
+      "chance": 0.25,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.25,
+      "item": "flint"
+    }
+  ],
+  "daywalker": [
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "armordreadstone_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "dreadstonehat_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "wall_dreadstone_item_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_daywalker_sketch"
+    }
+  ],
+  "daywalker2": [
+    {
+      "chance": 0.5,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.5,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "scrap_monoclehat"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_daywalker2_sketch"
+    }
+  ],
+  "daywalker_pillar": [
+    {
+      "chance": 0.5,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 0.5,
+      "item": "dreadstone"
+    }
+  ],
+  "dead_sea_bones_loot": [
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 0.5,
+      "item": "boneshard"
+    }
+  ],
+  "deer": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.5,
+      "item": "meat"
+    }
+  ],
+  "deerclops": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "deerclops_eyeball"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_deerclops_sketch"
+    }
+  ],
+  "dragonfly": [
+    {
+      "chance": 1,
+      "item": "dragon_scales"
+    },
+    {
+      "chance": 1,
+      "item": "dragonflyfurnace_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_dragonfly_sketch"
+    },
+    {
+      "chance": 0.33,
+      "item": "lavae_egg"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 1,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 1,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 1,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 1,
+      "item": "redgem"
+    },
+    {
+      "chance": 1,
+      "item": "bluegem"
+    },
+    {
+      "chance": 1,
+      "item": "purplegem"
+    },
+    {
+      "chance": 1,
+      "item": "orangegem"
+    },
+    {
+      "chance": 1,
+      "item": "yellowgem"
+    },
+    {
+      "chance": 1,
+      "item": "greengem"
+    },
+    {
+      "chance": 1,
+      "item": "redgem"
+    },
+    {
+      "chance": 1,
+      "item": "bluegem"
+    },
+    {
+      "chance": 0.5,
+      "item": "purplegem"
+    },
+    {
+      "chance": 0.5,
+      "item": "orangegem"
+    },
+    {
+      "chance": 0.5,
+      "item": "yellowgem"
+    },
+    {
+      "chance": 0.5,
+      "item": "greengem"
+    }
+  ],
+  "driftwood_small": [
+    {
+      "chance": 1,
+      "item": "twigs"
+    },
+    {
+      "chance": 1,
+      "item": "driftwood_log"
+    },
+    {
+      "chance": 1,
+      "item": "driftwood_log"
+    }
+  ],
+  "driftwood_tree": [
+    {
+      "chance": 1,
+      "item": "twigs"
+    },
+    {
+      "chance": 1,
+      "item": "twigs"
+    },
+    {
+      "chance": 1,
+      "item": "driftwood_log"
+    },
+    {
+      "chance": 1,
+      "item": "driftwood_log"
+    },
+    {
+      "chance": 1,
+      "item": "driftwood_log"
+    },
+    {
+      "chance": 1,
+      "item": "driftwood_log"
+    }
+  ],
+  "dustmoth": [
+    {
+      "chance": 1,
+      "item": "smallmeat"
+    }
+  ],
+  "dustmothden": [
+    {
+      "chance": 1,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.75,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.25,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.25,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.01,
+      "item": "thulecite"
+    }
+  ],
+  "eyeofterror": [
+    {
+      "chance": 1,
+      "item": "chesspiece_eyeofterror_sketch"
+    },
+    {
+      "chance": 1,
+      "item": "eyemaskhat"
+    },
+    {
+      "chance": 1,
+      "item": "milkywhites"
+    },
+    {
+      "chance": 1,
+      "item": "milkywhites"
+    },
+    {
+      "chance": 1,
+      "item": "milkywhites"
+    },
+    {
+      "chance": 0.5,
+      "item": "milkywhites"
+    },
+    {
+      "chance": 0.5,
+      "item": "milkywhites"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "monstermeat"
+    }
+  ],
+  "eyeturret": [
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 0.75,
+      "item": "thulecite"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.75,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.25,
+      "item": "thulecite_pieces"
+    }
+  ],
+  "fence_junk": [
+    {
+      "chance": 0.25,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "twigs"
+    }
+  ],
+  "fruit_dragon": [
+    {
+      "chance": 1,
+      "item": "plantmeat"
+    }
+  ],
+  "fruit_dragon_ripe": [
+    {
+      "chance": 1,
+      "item": "dragonfruit"
+    }
+  ],
+  "full_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.25,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    },
+    {
+      "chance": 0.05,
+      "item": "bluegem"
+    },
+    {
+      "chance": 0.05,
+      "item": "redgem"
+    }
+  ],
+  "fused_shadeling": [
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.75,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    }
+  ],
+  "gargoyles_loot": [
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonrocknugget"
+    }
+  ],
+  "gelblob": [
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.8,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.6,
+      "item": "nightmarefuel"
+    }
+  ],
+  "gestalt_guard_evolved": [
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.2,
+      "item": "purebrilliance"
+    }
+  ],
+  "gestalt_guard_evolved_2": [
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.5,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.2,
+      "item": "purebrilliance"
+    }
+  ],
+  "gestalt_guard_evolved_3": [
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.8,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.5,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.2,
+      "item": "purebrilliance"
+    }
+  ],
+  "gingerbreadhouse": [
+    {
+      "chance": 1,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 1,
+      "item": "crumbs"
+    },
+    {
+      "chance": 1,
+      "item": "crumbs"
+    },
+    {
+      "chance": 1,
+      "item": "crumbs"
+    },
+    {
+      "chance": 1,
+      "item": "crumbs"
+    },
+    {
+      "chance": 1,
+      "item": "crumbs"
+    }
+  ],
+  "gingerbreadwarg": [
+    {
+      "chance": 1,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 1,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 1,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 1,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 1,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 0.66,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 0.33,
+      "item": "wintersfeastfuel"
+    },
+    {
+      "chance": 1,
+      "item": "crumbs"
+    },
+    {
+      "chance": 1,
+      "item": "crumbs"
+    },
+    {
+      "chance": 0.5,
+      "item": "crumbs"
+    },
+    {
+      "chance": 0.5,
+      "item": "crumbs"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.66,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.33,
+      "item": "houndstooth"
+    }
+  ],
+  "glommer": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "glommerwings"
+    },
+    {
+      "chance": 1,
+      "item": "glommerfuel"
+    },
+    {
+      "chance": 1,
+      "item": "glommerfuel"
+    }
+  ],
+  "grassgekko": [
+    {
+      "chance": 1,
+      "item": "plantmeat"
+    },
+    {
+      "chance": 0.75,
+      "item": "cutgrass"
+    },
+    {
+      "chance": 0.75,
+      "item": "cutgrass"
+    }
+  ],
+  "hound": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.125,
+      "item": "houndstooth"
+    }
+  ],
+  "hound_cold": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.2,
+      "item": "bluegem"
+    }
+  ],
+  "hound_fire": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.2,
+      "item": "redgem"
+    }
+  ],
+  "hound_mound": [
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 0.01,
+      "item": "redgem"
+    },
+    {
+      "chance": 0.01,
+      "item": "bluegem"
+    }
+  ],
+  "houndbone": [
+    {
+      "chance": 1,
+      "item": "boneshard"
+    }
+  ],
+  "inspectaclesbox": [
+    {
+      "chance": 1,
+      "item": "winona_machineparts_1"
+    },
+    {
+      "chance": 0.5,
+      "item": "winona_machineparts_1"
+    },
+    {
+      "chance": 1,
+      "item": "winona_recipescanner"
+    },
+    {
+      "chance": 0.75,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.5,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.75,
+      "item": "transistor"
+    },
+    {
+      "chance": 0.5,
+      "item": "transistor"
+    }
+  ],
+  "inspectaclesbox2": [
+    {
+      "chance": 1,
+      "item": "winona_machineparts_2"
+    },
+    {
+      "chance": 0.5,
+      "item": "winona_machineparts_2"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.75,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "transistor"
+    },
+    {
+      "chance": 0.75,
+      "item": "transistor"
+    }
+  ],
+  "knight": [
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    }
+  ],
+  "knight_gilded": [
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "redpouch_yoth"
+    },
+    {
+      "chance": 1,
+      "item": "horseshoe"
+    },
+    {
+      "chance": 0.1,
+      "item": "horseshoe"
+    },
+    {
+      "chance": 0.25,
+      "item": "yoth_lance"
+    }
+  ],
+  "knight_nightmare": [
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 0.6,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite_pieces"
+    }
+  ],
+  "krampus": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "charcoal"
+    },
+    {
+      "chance": 1,
+      "item": "charcoal"
+    },
+    {
+      "chance": 0.01,
+      "item": "krampus_sack"
+    }
+  ],
+  "lavae_frozen": [
+    {
+      "chance": 1,
+      "item": "houndfire"
+    },
+    {
+      "chance": 1,
+      "item": "houndfire"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    }
+  ],
+  "lavae_lava": [
+    {
+      "chance": 1,
+      "item": "houndfire"
+    },
+    {
+      "chance": 1,
+      "item": "houndfire"
+    },
+    {
+      "chance": 1,
+      "item": "houndfire"
+    },
+    {
+      "chance": 1,
+      "item": "houndfire"
+    },
+    {
+      "chance": 1,
+      "item": "houndfire"
+    }
+  ],
+  "lavae_pet_frozen": [
+    {
+      "chance": 1,
+      "item": "lavae_cocoon"
+    }
+  ],
+  "lightflier": [
+    {
+      "chance": 1,
+      "item": "lightbulb"
+    }
+  ],
+  "lightninggoat": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.25,
+      "item": "lightninggoathorn"
+    }
+  ],
+  "loot1": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    }
+  ],
+  "lordfruitfly": [
+    {
+      "chance": 1,
+      "item": "plantmeat"
+    }
+  ],
+  "low_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.5,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.3,
+      "item": "flint"
+    }
+  ],
+  "lunarrift_crystal_big": [
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.75,
+      "item": "purebrilliance"
+    }
+  ],
+  "lunarrift_crystal_small": [
+    {
+      "chance": 0.75,
+      "item": "purebrilliance"
+    }
+  ],
+  "malbatross": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "malbatross_beak"
+    },
+    {
+      "chance": 1,
+      "item": "bluegem"
+    },
+    {
+      "chance": 1,
+      "item": "bluegem"
+    },
+    {
+      "chance": 0.3,
+      "item": "bluegem"
+    },
+    {
+      "chance": 0.05,
+      "item": "yellowgem"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_malbatross_sketch"
+    }
+  ],
+  "marble_pillar": [
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 0.33,
+      "item": "marble"
+    }
+  ],
+  "marble_tree": [
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 0.5,
+      "item": "marble"
+    }
+  ],
+  "marsh_tree": [
+    {
+      "chance": 1,
+      "item": "twigs"
+    },
+    {
+      "chance": 0.2,
+      "item": "log"
+    }
+  ],
+  "med_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.5,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    }
+  ],
+  "merm_lunar_loot": [
+    {
+      "chance": 0.25,
+      "item": "tentaclespots"
+    }
+  ],
+  "minotaur": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "support_pillar_scaffold_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "minotaurhorn"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_minotaur_sketch"
+    }
+  ],
+  "molebat": [
+    {
+      "chance": 0.15,
+      "item": "guano"
+    }
+  ],
+  "monkey": [
+    {
+      "chance": 1,
+      "item": "smallmeat"
+    },
+    {
+      "chance": 1,
+      "item": "cave_banana"
+    },
+    {
+      "chance": 1,
+      "item": "beardhair"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    }
+  ],
+  "monkey_barrel": [
+    {
+      "chance": 1,
+      "item": "poop"
+    },
+    {
+      "chance": 1,
+      "item": "poop"
+    },
+    {
+      "chance": 1,
+      "item": "cave_banana"
+    },
+    {
+      "chance": 1,
+      "item": "cave_banana"
+    },
+    {
+      "chance": 0.01,
+      "item": "trinket_4"
+    },
+    {
+      "chance": 0.01,
+      "item": "trinket_13"
+    }
+  ],
+  "monkeyisland_portal_debris": [
+    {
+      "chance": 0.85,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.25,
+      "item": "gears"
+    },
+    {
+      "chance": 0.25,
+      "item": "trinket_6"
+    }
+  ],
+  "moon_spider_hole": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "silk"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.25,
+      "item": "spidergland"
+    },
+    {
+      "chance": 0.5,
+      "item": "silk"
+    }
+  ],
+  "moonbutterfly": [
+    {
+      "chance": 1,
+      "item": "moonbutterflywings"
+    }
+  ],
+  "moonglass_prop": [
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonglass"
+    }
+  ],
+  "moonglass_trap": [
+    {
+      "chance": 1,
+      "item": "moonglass"
+    }
+  ],
+  "moonglass_wobster_den": [
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "wobster_moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "wobster_moonglass"
+    },
+    {
+      "chance": 0.5,
+      "item": "wobster_moonglass"
+    }
+  ],
+  "moonstorm_glass_infused": [
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass_charged"
+    },
+    {
+      "chance": 0.25,
+      "item": "moonglass_charged"
+    }
+  ],
+  "moontree_burnt": [
+    {
+      "chance": 1,
+      "item": "charcoal"
+    }
+  ],
+  "moontree_normal": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "moon_tree_blossom"
+    },
+    {
+      "chance": 0.25,
+      "item": "moon_tree_blossom"
+    },
+    {
+      "chance": 1,
+      "item": "moonbutterfly"
+    }
+  ],
+  "moontree_small": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 0.5,
+      "item": "moon_tree_blossom"
+    }
+  ],
+  "moontree_tall": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "moon_tree_blossom"
+    },
+    {
+      "chance": 1,
+      "item": "moon_tree_blossom"
+    },
+    {
+      "chance": 1,
+      "item": "moonbutterfly"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonbutterfly"
+    }
+  ],
+  "moose": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "drumstick"
+    },
+    {
+      "chance": 1,
+      "item": "drumstick"
+    },
+    {
+      "chance": 1,
+      "item": "goose_feather"
+    },
+    {
+      "chance": 1,
+      "item": "goose_feather"
+    },
+    {
+      "chance": 1,
+      "item": "goose_feather"
+    },
+    {
+      "chance": 0.33,
+      "item": "goose_feather"
+    },
+    {
+      "chance": 0.33,
+      "item": "goose_feather"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_moosegoose_sketch"
+    }
+  ],
+  "mosquito": [
+    {
+      "chance": 0.5,
+      "item": "mosquitosack"
+    }
+  ],
+  "mossling": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "drumstick"
+    },
+    {
+      "chance": 1,
+      "item": "goose_feather"
+    },
+    {
+      "chance": 1,
+      "item": "goose_feather"
+    },
+    {
+      "chance": 0.33,
+      "item": "goose_feather"
+    }
+  ],
+  "mushgnome": [
+    {
+      "chance": 1,
+      "item": "livinglog"
+    },
+    {
+      "chance": 0.5,
+      "item": "livinglog"
+    },
+    {
+      "chance": 1,
+      "item": "spore_moon"
+    },
+    {
+      "chance": 1,
+      "item": "spore_moon"
+    },
+    {
+      "chance": 1,
+      "item": "spore_moon"
+    },
+    {
+      "chance": 0.5,
+      "item": "spore_moon"
+    },
+    {
+      "chance": 0.5,
+      "item": "spore_moon"
+    },
+    {
+      "chance": 1,
+      "item": "moon_cap"
+    },
+    {
+      "chance": 1,
+      "item": "moon_cap"
+    }
+  ],
+  "mushtree_tall_webbed": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "silk"
+    },
+    {
+      "chance": 0.3,
+      "item": "silk"
+    },
+    {
+      "chance": 0.3,
+      "item": "silk"
+    }
+  ],
+  "mutated_penguin": [
+    {
+      "chance": 0.25,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "ice"
+    }
+  ],
+  "mutatedbearger": [
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 0.5,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.75,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_bearger_mutated_sketch"
+    }
+  ],
+  "mutateddeerclops": [
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 0.5,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.75,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "ice"
+    },
+    {
+      "chance": 0.75,
+      "item": "ice"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_deerclops_mutated_sketch"
+    }
+  ],
+  "mutatedhound": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    }
+  ],
+  "mutatedwarg": [
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 0.5,
+      "item": "spoiled_food"
+    },
+    {
+      "chance": 1,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 0.75,
+      "item": "purebrilliance"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.75,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.75,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.25,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_warg_mutated_sketch"
+    }
+  ],
+  "nightmare_creature": [
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    }
+  ],
+  "ocean_shadow_creature": [
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    }
+  ],
+  "oceantreenut": [
+    {
+      "chance": 1,
+      "item": "twigs"
+    },
+    {
+      "chance": 0.5,
+      "item": "twigs"
+    },
+    {
+      "chance": 0.01,
+      "item": "spoiled_fish_small"
+    }
+  ],
+  "oceanvine_cocoon": [
+    {
+      "chance": 1,
+      "item": "silk"
+    },
+    {
+      "chance": 0.3,
+      "item": "silk"
+    },
+    {
+      "chance": 0.3,
+      "item": "silk"
+    },
+    {
+      "chance": 1,
+      "item": "twigs"
+    }
+  ],
+  "otter": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "smallmeat"
+    },
+    {
+      "chance": 0.05,
+      "item": "messagebottle"
+    }
+  ],
+  "otterden": [
+    {
+      "chance": 1,
+      "item": "kelp"
+    },
+    {
+      "chance": 1,
+      "item": "kelp"
+    },
+    {
+      "chance": 0.75,
+      "item": "kelp"
+    },
+    {
+      "chance": 0.75,
+      "item": "boatpatch_kelp"
+    },
+    {
+      "chance": 0.5,
+      "item": "boatpatch_kelp"
+    },
+    {
+      "chance": 0.5,
+      "item": "barnacle"
+    },
+    {
+      "chance": 0.25,
+      "item": "barnacle"
+    }
+  ],
+  "palmconetree_burnt": [
+    {
+      "chance": 1,
+      "item": "charcoal"
+    }
+  ],
+  "palmconetree_normal": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    }
+  ],
+  "palmconetree_small": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    }
+  ],
+  "palmconetree_tall": [
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "palmcone_scale"
+    },
+    {
+      "chance": 1,
+      "item": "palmcone_scale"
+    },
+    {
+      "chance": 1,
+      "item": "palmcone_seed"
+    }
+  ],
+  "penguin": [
+    {
+      "chance": 0.2,
+      "item": "feather_crow"
+    },
+    {
+      "chance": 0.1,
+      "item": "smallmeat"
+    },
+    {
+      "chance": 0.1,
+      "item": "drumstick"
+    }
+  ],
+  "powdermonkey": [
+    {
+      "chance": 1,
+      "item": "smallmeat"
+    }
+  ],
+  "primemate": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.2,
+      "item": "bananajuice"
+    }
+  ],
+  "rock1": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "nitre"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.25,
+      "item": "nitre"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    }
+  ],
+  "rock2": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.25,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    }
+  ],
+  "rock_flintless": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.6,
+      "item": "rocks"
+    }
+  ],
+  "rock_flintless_low": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.2,
+      "item": "rocks"
+    }
+  ],
+  "rock_flintless_med": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.4,
+      "item": "rocks"
+    }
+  ],
+  "rock_moon": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.6,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.3,
+      "item": "moonrocknugget"
+    }
+  ],
+  "rock_moon_glass": [
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.25,
+      "item": "moonglass"
+    }
+  ],
+  "rock_moon_shell": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.3,
+      "item": "moonrocknugget"
+    }
+  ],
+  "rock_petrified_tree": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.75,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.4,
+      "item": "nitre"
+    },
+    {
+      "chance": 0.25,
+      "item": "flint"
+    }
+  ],
+  "rock_petrified_tree_old": [
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.25,
+      "item": "nitre"
+    },
+    {
+      "chance": 0.75,
+      "item": "flint"
+    }
+  ],
+  "rock_petrified_tree_short": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.35,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.25,
+      "item": "nitre"
+    },
+    {
+      "chance": 0.25,
+      "item": "flint"
+    }
+  ],
+  "rock_petrified_tree_tall": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.35,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.65,
+      "item": "nitre"
+    },
+    {
+      "chance": 0.75,
+      "item": "flint"
+    }
+  ],
+  "rocky_boss_shadow": [
+    {
+      "chance": 1,
+      "item": "atrium_ritual_organ_rocky"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_rockyboss_shadow_sketch"
+    }
+  ],
+  "rook": [
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    }
+  ],
+  "rook_nightmare": [
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 0.6,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite_pieces"
+    }
+  ],
+  "ruinsnightmare": [
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.25,
+      "item": "nightmarefuel"
+    }
+  ],
+  "ruinsnightmare_rifts": [
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "nightmarefuel"
+    }
+  ],
+  "saltstack_full": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "saltrock"
+    },
+    {
+      "chance": 0.5,
+      "item": "saltrock"
+    }
+  ],
+  "saltstack_low": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "saltrock"
+    }
+  ],
+  "saltstack_med": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "saltrock"
+    }
+  ],
+  "scorched_skeleton": [
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 0.75,
+      "item": "boneshard"
+    },
+    {
+      "chance": 1,
+      "item": "ash"
+    },
+    {
+      "chance": 0.75,
+      "item": "ash"
+    },
+    {
+      "chance": 0.5,
+      "item": "ash"
+    },
+    {
+      "chance": 0.25,
+      "item": "ash"
+    }
+  ],
+  "sculptures_loot": [
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 0.5,
+      "item": "marble"
+    }
+  ],
+  "seastack": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    }
+  ],
+  "shadow_chesspiece": [
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shadow_creature": [
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shadowthrall_centipede_head": [
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 0.66,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 0.34,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.25,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.25,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.25,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shadowthrall_hands": [
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 0.33,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shadowthrall_horns": [
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 0.33,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shadowthrall_mouth": [
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 0.33,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shadowthrall_parasite": [
+    {
+      "chance": 0.5,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shadowthrall_wings": [
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 0.67,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.33,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shallow_grave_player": [
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 1,
+      "item": "boneshard"
+    }
+  ],
+  "shark": [
+    {
+      "chance": 1,
+      "item": "fishmeat"
+    },
+    {
+      "chance": 1,
+      "item": "fishmeat"
+    },
+    {
+      "chance": 1,
+      "item": "fishmeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "fishmeat"
+    },
+    {
+      "chance": 0.25,
+      "item": "fishmeat"
+    },
+    {
+      "chance": 1,
+      "item": "barnacle"
+    },
+    {
+      "chance": 0.5,
+      "item": "barnacle"
+    },
+    {
+      "chance": 0.25,
+      "item": "barnacle"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.5,
+      "item": "flint"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.15,
+      "item": "oceanfish_medium_2_inv"
+    }
+  ],
+  "sharkboi_icespike": [
+    {
+      "chance": 1,
+      "item": "ice"
+    },
+    {
+      "chance": 0.75,
+      "item": "ice"
+    }
+  ],
+  "sharkboi_icespike_low": [
+    {
+      "chance": 0.25,
+      "item": "ice"
+    }
+  ],
+  "shell_cluster": [
+    {
+      "chance": 1,
+      "item": "singingshell_octave3"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave4"
+    },
+    {
+      "chance": 1,
+      "item": "singingshell_octave5"
+    },
+    {
+      "chance": 0.5,
+      "item": "singingshell_octave3"
+    },
+    {
+      "chance": 0.5,
+      "item": "singingshell_octave4"
+    },
+    {
+      "chance": 0.5,
+      "item": "singingshell_octave5"
+    }
+  ],
+  "shrouden": [
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.75,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.75,
+      "item": "nightmarefuel"
+    }
+  ],
+  "shrouden2": [
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 1,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 0.75,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 0.5,
+      "item": "dreadstone"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 0.75,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 0.5,
+      "item": "voidcloth"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_shrouden_sketch"
+    }
+  ],
+  "singingshell": [
+    {
+      "chance": 1,
+      "item": "slurtle_shellpieces"
+    },
+    {
+      "chance": 0.3,
+      "item": "slurtle_shellpieces"
+    }
+  ],
+  "skeleton": [
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 0.1,
+      "item": "scrapbook_page"
+    }
+  ],
+  "skeleton_player": [
+    {
+      "chance": 1,
+      "item": "boneshard"
+    },
+    {
+      "chance": 1,
+      "item": "boneshard"
+    }
+  ],
+  "slurper": [
+    {
+      "chance": 1,
+      "item": "lightbulb"
+    },
+    {
+      "chance": 1,
+      "item": "lightbulb"
+    },
+    {
+      "chance": 0.5,
+      "item": "slurper_pelt"
+    }
+  ],
+  "slurtle": [
+    {
+      "chance": 1,
+      "item": "slurtleslime"
+    },
+    {
+      "chance": 1,
+      "item": "slurtleslime"
+    },
+    {
+      "chance": 0.1,
+      "item": "slurtlehat"
+    }
+  ],
+  "slurtlehole": [
+    {
+      "chance": 1,
+      "item": "slurtleslime"
+    },
+    {
+      "chance": 1,
+      "item": "slurtleslime"
+    },
+    {
+      "chance": 1,
+      "item": "slurtleslime"
+    },
+    {
+      "chance": 1,
+      "item": "slurtle_shellpieces"
+    }
+  ],
+  "smallfalls": [
+    {
+      "chance": 1,
+      "item": "moonglass"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonglass"
+    }
+  ],
+  "smashables": [
+    {
+      "chance": 0.8,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.1,
+      "item": "cutstone"
+    },
+    {
+      "chance": 0.05,
+      "item": "trinket_6"
+    }
+  ],
+  "snurtle": [
+    {
+      "chance": 1,
+      "item": "slurtleslime"
+    },
+    {
+      "chance": 1,
+      "item": "slurtleslime"
+    },
+    {
+      "chance": 0.75,
+      "item": "armorsnurtleshell"
+    }
+  ],
+  "spat": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "steelwool"
+    },
+    {
+      "chance": 1,
+      "item": "steelwool"
+    },
+    {
+      "chance": 0.5,
+      "item": "steelwool"
+    },
+    {
+      "chance": 1,
+      "item": "phlegm"
+    },
+    {
+      "chance": 0.5,
+      "item": "phlegm"
+    }
+  ],
+  "spider_hole": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "silk"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.5,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.25,
+      "item": "spidergland"
+    },
+    {
+      "chance": 0.5,
+      "item": "silk"
+    }
+  ],
+  "squid": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "lightbulb"
+    }
+  ],
+  "stagehand_creature": [
+    {
+      "chance": 1,
+      "item": "endtable_blueprint"
+    }
+  ],
+  "stalagmite_tall_full_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.25,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    },
+    {
+      "chance": 0.05,
+      "item": "redgem"
+    },
+    {
+      "chance": 0.05,
+      "item": "log"
+    }
+  ],
+  "stalagmite_tall_low_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.15,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.3,
+      "item": "flint"
+    }
+  ],
+  "stalagmite_tall_med_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 0.15,
+      "item": "goldnugget"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    }
+  ],
+  "stalker": [
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    },
+    {
+      "chance": 1,
+      "item": "fossil_piece"
+    }
+  ],
+  "statue_harp": [
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 0.3,
+      "item": "marble"
+    }
+  ],
+  "statue_harp_hedgespawner": [
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 0.3,
+      "item": "marble"
+    }
+  ],
+  "statue_marble": [
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 0.3,
+      "item": "marble"
+    }
+  ],
+  "statue_maxwell": [
+    {
+      "chance": 1,
+      "item": "chesspiece_formal_sketch"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 0.33,
+      "item": "marble"
+    }
+  ],
+  "statue_ruins_no_gem": [
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.05,
+      "item": "thulecite"
+    }
+  ],
+  "statueglommer": [
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    },
+    {
+      "chance": 1,
+      "item": "marble"
+    }
+  ],
+  "tentacle": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "tentaclespike"
+    },
+    {
+      "chance": 0.2,
+      "item": "tentaclespots"
+    }
+  ],
+  "tentacle_pillar": [
+    {
+      "chance": 0.5,
+      "item": "tentaclespike"
+    },
+    {
+      "chance": 0.25,
+      "item": "turf_marsh"
+    },
+    {
+      "chance": 0.4,
+      "item": "tentaclespots"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    }
+  ],
+  "ticoon": [
+    {
+      "chance": 0.5,
+      "item": "meat"
+    },
+    {
+      "chance": 0.05,
+      "item": "coontail"
+    }
+  ],
+  "toadstool": [
+    {
+      "chance": 1,
+      "item": "froglegs"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.5,
+      "item": "meat"
+    },
+    {
+      "chance": 0.25,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "shroom_skin"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_toadstool_sketch"
+    },
+    {
+      "chance": 1,
+      "item": "red_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "red_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "red_cap"
+    },
+    {
+      "chance": 1,
+      "item": "blue_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "blue_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "blue_cap"
+    },
+    {
+      "chance": 1,
+      "item": "green_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "green_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "green_cap"
+    }
+  ],
+  "toadstool_dark": [
+    {
+      "chance": 1,
+      "item": "froglegs"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 0.5,
+      "item": "meat"
+    },
+    {
+      "chance": 0.25,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "shroom_skin"
+    },
+    {
+      "chance": 1,
+      "item": "shroom_skin"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_toadstool_sketch"
+    },
+    {
+      "chance": 1,
+      "item": "red_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "red_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "red_cap"
+    },
+    {
+      "chance": 1,
+      "item": "blue_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "blue_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "blue_cap"
+    },
+    {
+      "chance": 1,
+      "item": "green_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "green_cap"
+    },
+    {
+      "chance": 0.33,
+      "item": "green_cap"
+    },
+    {
+      "chance": 1,
+      "item": "mushroom_light2_blueprint"
+    },
+    {
+      "chance": 1,
+      "item": "sleepbomb_blueprint"
+    }
+  ],
+  "tree_rock1_chop": [
+    {
+      "chance": 1,
+      "item": "twigs"
+    }
+  ],
+  "tree_rock1_mine": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "nitre"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.25,
+      "item": "nitre"
+    },
+    {
+      "chance": 0.6,
+      "item": "flint"
+    },
+    {
+      "chance": 1,
+      "item": "tree_rock_seed"
+    }
+  ],
+  "tree_rock1_mine_break": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.25,
+      "item": "nitre"
+    },
+    {
+      "chance": 1,
+      "item": "flint"
+    },
+    {
+      "chance": 0.1,
+      "item": "nitre"
+    },
+    {
+      "chance": 0.2,
+      "item": "flint"
+    },
+    {
+      "chance": 1,
+      "item": "tree_rock_seed"
+    }
+  ],
+  "twinofterror1": [
+    {
+      "chance": 1,
+      "item": "yellowgem"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 0.5,
+      "item": "gears"
+    },
+    {
+      "chance": 0.5,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "transistor"
+    },
+    {
+      "chance": 1,
+      "item": "transistor"
+    },
+    {
+      "chance": 0.75,
+      "item": "transistor"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 0.5,
+      "item": "trinket_6"
+    }
+  ],
+  "twinofterror2": [
+    {
+      "chance": 1,
+      "item": "greengem"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 0.5,
+      "item": "gears"
+    },
+    {
+      "chance": 0.5,
+      "item": "gears"
+    },
+    {
+      "chance": 1,
+      "item": "transistor"
+    },
+    {
+      "chance": 1,
+      "item": "transistor"
+    },
+    {
+      "chance": 0.75,
+      "item": "transistor"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.5,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 0.5,
+      "item": "trinket_6"
+    }
+  ],
+  "vault_pillar_guard": [
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite"
+    },
+    {
+      "chance": 0.5,
+      "item": "thulecite"
+    },
+    {
+      "chance": 1,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.6667,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 0.3333,
+      "item": "thulecite_pieces"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.75,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 1,
+      "item": "moonrocknugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "moonrocknugget"
+    }
+  ],
+  "wagboss_robot": [
+    {
+      "chance": 0.5,
+      "item": "gears"
+    },
+    {
+      "chance": 0.5,
+      "item": "transistor"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.5,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_wagboss_robot_sketch"
+    }
+  ],
+  "wagdrone_common": [
+    {
+      "chance": 1,
+      "item": "wagdrone_parts"
+    },
+    {
+      "chance": 1,
+      "item": "gears"
+    },
+    {
+      "chance": 0.333,
+      "item": "gears"
+    },
+    {
+      "chance": 0.667,
+      "item": "transistor"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.5,
+      "item": "wagpunk_bits"
+    }
+  ],
+  "wagstaff_machinery": [
+    {
+      "chance": 0.75,
+      "item": "cutstone"
+    },
+    {
+      "chance": 1,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.75,
+      "item": "wagpunk_bits"
+    },
+    {
+      "chance": 0.1,
+      "item": "transistor"
+    },
+    {
+      "chance": 0.15,
+      "item": "trinket_6"
+    },
+    {
+      "chance": 0.01,
+      "item": "trinket_10"
+    }
+  ],
+  "walrus": [
+    {
+      "chance": 1,
+      "item": "meat"
+    },
+    {
+      "chance": 1,
+      "item": "blowdart_pipe"
+    },
+    {
+      "chance": 0.25,
+      "item": "walrushat"
+    },
+    {
+      "chance": 0.5,
+      "item": "walrus_tusk"
+    }
+  ],
+  "walrus_wee_loot": [
+    {
+      "chance": 1,
+      "item": "meat"
+    }
+  ],
+  "warg": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.66,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.33,
+      "item": "houndstooth"
+    }
+  ],
+  "warglet": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.5,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "houndstooth"
+    },
+    {
+      "chance": 0.33,
+      "item": "houndstooth"
+    }
+  ],
+  "waterplant": [
+    {
+      "chance": 1,
+      "item": "waterplant_bomb"
+    },
+    {
+      "chance": 1,
+      "item": "waterplant_bomb"
+    },
+    {
+      "chance": 0.5,
+      "item": "waterplant_bomb"
+    }
+  ],
+  "waterplant_rock": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    }
+  ],
+  "watertree_root": [
+    {
+      "chance": 1,
+      "item": "driftwood_log"
+    },
+    {
+      "chance": 0.3,
+      "item": "driftwood_log"
+    },
+    {
+      "chance": 0.3,
+      "item": "twigs"
+    }
+  ],
+  "wobster_den": [
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "rocks"
+    },
+    {
+      "chance": 0.5,
+      "item": "rocks"
+    },
+    {
+      "chance": 1,
+      "item": "wobster_sheller"
+    },
+    {
+      "chance": 1,
+      "item": "wobster_sheller"
+    },
+    {
+      "chance": 0.5,
+      "item": "wobster_sheller"
+    }
+  ],
+  "worm": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "wormlight"
+    }
+  ],
+  "worm_boss": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.66,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 0.66,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "wormlight"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_wormboss_sketch"
+    }
+  ],
+  "worm_boss_shadow": [
+    {
+      "chance": 1,
+      "item": "atrium_ritual_organ_worm"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 0.67,
+      "item": "horrorfuel"
+    },
+    {
+      "chance": 1,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.33,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 0.33,
+      "item": "nightmarefuel"
+    },
+    {
+      "chance": 1,
+      "item": "fused_shadeling_bomb"
+    },
+    {
+      "chance": 1,
+      "item": "chesspiece_wormboss_shadow_sketch"
+    }
+  ],
+  "yellow_waterplant": [
+    {
+      "chance": 1,
+      "item": "waterplant_bomb"
+    },
+    {
+      "chance": 1,
+      "item": "waterplant_bomb"
+    },
+    {
+      "chance": 1,
+      "item": "waterplant_bomb"
+    },
+    {
+      "chance": 0.5,
+      "item": "waterplant_bomb"
+    },
+    {
+      "chance": 0.5,
+      "item": "waterplant_bomb"
+    }
+  ],
+  "yots_worm": [
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "monstermeat"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 1,
+      "item": "log"
+    },
+    {
+      "chance": 0.5,
+      "item": "yots_redlantern"
+    },
+    {
+      "chance": 0.5,
+      "item": "lightbulb"
+    }
+  ]
+}

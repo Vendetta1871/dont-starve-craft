@@ -1,5 +1,7 @@
 package net.celestiald.dontstarve.survive;
 
+import net.celestiald.dontstarve.DSScale;
+
 import java.util.List;
 import javax.annotation.Nullable;
 import net.celestiald.dontstarve.DSRefs;
@@ -39,6 +41,8 @@ public final class HoundWave {
     /** DST intro warnduration = 120 s of distant howling before the bite. */
     public static final int WARNING_SECONDS = 120;
     public static final String WAVE_TAG = "dontstarve.hound_wave";
+    /** hounded.lua SPAWN_DIST: hounds appear 30 DS units from their target. */
+    private static final double SPAWN_DIST = 30;
 
     /** Sends wave number {@code wave} (1-based) at once; used by /ds hound now. */
     public static int forceWave(ServerLevel islands, IslandState state, int wave) {
@@ -128,10 +132,10 @@ public final class HoundWave {
 
     private static boolean spawnHound(ServerLevel islands, @Nullable ServerPlayer target,
                                       Vec3 around, RandomSource random) {
-        // Arrive from a random bearing, just off-screen, on solid island ground.
+        // Arrive from a random bearing at hounded.lua SPAWN_DIST 30 units, on solid island ground.
         for (int attempt = 0; attempt < 12; attempt++) {
             double angle = random.nextDouble() * Math.PI * 2.0;
-            double dist = 24.0 + random.nextDouble() * 12.0;
+            double dist = DSScale.blocks(SPAWN_DIST) + random.nextDouble() * 4.0;
             int x = (int) Math.round(around.x + Math.cos(angle) * dist);
             int z = (int) Math.round(around.z + Math.sin(angle) * dist);
             BlockPos pos = islands.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(x, 0, z));

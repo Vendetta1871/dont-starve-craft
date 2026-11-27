@@ -1,6 +1,7 @@
 package net.celestiald.dontstarve;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.celestiald.dontstarve.DSRefs;
@@ -28,7 +29,9 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  * {@code /ds codex <player>} (reads a Codex Umbra for them), and
  * {@code /ds ghost <player> on|off|check} for the ghost/wipe flow,
  * {@code /ds run <player> join|check} for run membership and
- * {@code /ds hound now <wave>} to release a hound wave on demand.
+ * {@code /ds hound now <wave>} to release a hound wave on demand and
+ * {@code /ds shot <player> <name> [hud]} to make that client save a screenshot and
+ * {@code /ds speed <mob> <x> <z> <ticks>} to measure a mob's real walking speed (logged).
  */
 public final class DSCommands {
 
@@ -58,6 +61,17 @@ public final class DSCommands {
                         .then(Commands.literal("now")
                                 .then(Commands.argument("wave", IntegerArgumentType.integer(1, 10))
                                         .executes(DSCommands::houndNow))))
+                .then(Commands.literal("speed")
+                        .then(Commands.argument("mob", EntityArgument.entity())
+                                .then(Commands.argument("x", IntegerArgumentType.integer())
+                                        .then(Commands.argument("z", IntegerArgumentType.integer())
+                                                .then(Commands.argument("ticks", IntegerArgumentType.integer(1, 1200))
+                                                        .executes(DSCommands::speed))))))
+                .then(Commands.literal("shot")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .then(Commands.argument("name", StringArgumentType.word())
+                                        .executes(ctx -> shot(ctx, false))
+                                        .then(Commands.literal("hud").executes(ctx -> shot(ctx, true))))))
                 .then(Commands.literal("check")
                         .then(Commands.literal("item")
                                 .then(Commands.argument("id", ResourceLocationArgument.id())
@@ -71,6 +85,31 @@ public final class DSCommands {
                         .then(Commands.literal("tag")
                                 .then(Commands.argument("id", ResourceLocationArgument.id())
                                         .executes(DSCommands::checkTag)))));
+    }
+
+    private static int speed(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        if (!(EntityArgument.getEntity(ctx, "mob") instanceof net.minecraft.world.entity.Mob mob)) {
+            ctx.getSource().sendFailure(Component.literal("Not a mob"));
+            return 0;
+        }
+        SpeedProbe.start(mob, IntegerArgumentType.getInteger(ctx, "x") + 0.5,
+                IntegerArgumentType.getInteger(ctx, "z") + 0.5, IntegerArgumentType.getInteger(ctx, "ticks"));
+        ctx.getSource().sendSuccess(() -> Component.literal("Speed probe started"), false);
+        return 1;
+    }
+
+    private static int shot(CommandContext<CommandSourceStack> ctx, boolean hud) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        String name = StringArgumentType.getString(ctx, "name");
+        if (!name.matches("[A-Za-z0-9_-]+")) {
+            ctx.getSource().sendFailure(Component.literal("Shot name must be [A-Za-z0-9_-]+"));
+            return 0;
+        }
+        net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(player,
+                new net.celestiald.dontstarve.network.ShotPayload(name, hud));
+        ctx.getSource().sendSuccess(() -> Component.literal("Shot " + name + " requested from "
+                + player.getGameProfile().getName()), false);
+        return 1;
     }
 
     private static int currentIsland(CommandContext<CommandSourceStack> ctx) {

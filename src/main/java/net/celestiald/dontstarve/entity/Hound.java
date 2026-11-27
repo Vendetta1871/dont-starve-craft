@@ -1,5 +1,7 @@
 package net.celestiald.dontstarve.entity;
 
+import net.celestiald.dontstarve.DSScale;
+
 import net.celestiald.dontstarve.survive.GhostState;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -25,13 +27,15 @@ import net.minecraft.world.level.Level;
  * sounds are placeholders until DS art exists.
  *
  * Stats scale DST numbers by the player's health ratio (Wilson 150 HP ->
- * Minecraft 20 HP, x2/15): HOUND_HEALTH 150 -> 20, HOUND_DAMAGE 20 -> ~3,
- * HOUND_ATTACK_PERIOD 2 s (tuning.lua:1490-1492). HOUND_SPEED 10 vs
- * WILSON_RUN_SPEED 6: 10/6 of a sprinting player (~5.6 b/s) is ~9.3 b/s,
- * and a chasing mob covers roughly 10 x its speed attribute per second.
+ * Minecraft 20 HP, x2/15): HOUND_HEALTH 150 -> 20, HOUND_DAMAGE 20 -> 2.67, HOUND_TARGET_DIST 20 units -> 20 blocks,
+ * HOUND_ATTACK_PERIOD 2 s (tuning.lua:1490-1492). Runs at HOUND_SPEED 10 b/s,
+ * wanders at the locomotor default walk speed 4 (components/locomotor.lua:300).
  * Loot: monstermeat 100 %, houndstooth 12.5 % (hound.lua:110-113).
  */
 public class Hound extends Monster {
+
+    private static final double RUN_SPEED = 10;
+    private static final double WALK_SPEED = 4;
 
     public Hound(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -40,10 +44,10 @@ public class Hound extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0)
-                .add(Attributes.ATTACK_DAMAGE, 3.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.9)
-                .add(Attributes.FOLLOW_RANGE, 32.0);
+                .add(Attributes.MAX_HEALTH, DSScale.stat(150))
+                .add(Attributes.ATTACK_DAMAGE, DSScale.stat(20))
+                .add(Attributes.MOVEMENT_SPEED, DSScale.mobSpeed(RUN_SPEED))
+                .add(Attributes.FOLLOW_RANGE, DSScale.blocks(20));
     }
 
     @Override
@@ -51,7 +55,7 @@ public class Hound extends Monster {
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.4F));
         goalSelector.addGoal(3, new HoundAttackGoal(this));
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, DSScale.speedModifier(WALK_SPEED, RUN_SPEED)));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));

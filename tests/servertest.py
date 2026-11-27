@@ -18,6 +18,10 @@ Scenario syntax (one entry per line, commands without the slash):
 - `#sleep N`         -> wait N seconds
 - `#expect REGEX`    -> assert the previous command's response matches
 - `#expect-log REGEX [timeout]` -> wait for a server log line to appear
+- `#ds-wait N`       -> run N DS seconds of world time (N x 2.5 x 20 ticks) at full
+                        speed with `tick sprint`, then continue
+- `#shot NAME [hud]` -> (with --client) the client saves a screenshot, HUD hidden
+                        unless `hud`; copied to build/screenshots/<scenario>/NAME.png
 Environment: DST_JAVA_HOME (a JDK 21, else JAVA_HOME is used as is).
 """
 import os, re, socket, struct, subprocess, sys, threading, time
@@ -172,6 +176,38 @@ spawn-animals=true
                     online = True; break
                 time.sleep(2)
             check(f'player {name} online', online)
+            continue
+        if cmd.startswith('#ds-wait'):
+            ticks = round(float(cmd.split()[1]) * 2.5 * 20)
+            sock.sendall(rcon_packet(2, 2, f'tick sprint {ticks}'))
+            rcon_read(sock)
+            done = wait_for(r'Sprint completed', max(120, ticks / 100))
+            check(f'ds-wait {cmd.split()[1]} DS s ({ticks} ticks)', done is not None)
+            continue
+        if cmd.startswith('#shot'):
+            parts = cmd.split()
+            shot = parts[1]
+            hud = len(parts) > 2 and parts[2] == 'hud'
+            src = os.path.join(project, 'run-autotest', 'screenshots', shot + '.png')
+            if os.path.exists(src):
+                os.remove(src)
+            sock.sendall(rcon_packet(2, 2, f'ds shot {player} {shot}' + (' hud' if hud else '')))
+            rcon_read(sock)
+            start = time.time(); size = -1; ok = False
+            while time.time() - start < 60:
+                if os.path.exists(src):
+                    now = os.path.getsize(src)
+                    if now > 0 and now == size:
+                        ok = True; break
+                    size = now
+                time.sleep(1)
+            dest = os.path.join(project, 'build', 'screenshots',
+                                os.path.splitext(os.path.basename(cmdfile))[0], shot + '.png')
+            if ok:
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                os.replace(src, dest)
+                print(f'SHOT: {dest}')
+            check(f'shot {shot}', ok)
             continue
         if cmd.startswith('#expect-log'):
             m = re.match(r'(.*)\s+(\d+)$', cmd[len('#expect-log'):].strip())

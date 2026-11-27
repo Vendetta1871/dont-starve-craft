@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import net.celestiald.dontstarve.entity.DSSpider;
 import net.celestiald.dontstarve.init.DSBlockEntities;
 import net.celestiald.dontstarve.init.DSEntities;
-import net.celestiald.dontstarve.item.DSTorch;
+import net.celestiald.dontstarve.DSScale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -32,8 +32,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SpiderDenBlock extends Block implements EntityBlock {
 
     public static final int MAX_CHILDREN = 3;
-    private static final int REGEN_TICKS = Math.round(90 * DSTorch.DS_TIME_SCALE * 20);
-    private static final int RELEASE_TICKS = Math.round(5 * DSTorch.DS_TIME_SCALE * 20);
+    private static final int REGEN_TICKS = DSScale.ticks(90);
+    private static final int RELEASE_TICKS = DSScale.ticks(5);
     private static final int ON_HIT_RELEASE = 2;
 
     public SpiderDenBlock(Properties properties) {

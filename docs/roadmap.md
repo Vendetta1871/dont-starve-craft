@@ -26,6 +26,11 @@ Every stage ends with `tests/run-all.sh` green and a commit.
 
 ## Stage 0 — infrastructure (before content)
 
+Done: screenshots (`#shot`), DS time skips (`#ds-wait`), the DST data extractor
+(`tools/dst_extract.sh` → `docs/dont-starve/data/`), `DSScale`. Stat-setting test
+commands come with the stats themselves in DS-1. Mob speeds are calibrated: a
+navigating mob covers 43.17 × attribute² blocks/s (`DSScale.mobSpeed`, `speed.txt`).
+
 - Screenshot capture for the headless client: a dev-only client command/key that saves
   a frame after camera placement, plus scene scripts in `demo/` that build a scene
   and photograph it. **A** (the pipeline itself)
@@ -34,7 +39,8 @@ Every stage ends with `tests/run-all.sh` green and a commit.
 - Data extraction from the DST Lua into reviewable tables (tuning, recipes, loot,
   perish times) so ports cite numbers instead of retyping them. **A**
 - Scaling rules written down once and enforced in code: stats ×2/15, time ×2.5,
-  distances ×2 (1 DS unit = 2 blocks), mob speeds (to be measured in game). **A** + **M**
+  distances 1:1 (1 DS unit = 1 block), mob speeds in blocks/s (attribute mapping to
+  be measured in game). **A** + **M**
   (speed feel).
 
 ## DS — base game
@@ -79,7 +85,7 @@ Every stage ends with `tests/run-all.sh` green and a commit.
 - DS biomes (grassland, forest, deciduous later, rocky, savanna, marsh, graveyard,
   checkerboard, mosaic) and set pieces, wormholes, touch stones, statues,
   boulders, Pig King set piece, roads. Island size and layout follow DS room/task
-  rules at 8×8 blocks per tile. **A** placement statistics, **S** aerial shots, **M** walk-around feel.
+  rules at 4×4 blocks per tile. **A** placement statistics, **S** aerial shots, **M** walk-around feel.
 
 ### DS-7. Bosses (DS)
 - Deerclops, Treeguards, Spider Queen. **A** stats/phases/loot, **S**, **M** fights.
@@ -140,8 +146,10 @@ comes once a stage is playable end to end.
 ## Decisions
 
 - **No DS Adventure Mode.** It is DS-only (absent from DST); the islands run stays.
-- **World scale: one DST tile = 8×8 blocks** (4 tiles per chunk side), so one DS
-  distance unit (a tile is 4 units) = 2 blocks. Positions, ranges and radii scale ×2.
+- **World scale: one DST tile = 4×4 blocks** (a tile is 4 DS units, `TILE_SCALE`),
+  so one DS distance unit = one block and distances carry over 1:1. Speeds then
+  match too: WILSON_RUN_SPEED 6 units/s = 6 blocks/s ≈ a vanilla sprint (5.6), so the
+  player keeps vanilla movement and mobs move at their DST speed in blocks/s.
 - **Season clock belongs to the run.** All players share one world and one current
   island; every new island starts at autumn day 1, like a new DST world.
 - **Crafting UI: our own DS-style menu** (tabs, tech levels, prototyping) drawn in

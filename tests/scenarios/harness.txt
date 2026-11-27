@@ -1,0 +1,21 @@
+// PLAYER: the stage-0 test tools — DS time skips (#ds-wait) and client screenshots (#shot).
+#wait-player {P} 180
+gamemode survival {P}
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds island current
+#expect centered at
+// DS world time: a held torch burns 1 durability per Minecraft second, so 10 DS
+// seconds of world time (25 MC s) burn ~25 points of its 188.
+item replace entity {P} weapon.mainhand with minecraft:torch
+#sleep 2
+#ds-wait 10
+data get entity {P} SelectedItem.components."minecraft:damage"
+#expect has the following entity data: (2[4-9]|3[0-2])$
+clear {P} minecraft:torch
+// Screenshots: the arrival plaza looking north, without and with the HUD.
+execute in dontstarve:islands run tp {P} {X} 76 {Z+6} 180 15
+#sleep 5
+#shot island_arrival
+#shot island_arrival_hud hud

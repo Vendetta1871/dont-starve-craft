@@ -51,7 +51,7 @@ public class PickableBlock extends BushBlock {
     public PickableBlock(Properties properties, Supplier<? extends Item> product, int regrowDsSeconds, int maxCycles) {
         super(properties);
         this.product = product;
-        this.regrowTicks = Math.round(regrowDsSeconds * net.celestiald.dontstarve.item.DSTorch.DS_TIME_SCALE * 20);
+        this.regrowTicks = net.celestiald.dontstarve.DSScale.ticks(regrowDsSeconds);
         this.limitedCycles = maxCycles > 0;
         registerDefaultState(stateDefinition.any().setValue(PICKED, false)
                 .setValue(CYCLES, limitedCycles ? maxCycles : 0));

@@ -29,8 +29,13 @@ One entry per line, commands without the slash:
 - `#wait-player NAME [timeout]` — block until that player is online (default 180 s).
 - `#expect REGEX` — the previous command's response must match.
 - `#expect-log REGEX [timeout]` — wait for a server log line (default 120 s).
+- `#ds-wait N` — run N DS seconds of world time (N × 2.5 × 20 ticks) at full speed
+  with `tick sprint`; timers, burning and regrowth advance as in real play.
+- `#shot NAME [hud]` — PLAYER: the client saves a screenshot (HUD hidden unless
+  `hud`), collected to `build/screenshots/<scenario>/NAME.png`. Place the camera
+  first with `tp {P} x y z yaw pitch`.
 - `{X}` `{Y}` `{Z}` — coordinates captured from the last response containing
-  `[x, y, z]` (e.g. `ds island current`); `{X+16}` arithmetic works.
+  `[x, y, z]` or from `centered at X, Y, Z` (`ds island current`); `{X+16}` arithmetic works.
 - `{P}` — the `--player` name.
 
 The world is deleted before each run (unless `--keep-world`), so island indices
@@ -45,9 +50,11 @@ indices (`ds island goto 900`).
 | `grave.txt` | Grave stores items + XP; contents survive breaking via `copy_components` |
 | `meteorite.txt` | Deterministic plaza floor; one moon meteorite per island (island 900) |
 | `island.txt` | Grass tufts, no gravel, evergreens on both island halves, dig/mine loot of tufts and boulders, den releases spiders only at night, hound waves, hound and spider loot (island 910) |
+| `speed.txt` | Hound and spider move at their DST speeds in blocks/s (`/ds speed`), zombie as the control of the 43.17 × attribute² law |
 | `codex.txt` | PLAYER: the Codex Umbra drops belongings and joins the run; DS torch burn + light; the way home leads to the reading spot |
 | `ghost.txt` | PLAYER: ghost perks (invisibility, mayfly); all-ghost countdown starts and is averted |
 | `run.txt` | PLAYER: void death puts the grave at the last ground and raises the ghost to it; a member of a wiped run is sent home |
+| `harness.txt` | PLAYER: the test tools — `#ds-wait` burns a held torch by DS time, `#shot` saves screenshots with and without HUD |
 | `wipe.txt` | PLAYER, SLOW: full all-ghost wipe — countdown, island advance, ejection home |
 
 ## Test-only commands
@@ -56,5 +63,7 @@ indices (`ds island goto 900`).
 Codex Umbra for the player (the right-click path); `/ds ghost <player>
 on|off|check` drives the ghost flow; `/ds run <player> join|check` sets/reads
 run membership (what walking through the portal does); `/ds hound now <wave>` releases a hound
-wave at once. They exist for these scenarios and manual
+wave at once; `/ds shot <player> <name> [hud]` makes that client save a screenshot;
+`/ds speed <mob> <x> <z> <ticks>` walks a mob towards (x, z) and logs its real speed.
+They exist for these scenarios and manual
 probing, not for gameplay.

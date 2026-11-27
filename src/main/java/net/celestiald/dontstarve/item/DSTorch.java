@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import net.celestiald.dontstarve.DSRefs;
+import net.celestiald.dontstarve.DSScale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
@@ -33,10 +34,8 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  */
 public final class DSTorch {
 
-    /** DS seconds -> Minecraft seconds: a DS day is 480 s, a Minecraft day 1200 s. */
-    public static final float DS_TIME_SCALE = 1200.0F / 480.0F;
     /** TORCH_FUEL 75 DS seconds of burn time, in Minecraft seconds (durability units). */
-    public static final int BURN_SECONDS = Math.round(75 * DS_TIME_SCALE);
+    public static final int BURN_SECONDS = DSScale.seconds(75);
     /** DS ignites the target for the burn of a small fire; vanilla fire aspect I equivalent. */
     private static final int IGNITE_SECONDS = 4;
     private static final BlockState LIGHT = Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, 13);

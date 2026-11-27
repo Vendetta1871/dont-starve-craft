@@ -1,5 +1,7 @@
 package net.celestiald.dontstarve.entity;
 
+import net.celestiald.dontstarve.DSScale;
+
 import javax.annotation.Nullable;
 import net.celestiald.dontstarve.survive.GhostState;
 import net.celestiald.dontstarve.world.SpiderDenBlock;
@@ -31,15 +33,18 @@ import java.util.EnumSet;
  *
  * Stats scale DST numbers by the player's health ratio (Wilson 150 HP ->
  * 20 HP, x2/15): health 100 -> 13.3, damage 20 -> 2.7, attack period 3 s
- * (spider.lua:765-768). Run speed 5 vs WILSON_RUN_SPEED 6: 5/6 of a
- * sprinting player (~4.7 b/s); a chasing mob covers ~10 x its speed attribute. Retargets players within SPIDER_TARGET_DIST 4
+ * (spider.lua:765-768). Runs at SPIDER_RUN_SPEED 5 b/s, wanders at
+ * SPIDER_WALK_SPEED 3 (spider.lua:771-772). Retargets players within
+ * SPIDER_TARGET_DIST 4 units = 4 blocks
  * (spider.lua:227). A spider without a den sleeps by day (spider.lua:252-263);
  * a den spider goes home at dawn and is stored back in its den.
  * Loot: one weighted item — monstermeat 50 %, silk 25 %, spidergland 25 %.
  */
 public class DSSpider extends Monster {
 
-    private static final double TARGET_DIST = 4.0;
+    private static final double TARGET_DIST = DSScale.blocks(4);
+    private static final double RUN_SPEED = 5;
+    private static final double WALK_SPEED = 3;
 
     @Nullable
     private BlockPos home;
@@ -51,9 +56,9 @@ public class DSSpider extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 100.0 * 2.0 / 15.0)
-                .add(Attributes.ATTACK_DAMAGE, 20.0 * 2.0 / 15.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.45)
+                .add(Attributes.MAX_HEALTH, DSScale.stat(100))
+                .add(Attributes.ATTACK_DAMAGE, DSScale.stat(20))
+                .add(Attributes.MOVEMENT_SPEED, DSScale.mobSpeed(RUN_SPEED))
                 .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 
@@ -76,7 +81,7 @@ public class DSSpider extends Monster {
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new SpiderAttackGoal(this));
         goalSelector.addGoal(3, new GoHomeGoal(this));
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8) {
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, DSScale.speedModifier(WALK_SPEED, RUN_SPEED)) {
             @Override
             public boolean canUse() {
                 return !isSleepy() && super.canUse();

@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
  */
 public class MonsterMeatItem extends Item {
 
-    private static final float HEALTH_PENALTY = 20.0F * 2.0F / 15.0F;
+    private static final float HEALTH_PENALTY = net.celestiald.dontstarve.DSScale.stat(20);
 
     public MonsterMeatItem(Properties properties) {
         super(properties);

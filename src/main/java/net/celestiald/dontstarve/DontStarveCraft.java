@@ -40,6 +40,7 @@ public final class DontStarveCraft {
 
         modBus.addListener(DontStarveCraft::registerWorldgen);
         modBus.addListener(DontStarveCraft::createAttributes);
+        modBus.addListener(net.celestiald.dontstarve.network.DSNetwork::register);
 
         NeoForge.EVENT_BUS.addListener(CodexUmbraItem::onPlayerLoggedIn);
         NeoForge.EVENT_BUS.addListener(DSCommands::register);
@@ -61,6 +62,7 @@ public final class DontStarveCraft {
         NeoForge.EVENT_BUS.addListener(HoundWave::onServerTick);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.DSBlockDrops::onBlockDrops);
         NeoForge.EVENT_BUS.addListener(DSTorch::onServerTick);
+        NeoForge.EVENT_BUS.addListener(SpeedProbe::onServerTick);
         NeoForge.EVENT_BUS.addListener(DSTorch::onRightClickBlock);
         NeoForge.EVENT_BUS.addListener(DSTorch::onAttack);
         NeoForge.EVENT_BUS.addListener(DSTorch::onLoggedOut);

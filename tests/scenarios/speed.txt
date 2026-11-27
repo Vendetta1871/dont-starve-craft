@@ -1,0 +1,20 @@
+// Mob speeds: DS units/s = blocks/s at our scale (one tile = 4x4 blocks). Each mob
+// walks a straight stone strip via its navigation at modifier 1.0 (its run speed);
+// /ds speed logs the measured blocks/s after a warm-up. A zombie is the vanilla control.
+gamerule doMobSpawning false
+time set noon
+execute in minecraft:overworld run forceload add -16 -16 150 16
+execute in minecraft:overworld run fill 0 99 -2 120 99 2 minecraft:stone
+execute in minecraft:overworld run fill 0 100 -2 120 103 2 minecraft:air
+execute in minecraft:overworld run summon dontstarve:hound 2 100 0
+execute in minecraft:overworld run summon dontstarve:spider 2 100 1
+execute in minecraft:overworld run summon minecraft:zombie 2 100 -1 {PersistenceRequired:1b}
+#sleep 1
+ds speed @e[type=dontstarve:hound,limit=1] 118 0 40
+#expect Speed probe started
+ds speed @e[type=dontstarve:spider,limit=1] 118 1 40
+ds speed @e[type=minecraft:zombie,limit=1] 118 -1 40
+// HOUND_SPEED 10, SPIDER_RUN_SPEED 5 (+-10 %); zombie 0.23 -> 2.28 confirms the 43.17 x attr^2 law.
+#expect-log Hound \(speed attribute 0\.481\) moved .*: (9\.[0-9]|10\.[0-9])\d* blocks/s 30
+#expect-log Spider \(speed attribute 0\.340\) moved .*: (4\.[5-9]|5\.[0-4])\d* blocks/s 30
+#expect-log Zombie \(speed attribute 0\.230\) moved .*: 2\.[1-4]\d* blocks/s 30
