@@ -50,9 +50,12 @@ public final class HoundWave {
         return spawnWave(islands, state, wave);
     }
 
+    /** Test switch (/ds hound pause): scenarios that jump the clock keep the waves away. Not saved. */
+    public static boolean paused;
+
     public static void onServerTick(ServerTickEvent.Post event) {
         MinecraftServer server = event.getServer();
-        if (server.getTickCount() % 20 != 0) {
+        if (paused || server.getTickCount() % 20 != 0) {
             return;
         }
         ServerLevel islands = server.getLevel(DSRefs.ISLANDS);
@@ -62,9 +65,8 @@ public final class HoundWave {
         }
         IslandState state = IslandState.get(overworld);
         if (survivors(islands, state).isEmpty()) {
-            return; // no living souls, no dinner — and the clock stands still
+            return; // no living souls, no dinner
         }
-        state.tickRunSecond();
 
         int elapsed = state.runSeconds();
         int sent = state.houndWavesSent();

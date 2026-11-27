@@ -113,7 +113,7 @@ public class SpiderDenBlock extends Block implements EntityBlock {
             }
             if (--den.releaseTimer <= 0) {
                 den.releaseTimer = RELEASE_TICKS;
-                if (!server.isDay() && den.inside > 0) {
+                if (!net.celestiald.dontstarve.clock.RunClock.isDay(server) && den.inside > 0) {
                     den.release(server, pos);
                 }
             }

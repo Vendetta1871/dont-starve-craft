@@ -20,6 +20,13 @@ public final class DSDataComponents {
                     .networkSynchronized(ByteBufCodecs.INT)
                     .build());
 
+    /** DS seconds of freshness left (components/perishable.lua perishremainingtime); absent = fully fresh. */
+    public static final Supplier<DataComponentType<Float>> PERISH = DATA_COMPONENTS.register("perish",
+            () -> new DataComponentType.Builder<Float>()
+                    .persistent(Codec.FLOAT)
+                    .networkSynchronized(ByteBufCodecs.FLOAT)
+                    .build());
+
     private DSDataComponents() {
     }
 }

@@ -7,9 +7,9 @@ cd "$(dirname "$0")/.."
 export JAVA_HOME="${DST_JAVA_HOME:-/usr/lib/jvm/java-21-openjdk}"
 port=${1:-25699}
 status=0
-player_scenarios="ghost run codex harness wipe"
+player_scenarios="ghost run codex harness clockview stats perish wipe"
 [ -n "${SKIP_PLAYER:-}" ] && player_scenarios=""
-for scenario in smoke grave meteorite island speed $player_scenarios; do
+for scenario in smoke grave meteorite island speed clock $player_scenarios; do
     echo "=== $scenario ==="
     extra=""
     case " $player_scenarios " in *" $scenario "*) extra="--client --player Tester" ;; esac

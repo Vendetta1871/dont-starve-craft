@@ -1,0 +1,31 @@
+// PLAYER: the run clock runs with a member on the island; the sky, light and HUD
+// clock follow the DS phases. Screenshots: day, dusk, night (dark, torch only),
+// full-moon night. Creative keeps the hounds that clock jumps call off the camera.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock
+#expect run [1-9]\d*$
+ds island current
+#expect centered at
+gamemode creative {P}
+execute in dontstarve:islands run tp {P} {X} 76 {Z+6} 180 10
+#sleep 8
+#shot day hud
+ds clock set 1 dusk 500
+#sleep 3
+#shot dusk hud
+ds clock set 1 night 500
+#sleep 4
+#shot night hud
+// A held torch is the only light at night.
+item replace entity {P} weapon.mainhand with minecraft:torch
+#sleep 2
+#shot night_torch hud
+clear {P} minecraft:torch
+ds clock set 11 night 500
+#sleep 4
+#shot fullmoon hud

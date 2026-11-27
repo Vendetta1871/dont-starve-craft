@@ -99,6 +99,7 @@ simulation-distance=6
 motd=dst-test
 max-tick-time=-1
 spawn-npcs=false
+allow-flight=true
 spawn-animals=true
 """)
     log_path = os.path.join(run, 'test-server.log')
@@ -179,9 +180,16 @@ spawn-animals=true
             continue
         if cmd.startswith('#ds-wait'):
             ticks = round(float(cmd.split()[1]) * 2.5 * 20)
+            # Scan only lines after the sprint starts and leave the #expect-log cursor alone,
+            # so log lines printed during the sprint stay visible to later #expect-log.
+            start_line = len(lines)
             sock.sendall(rcon_packet(2, 2, f'tick sprint {ticks}'))
             rcon_read(sock)
-            done = wait_for(r'Sprint completed', max(120, ticks / 100))
+            done = None
+            deadline = time.time() + max(120, ticks / 100)
+            while done is None and time.time() < deadline and proc.poll() is None:
+                done = next((l for l in lines[start_line:] if 'Sprint completed' in l), None)
+                time.sleep(0.2)
             check(f'ds-wait {cmd.split()[1]} DS s ({ticks} ticks)', done is not None)
             continue
         if cmd.startswith('#shot'):

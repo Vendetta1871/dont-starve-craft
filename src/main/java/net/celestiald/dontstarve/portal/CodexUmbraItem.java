@@ -67,6 +67,7 @@ public class CodexUmbraItem extends Item {
 
         int index = IslandState.get(overworld).islandIndex();
         player.setData(DSAttachments.RUN_ISLAND.get(), index);
+        net.celestiald.dontstarve.survive.Survival.freshStart(player);
         from.playSound(null, player.blockPosition(), SoundEvents.EVOKER_PREPARE_SUMMON, SoundSource.PLAYERS, 1.0F, 0.6F);
         player.changeDimension(new DimensionTransition(islands, IslandState.arrivalPos(index), Vec3.ZERO,
                 player.getYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND));

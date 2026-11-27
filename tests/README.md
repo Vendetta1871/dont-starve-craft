@@ -55,6 +55,10 @@ indices (`ds island goto 900`).
 | `ghost.txt` | PLAYER: ghost perks (invisibility, mayfly); all-ghost countdown starts and is averted |
 | `run.txt` | PLAYER: void death puts the grave at the last ground and raises the ghost to it; a member of a wiped run is sent home |
 | `harness.txt` | PLAYER: the test tools — `#ds-wait` burns a held torch by DS time, `#shot` saves screenshots with and without HUD |
+| `clock.txt` | DST clock and seasons: day/dusk/night split per season (incl. the slide between seasons), season lengths, moon cycle, ambient light, world temperature |
+| `clockview.txt` | PLAYER: the run clock runs with a member present; screenshots of day, dusk, night, torch at night, full moon |
+| `stats.txt` | PLAYER: hunger burn, starvation, sanity by light (torch vs dark), the grue, freezing, eating, ghost stats; HUD and frost screenshots |
+| `perish.txt` | PLAYER: food spoilage carried and on the ground, stale/spoiled food values, rot, merging stacks |
 | `wipe.txt` | PLAYER, SLOW: full all-ghost wipe — countdown, island advance, ejection home |
 
 ## Test-only commands
@@ -64,6 +68,9 @@ Codex Umbra for the player (the right-click path); `/ds ghost <player>
 on|off|check` drives the ghost flow; `/ds run <player> join|check` sets/reads
 run membership (what walking through the portal does); `/ds hound now <wave>` releases a hound
 wave at once; `/ds shot <player> <name> [hud]` makes that client save a screenshot;
-`/ds speed <mob> <x> <z> <ticks>` walks a mob towards (x, z) and logs its real speed.
+`/ds speed <mob> <x> <z> <ticks>` walks a mob towards (x, z) and logs its real speed;
+`/ds clock [set <day> day|dusk|night [ticks]]` reads or jumps the run clock; `/ds stats <player>
+[set hunger|sanity|temperature <v>]`, `/ds eat <player>` and `/ds perish <player> [percent]` drive
+the DS stats and spoilage; `/ds hound pause on|off` keeps hound waves away from clock jumps.
 They exist for these scenarios and manual
 probing, not for gameplay.

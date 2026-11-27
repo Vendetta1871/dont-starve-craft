@@ -25,13 +25,14 @@ All rates below are per second unless stated.
 
 - Max 200 (Wilson). WX-78 uses **lunacy** mode instead (`WX78_SANITY=100`, max 300,
   `tuning.lua:145-153`).
-- **No passive daytime gain**: `SANITY_DAY_GAIN = 0` (`tuning.lua:2191`).
+- **No passive daytime gain**: `SANITY_DAY_GAIN = 0` (`tuning.lua:2191`). "Day" means
+  `TheWorld.state.isday`, which is false at **dusk** — dusk already uses the night table.
 - Night/dark drain by light value (`sanity.lua:470-540`, `tuning.lua:2180-2195`):
 
 | Condition | Rate |
 |---|---|
-| night, light ≥ 0.1 (`SANITY_LOW_LIGHT`) | −100/(60·20) = **−0.083/s** |
-| night, light < 0.1 (dark) | −100/(60·2) = **−0.833/s** |
+| dusk or night, light ≥ 0.1 (`SANITY_LOW_LIGHT`) | −100/(30·40) = **−0.083/s** |
+| dusk or night, light < 0.1 (dark) | −100/(30·4) = **−0.833/s** |
 | caves (always treated as night) | same table |
 | wetness penalty at max moisture | −100/(300·6) ≈ **−0.056/s** (`tuning.lua:2221`) |
 

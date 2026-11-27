@@ -1,0 +1,68 @@
+// PLAYER: DS health / hunger / sanity on the islands with Wilson's DST rates
+// (tuning.lua, hunger.lua, sanity.lua, grue.lua). World time runs with #ds-wait.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+// Reading the Codex is a fresh start: full health, hunger and sanity.
+ds stats {P}
+#expect health 150\.00 hunger 1(49|50)\.\d+ sanity 200\.00 sane
+// Day: hunger burns 75/480 per DS s (48 s -> -7.5); no sanity change by day.
+ds clock set 1 day 500
+ds stats {P} set hunger 150
+#ds-wait 48
+ds stats {P}
+#expect hunger 142\.[3-7]\d sanity 200\.00
+ds island current
+execute in dontstarve:islands run tp {P} {X} 76 {Z+6} 180 10
+#sleep 3
+#shot hud_day hud
+// Night with a torch in hand: "light" -> -0.083/s (12 s -> -1).
+ds clock set 1 night 500
+item replace entity {P} weapon.mainhand with minecraft:torch
+#sleep 2
+ds stats {P} set sanity 200
+#ds-wait 12
+ds stats {P}
+#expect sanity (198\.9\d|199\.0\d) sane temperature [-.0-9]+ light 0\.8
+// Night in the dark: -0.833/s, and the grue hunts (resistance keeps the tester alive;
+// each hit still costs 20 sanity).
+clear {P} minecraft:torch
+effect give {P} minecraft:resistance 120 4 true
+ds stats {P} set sanity 200
+#ds-wait 12
+#expect-log The grue attacks Tester 5
+ds stats {P}
+#expect sanity 1[0-7]\d\.\d+ (sane|insane) temperature [-.0-9]+ light 0\.00
+#shot hud_night_dark hud
+// Starvation at 0 hunger: 1.25 health per DS s (8 s -> -10).
+effect clear {P}
+ds clock set 2 day 100
+effect give {P} minecraft:instant_health 1 10 true
+#sleep 2
+ds stats {P} set hunger 0
+#ds-wait 8
+ds stats {P}
+#expect health 1(39|40)\.\d+ hunger 0\.00
+// Monster meat (meats.lua:290-293): +18.75 hunger, -20 health, -15 sanity.
+ds stats {P} set sanity 100
+ds stats {P} set hunger 50
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat
+#sleep 1
+ds eat {P}
+#expect health 119\.\d+ hunger 68\.[67]\d sanity 85\.00
+// Winter night (mid-winter, about -25 degrees): body temperature falls 1 degree per DS s;
+// below 0 the player freezes for 1.25 health per DS s. A torch keeps the grue away.
+ds clock set 28 night 500
+item replace entity {P} weapon.mainhand with minecraft:torch
+ds stats {P} set temperature 2
+#ds-wait 8
+ds stats {P}
+#expect health 1(0\d|1[0-4])\.\d+ hunger .* temperature -(5\.[5-9]|6\.[0-4])\d
+#shot frost hud
+// Becoming a ghost: hunger to 2/3, sanity to 1/2 (player_common_extensions.lua).
+ds ghost {P} on
+ds stats {P}
+#expect hunger 100\.00 sanity 100\.00 sane temperature 35\.00

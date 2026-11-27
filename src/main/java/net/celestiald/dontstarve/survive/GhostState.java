@@ -21,6 +21,7 @@ public final class GhostState {
 
     public static void becomeGhost(ServerPlayer player) {
         player.setData(DSAttachments.GHOST.get(), true);
+        Survival.onBecomeGhost(player);
         player.setHealth(player.getMaxHealth());
         applyGhostPerks(player);
         // Mobs that were chasing the player before death lose interest in the spirit.

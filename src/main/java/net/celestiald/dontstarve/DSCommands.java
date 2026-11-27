@@ -31,6 +31,9 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  * {@code /ds run <player> join|check} for run membership and
  * {@code /ds hound now <wave>} to release a hound wave on demand and
  * {@code /ds shot <player> <name> [hud]} to make that client save a screenshot and
+ * {@code /ds stats <player> [set hunger|sanity|temperature <v>]}, {@code /ds eat <player>} (main hand) and
+ * {@code /ds perish <player> [percent]} (main hand freshness) for DS stats and spoilage,
+ * {@code /ds clock [set <day> day|dusk|night [ticks]]} to read or jump the run clock,
  * {@code /ds speed <mob> <x> <z> <ticks>} to measure a mob's real walking speed (logged).
  */
 public final class DSCommands {
@@ -58,9 +61,40 @@ public final class DSCommands {
                                 .then(Commands.literal("join").executes(DSCommands::runJoin))
                                 .then(Commands.literal("check").executes(DSCommands::runCheck))))
                 .then(Commands.literal("hound")
+                        .then(Commands.literal("pause")
+                                .then(Commands.literal("on").executes(ctx -> houndPause(ctx, true)))
+                                .then(Commands.literal("off").executes(ctx -> houndPause(ctx, false))))
                         .then(Commands.literal("now")
                                 .then(Commands.argument("wave", IntegerArgumentType.integer(1, 10))
                                         .executes(DSCommands::houndNow))))
+                .then(Commands.literal("stats")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(DSCommands::statsReport)
+                                .then(Commands.literal("set")
+                                        .then(Commands.literal("hunger").then(Commands.argument("value", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0))
+                                                .executes(ctx -> statsSet(ctx, true))))
+                                        .then(Commands.literal("sanity").then(Commands.argument("value", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0))
+                                                .executes(ctx -> statsSet(ctx, false))))
+                                        .then(Commands.literal("temperature").then(Commands.argument("value", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(-20, 90))
+                                                .executes(DSCommands::temperatureSet))))))
+                .then(Commands.literal("eat")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(DSCommands::eat)))
+                .then(Commands.literal("perish")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(ctx -> perish(ctx, -1.0F))
+                                .then(Commands.argument("percent", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 100))
+                                        .executes(ctx -> perish(ctx, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(ctx, "percent"))))))
+                .then(Commands.literal("clock")
+                        .executes(DSCommands::clockReport)
+                        .then(Commands.literal("set")
+                                .then(Commands.argument("day", IntegerArgumentType.integer(1))
+                                        .then(Commands.literal("day").executes(ctx -> clockSet(ctx, net.celestiald.dontstarve.clock.DSClock.Phase.DAY, 0))
+                                                .then(Commands.argument("ticks", IntegerArgumentType.integer(0)).executes(ctx -> clockSet(ctx, net.celestiald.dontstarve.clock.DSClock.Phase.DAY, IntegerArgumentType.getInteger(ctx, "ticks")))))
+                                        .then(Commands.literal("dusk").executes(ctx -> clockSet(ctx, net.celestiald.dontstarve.clock.DSClock.Phase.DUSK, 0))
+                                                .then(Commands.argument("ticks", IntegerArgumentType.integer(0)).executes(ctx -> clockSet(ctx, net.celestiald.dontstarve.clock.DSClock.Phase.DUSK, IntegerArgumentType.getInteger(ctx, "ticks")))))
+                                        .then(Commands.literal("night").executes(ctx -> clockSet(ctx, net.celestiald.dontstarve.clock.DSClock.Phase.NIGHT, 0))
+                                                .then(Commands.argument("ticks", IntegerArgumentType.integer(0)).executes(ctx -> clockSet(ctx, net.celestiald.dontstarve.clock.DSClock.Phase.NIGHT, IntegerArgumentType.getInteger(ctx, "ticks"))))))))
                 .then(Commands.literal("speed")
                         .then(Commands.argument("mob", EntityArgument.entity())
                                 .then(Commands.argument("x", IntegerArgumentType.integer())
@@ -85,6 +119,93 @@ public final class DSCommands {
                         .then(Commands.literal("tag")
                                 .then(Commands.argument("id", ResourceLocationArgument.id())
                                         .executes(DSCommands::checkTag)))));
+    }
+
+    private static int statsReport(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        var stats = net.celestiald.dontstarve.survive.Survival.stats(player);
+        String line = String.format(java.util.Locale.ROOT, "%s health %.2f hunger %.2f sanity %.2f %s temperature %.2f light %.2f",
+                player.getGameProfile().getName(), player.getHealth() / net.celestiald.dontstarve.DSScale.STAT,
+                stats.hunger(), stats.sanity(), stats.sane() ? "sane" : "insane", stats.temperature(),
+                player.level().dimension().equals(DSRefs.ISLANDS) ? net.celestiald.dontstarve.survive.DSLight.value(player) : -1.0F);
+        ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+        return 1;
+    }
+
+    private static int statsSet(CommandContext<CommandSourceStack> ctx, boolean hunger) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        float value = com.mojang.brigadier.arguments.FloatArgumentType.getFloat(ctx, "value");
+        var stats = net.celestiald.dontstarve.survive.Survival.stats(player);
+        net.celestiald.dontstarve.survive.Survival.set(player, hunger ? stats.withHunger(value) : stats.withSanity(value));
+        return statsReport(ctx);
+    }
+
+    private static int temperatureSet(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        float value = com.mojang.brigadier.arguments.FloatArgumentType.getFloat(ctx, "value");
+        net.celestiald.dontstarve.survive.Survival.set(player, net.celestiald.dontstarve.survive.Survival.stats(player).withTemperature(value));
+        return statsReport(ctx);
+    }
+
+    private static int eat(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        ItemStack stack = player.getMainHandItem();
+        if (!(stack.getItem() instanceof net.celestiald.dontstarve.item.DSFoodItem)) {
+            ctx.getSource().sendFailure(Component.literal("Not holding a DS food"));
+            return 0;
+        }
+        net.celestiald.dontstarve.survive.Survival.eat(player, stack);
+        stack.shrink(1);
+        return statsReport(ctx);
+    }
+
+    private static int perish(CommandContext<CommandSourceStack> ctx, float percent) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        ItemStack stack = player.getMainHandItem();
+        if (!net.celestiald.dontstarve.item.Perishable.isPerishable(stack)) {
+            ctx.getSource().sendFailure(Component.literal("Not holding a perishable food"));
+            return 0;
+        }
+        if (percent >= 0.0F) {
+            net.celestiald.dontstarve.item.Perishable.setPercent(stack, percent / 100.0F);
+        }
+        String line = String.format(java.util.Locale.ROOT, "%s x%d %s %.1f%%", stack.getHoverName().getString(),
+                stack.getCount(), net.celestiald.dontstarve.item.Perishable.freshness(stack).name().toLowerCase(java.util.Locale.ROOT),
+                net.celestiald.dontstarve.item.Perishable.percent(stack) * 100.0F);
+        ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+        return 1;
+    }
+
+    private static int houndPause(CommandContext<CommandSourceStack> ctx, boolean paused) {
+        net.celestiald.dontstarve.survive.HoundWave.paused = paused;
+        ctx.getSource().sendSuccess(() -> Component.literal("Hound waves " + (paused ? "paused" : "resumed")), false);
+        return 1;
+    }
+
+    private static int clockReport(CommandContext<CommandSourceStack> ctx) {
+        var state = net.celestiald.dontstarve.clock.RunClock.state(ctx.getSource().getServer());
+        var day = state.day();
+        String line = String.format(java.util.Locale.ROOT,
+                "Day %d %s %d/%d %s %d/%d left segs %d/%d/%d moon %s%s ambient %.2f temperature %.1f run %d",
+                day.cycles() + 1, state.phase().name().toLowerCase(java.util.Locale.ROOT),
+                state.phaseTicks(), state.phaseLength(), day.season().name().toLowerCase(java.util.Locale.ROOT),
+                day.remainingDays(), day.totalDays(), day.segs().day(), day.segs().dusk(), day.segs().night(),
+                state.moon().name().toLowerCase(java.util.Locale.ROOT), state.waxing() ? " waxing" : " waning",
+                net.celestiald.dontstarve.clock.DSClock.ambientLevel(state),
+                net.celestiald.dontstarve.clock.WorldTemperature.at(state, IslandState.get(ctx.getSource().getServer().getLevel(Level.OVERWORLD)).islandIndex()),
+                state.runTicks());
+        ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+        return 1;
+    }
+
+    private static int clockSet(CommandContext<CommandSourceStack> ctx, net.celestiald.dontstarve.clock.DSClock.Phase phase, int offset) {
+        ServerLevel overworld = ctx.getSource().getServer().getLevel(Level.OVERWORLD);
+        if (overworld == null) {
+            return 0;
+        }
+        int day = IntegerArgumentType.getInteger(ctx, "day");
+        IslandState.get(overworld).setRunTicks(net.celestiald.dontstarve.clock.DSClock.startOf(day - 1, phase) + offset);
+        return clockReport(ctx);
     }
 
     private static int speed(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {

@@ -31,10 +31,10 @@ public final class IslandState extends SavedData {
     /** All-ghost wipe countdown in seconds; -1 means inactive. */
     private int wipeSecondsLeft = -1;
     /**
-     * Seconds the current run has been played: counted only while living run
-     * members are on the island, so time spent away does not pile up waves.
+     * Ticks the current run's world clock has run: it advances while members of
+     * the run are on the island (like a DST server, which pauses when empty).
      */
-    private int runSeconds = 0;
+    private long runTicks = 0;
     /** Hound waves already sent against the current island. */
     private int houndWavesSent = 0;
     /** Whether the warning howl for the next wave has already been broadcast. */
@@ -63,7 +63,7 @@ public final class IslandState extends SavedData {
 
     /** Resets the per-run clocks when another island becomes current. */
     private void onIslandChanged() {
-        runSeconds = 0;
+        runTicks = 0;
         houndWavesSent = 0;
         houndWarned = false;
     }
@@ -83,14 +83,25 @@ public final class IslandState extends SavedData {
         return islandIndex;
     }
 
-    /** Seconds of live play on the current island (hound clock). */
-    public int runSeconds() {
-        return runSeconds;
+    /** Ticks of the current run's world clock (see {@link net.celestiald.dontstarve.clock.DSClock}). */
+    public long runTicks() {
+        return runTicks;
     }
 
-    /** Advances the run clock by one second of live play. */
-    public void tickRunSecond() {
-        runSeconds++;
+    /** Whole seconds of the current run's world clock. */
+    public int runSeconds() {
+        return (int) (runTicks / 20);
+    }
+
+    /** Advances the run clock by one tick. */
+    public void tickRun() {
+        runTicks++;
+        setDirty();
+    }
+
+    /** Sets the run clock (test commands). */
+    public void setRunTicks(long ticks) {
+        runTicks = Math.max(0, ticks);
         setDirty();
     }
 
@@ -139,7 +150,7 @@ public final class IslandState extends SavedData {
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
         tag.putInt("island_index", islandIndex);
         tag.putInt("wipe_seconds_left", wipeSecondsLeft);
-        tag.putInt("run_seconds", runSeconds);
+        tag.putLong("run_ticks", runTicks);
         tag.putInt("hound_waves_sent", houndWavesSent);
         tag.putBoolean("hound_warned", houndWarned);
         return tag;
@@ -150,7 +161,7 @@ public final class IslandState extends SavedData {
         state.islandIndex = tag.getInt("island_index");
         state.wipeSecondsLeft = tag.contains("wipe_seconds_left")
                 ? tag.getInt("wipe_seconds_left") : -1;
-        state.runSeconds = tag.getInt("run_seconds");
+        state.runTicks = tag.contains("run_ticks") ? tag.getLong("run_ticks") : tag.getInt("run_seconds") * 20L;
         state.houndWavesSent = tag.getInt("hound_waves_sent");
         state.houndWarned = tag.getBoolean("hound_warned");
         return state;

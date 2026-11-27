@@ -31,6 +31,7 @@ public final class DSCreativeTabs {
                         output.accept(DSItems.BEARDHAIR.get());
                         output.accept(DSItems.HOUNDSTOOTH.get());
                         output.accept(DSItems.MONSTERMEAT.get());
+                        output.accept(DSItems.SPOILED_FOOD.get());
                         output.accept(DSItems.REVIVER.get());
                         output.accept(DSItems.MOONROCKNUGGET.get());
                         output.accept(DSItems.MOONROCKIDOL.get());

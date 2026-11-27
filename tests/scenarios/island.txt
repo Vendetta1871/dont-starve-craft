@@ -43,18 +43,19 @@ execute in dontstarve:islands run loot spawn 7454720 77 4 mine 7454720 76 4 mine
 execute in dontstarve:islands run setblock 7454720 76 6 dontstarve:rock1
 execute in dontstarve:islands run loot spawn 7454720 77 6 mine 7454720 76 6 minecraft:diamond_pickaxe
 #expect Dropped [5-7] items
-// Spider den: a childspawner that lets spiders out only at night.
+// Spider den: a childspawner that lets spiders out only when it is not day (DS run clock).
 execute in dontstarve:islands run setblock 7454728 75 0 dontstarve:spider_den
 #expect Changed the block
-time set 1000
+ds clock set 1 day 100
 #sleep 15
 execute in dontstarve:islands positioned 7454728 75 0 if entity @e[type=dontstarve:spider,distance=..16]
 #expect Test failed
-time set 18000
-#sleep 15
+// The den checks every 5 DS s (250 ticks): give it several checks at night.
+ds clock set 1 night 100
+#sleep 25
 execute in dontstarve:islands positioned 7454728 75 0 run data get entity @e[limit=1,type=dontstarve:spider,distance=..16] Home
 #expect Spider has the following entity data: \[I; 7454728, 75, 0\]
-time set 1000
+ds clock set 1 day 100
 // Hound waves: the intro wave is a single hound, later waves bring 2-5.
 ds hound now 1
 #expect released: 1 hound

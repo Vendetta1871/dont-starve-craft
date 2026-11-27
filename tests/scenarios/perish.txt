@@ -1,0 +1,50 @@
+// PLAYER: DST food spoilage (components/perishable.lua, edible.lua). Monster meat
+// perishes in PERISH_FAST = 6 days = 2880 DS s, into rot.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock set 1 day 500
+// Carried food loses 1 DS s per DS s: 144 s = 5 %.
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 2
+#sleep 1
+#ds-wait 144
+ds perish {P}
+#expect Monster Meat x2 fresh 9[45]\.\d%
+// On the ground it spoils 1.5x faster: 96 s -> 144 s = 5 %.
+ds island current
+execute in dontstarve:islands run summon item {X} 76 {Z+20} {Item:{id:"dontstarve:monstermeat",count:1},PickupDelay:32767,Tags:["perish_test"]}
+#ds-wait 96
+execute in dontstarve:islands run data get entity @e[type=item,tag=perish_test,limit=1] Item.components."dontstarve:perish"
+#expect has the following entity data: 27(3[5-9]|4[0-9])\.
+// Stale food (below 50 %): hunger x0.667; negative health and sanity are not reduced.
+ds stats {P} set hunger 50
+ds stats {P} set sanity 100
+ds perish {P} 40
+#expect stale 40\.0%
+ds eat {P}
+#expect hunger 62\.[45]\d sanity 8[45]\.\d+
+// Spoiled (below 20 %): hunger x0.5.
+ds stats {P} set hunger 50
+ds perish {P} 10
+#expect spoiled 10\.0%
+ds eat {P}
+#expect hunger 59\.[34]\d
+// At 0 the stack turns into rot, keeping its count.
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 3
+#sleep 1
+ds perish {P} 0.2
+#ds-wait 10
+data get entity {P} SelectedItem
+#expect id: "dontstarve:spoiled_food"
+#expect count: 3
+// Picking up meat of another freshness merges it, averaging: (50 % + 100 %) / 2 = 75 %.
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 1
+#sleep 1
+ds perish {P} 50
+execute in dontstarve:islands at {P} run summon item ~ ~ ~ {Item:{id:"dontstarve:monstermeat",count:1}}
+#sleep 3
+ds perish {P}
+#expect Monster Meat x2 fresh 7[45]\.\d%

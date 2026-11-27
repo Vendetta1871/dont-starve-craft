@@ -49,5 +49,12 @@
   "block.dontstarve.rock1": "Валун",
   "block.dontstarve.rock2": "Валун",
   "item.dontstarve.rocks": "Камни",
-  "item.dontstarve.nitre": "Селитра"
+  "item.dontstarve.nitre": "Селитра",
+  "hud.dontstarve.day": "День",
+  "death.attack.dontstarve.darkness": "%1$s утащило что-то во тьме",
+  "death.attack.dontstarve.darkness.player": "%1$s утащило что-то во тьме во время боя с %2$s",
+  "item.dontstarve.spoiled_food": "Гниль",
+  "tooltip.dontstarve.fresh": "Свежее (%s%%)",
+  "tooltip.dontstarve.stale": "Несвежее (%s%%)",
+  "tooltip.dontstarve.spoiled": "Испорченное (%s%%)"
 }

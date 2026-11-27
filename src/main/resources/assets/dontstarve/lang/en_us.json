@@ -49,5 +49,12 @@
   "block.dontstarve.rock1": "Boulder",
   "block.dontstarve.rock2": "Boulder",
   "item.dontstarve.rocks": "Rocks",
-  "item.dontstarve.nitre": "Nitre"
+  "item.dontstarve.nitre": "Nitre",
+  "hud.dontstarve.day": "Day",
+  "death.attack.dontstarve.darkness": "%1$s was taken by something in the dark",
+  "death.attack.dontstarve.darkness.player": "%1$s was taken by something in the dark while fighting %2$s",
+  "item.dontstarve.spoiled_food": "Rot",
+  "tooltip.dontstarve.fresh": "Fresh (%s%%)",
+  "tooltip.dontstarve.stale": "Stale (%s%%)",
+  "tooltip.dontstarve.spoiled": "Spoiled (%s%%)"
 }

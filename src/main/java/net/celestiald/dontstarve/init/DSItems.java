@@ -39,6 +39,12 @@ public final class DSItems {
     public static final DeferredItem<Item> HOUNDSTOOTH = ITEMS.registerItem("houndstooth",
             Item::new, new Item.Properties().stacksTo(40));
     /** Hound loot; edible with a health penalty, see MonsterMeatItem. */
+    /** Rot (DST "spoiled_food", prefabs/spoiledfood.lua): what perished food becomes; SPOILED_HEALTH -1, SPOILED_HUNGER -10. */
+    public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> SPOILED_FOOD = ITEMS.registerItem("spoiled_food",
+            p -> new net.celestiald.dontstarve.item.DSFoodItem(p, new net.celestiald.dontstarve.item.DSFoodItem.Edible(-10.0F, -1.0F, 0.0F)),
+            new Item.Properties().stacksTo(40)
+                    .food(new FoodProperties.Builder().nutrition(0).saturationModifier(0.0F).alwaysEdible().build()));
+
     public static final DeferredItem<MonsterMeatItem> MONSTERMEAT = ITEMS.registerItem("monstermeat",
             MonsterMeatItem::new, new Item.Properties().stacksTo(40)
                     .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build()));

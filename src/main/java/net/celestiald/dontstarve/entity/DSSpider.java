@@ -40,10 +40,17 @@ import java.util.EnumSet;
  * a den spider goes home at dawn and is stored back in its den.
  * Loot: one weighted item — monstermeat 50 %, silk 25 %, spidergland 25 %.
  */
-public class DSSpider extends Monster {
+public class DSSpider extends Monster implements net.celestiald.dontstarve.survive.SanityAura {
 
     private static final double TARGET_DIST = DSScale.blocks(4);
     private static final double RUN_SPEED = 5;
+    /** -SANITYAURA_SMALL (spider.lua:774): 100/(30*8) sanity per DS s at distance 1. */
+    private static final float AURA = -100.0F / (30 * 8);
+
+    @Override
+    public float sanityAura(Player observer) {
+        return AURA;
+    }
     private static final double WALK_SPEED = 3;
 
     @Nullable
@@ -73,7 +80,7 @@ public class DSSpider extends Monster {
 
     /** DST: homeless spiders sleep through the day unless something wakes them. */
     public boolean isSleepy() {
-        return home == null && level().isDay() && getTarget() == null && getLastHurtByMob() == null;
+        return home == null && net.celestiald.dontstarve.clock.RunClock.isDay(level()) && getTarget() == null && getLastHurtByMob() == null;
     }
 
     @Override
@@ -163,7 +170,7 @@ public class DSSpider extends Monster {
 
         @Override
         public boolean canUse() {
-            return spider.home != null && spider.level().isDay() && spider.getTarget() == null;
+            return spider.home != null && net.celestiald.dontstarve.clock.RunClock.isDay(spider.level()) && spider.getTarget() == null;
         }
 
         @Override

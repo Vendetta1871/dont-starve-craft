@@ -1,0 +1,34 @@
+// The DST clock and seasons (components/clock.lua, seasons.lua, ambientlighting.lua).
+// Server side: the day split, season and moon at chosen days; the clock only runs
+// while a run member is on the island.
+ds clock
+#expect Day 1 day 0/\d+ autumn 20/40 left segs 8/6/2 moon new waxing ambient 0\.84
+// Autumn starts mid-season: lerp(55, 5, 0.5) = 30 degrees, +-8 noise.
+#expect temperature (2[2-9]|3[0-8])\.\d run
+#sleep 2
+ds clock
+#expect run 0$
+// Last autumn day slides towards winter: p = 39/40 -> 7/5/4.
+ds clock set 20 day
+#expect Day 20 day 0/\d+ autumn 1/40 left segs 7/5/4
+// First winter day sits halfway back towards autumn: 7/5/4; mid-winter is pure 5/5/6.
+ds clock set 21 night
+#expect Day 21 night 0/\d+ winter 15/15 left segs 7/5/4
+ds clock set 28 day
+#expect Day 28 day 0/\d+ winter 8/15 left segs 5/5/6
+// World temperature (worldtemperature.lua): mid-winter sin(pi*7/15)*-30+5 = -24.8, +-8 noise.
+#expect temperature -(1[6-9]|2\d|3[0-3])\.\d run
+// After 15 winter days autumn returns (no spring/summer before Reign of Giants).
+ds clock set 36 day
+#expect Day 36 day 0/\d+ autumn 20/20 left
+// Moon: new on day 1, full on day 11 of the 20-day cycle (already "waning": cycle 11 > 10).
+// Ambient lerps from the previous phase: at the first night tick it is still dusk grey,
+// 8 DS s (500 ticks) later it is the full-moon blue.
+ds clock set 11 night
+#expect moon full waning ambient 0\.59
+ds clock set 11 night 500
+#expect moon full waning ambient 0\.47
+ds clock set 10 night 500
+#expect moon threequarter waxing ambient 0\.00
+ds clock set 12 dusk
+#expect moon threequarter waning

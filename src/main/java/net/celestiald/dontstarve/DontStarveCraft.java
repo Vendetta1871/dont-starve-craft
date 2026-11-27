@@ -27,6 +27,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 public final class DontStarveCraft {
 
     public static final String MODID = "dontstarve";
+    public static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
 
     public DontStarveCraft(IEventBus modBus) {
         DSBlocks.BLOCKS.register(modBus);
@@ -63,6 +64,13 @@ public final class DontStarveCraft {
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.DSBlockDrops::onBlockDrops);
         NeoForge.EVENT_BUS.addListener(DSTorch::onServerTick);
         NeoForge.EVENT_BUS.addListener(SpeedProbe::onServerTick);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.clock.RunClock::onServerTick);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.survive.Survival::onServerTick);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.survive.Survival::onUseStart);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.survive.Survival::onUseFinish);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.item.Perishable::onServerTick);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.item.Perishable::onStackedOnOther);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.item.Perishable::onPickup);
         NeoForge.EVENT_BUS.addListener(DSTorch::onRightClickBlock);
         NeoForge.EVENT_BUS.addListener(DSTorch::onAttack);
         NeoForge.EVENT_BUS.addListener(DSTorch::onLoggedOut);

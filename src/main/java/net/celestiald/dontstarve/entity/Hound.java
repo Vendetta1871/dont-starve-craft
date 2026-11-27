@@ -32,9 +32,16 @@ import net.minecraft.world.level.Level;
  * wanders at the locomotor default walk speed 4 (components/locomotor.lua:300).
  * Loot: monstermeat 100 %, houndstooth 12.5 % (hound.lua:110-113).
  */
-public class Hound extends Monster {
+public class Hound extends Monster implements net.celestiald.dontstarve.survive.SanityAura {
 
     private static final double RUN_SPEED = 10;
+    /** -SANITYAURA_MED (hound.lua:553): 100/(30*5) sanity per DS s at distance 1. */
+    private static final float AURA = -100.0F / (30 * 5);
+
+    @Override
+    public float sanityAura(Player observer) {
+        return AURA;
+    }
     private static final double WALK_SPEED = 4;
 
     public Hound(EntityType<? extends Monster> type, Level level) {

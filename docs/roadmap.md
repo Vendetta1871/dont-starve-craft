@@ -46,6 +46,14 @@ navigating mob covers 43.17 × attribute² blocks/s (`DSScale.mobSpeed`, `speed.
 ## DS — base game
 
 ### DS-1. Survival core
+
+Done: the DST clock and seasons per run (`DSClock`: season split slides between seasons,
+moon cycle, ambient light; islands lighting and HUD clock), hunger / sanity / health with
+the DST rates and HUD badges, sanity by light and monster auras, ghost drain, the grue,
+world and body temperature with freezing and the frost overlay, food spoilage with rot.
+Known gaps, each landing with its content: heaters and insulation (DS-3 fire, clothing),
+the moon icon in the clock, rate arrows on the badges, insanity effects (DS-8),
+overheating sources (RoG).
 - Hunger, Sanity, Health as DS stats with DS rates, own HUD meters (badges) replacing
   the vanilla hunger bar. **A** rates, **S** HUD, **M** readability.
 - DS clock per island: day/dusk/night segments, the clock HUD. **A**, **S**.

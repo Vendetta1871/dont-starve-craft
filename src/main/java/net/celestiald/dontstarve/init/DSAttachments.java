@@ -54,6 +54,12 @@ public final class DSAttachments {
                     .serialize(BlockPos.CODEC)
                     .build());
 
+    /** DS hunger and sanity on the islands (health is the vanilla health bar). */
+    public static final Supplier<AttachmentType<net.celestiald.dontstarve.survive.DSStats>> STATS = ATTACHMENTS.register("stats",
+            () -> AttachmentType.builder(() -> net.celestiald.dontstarve.survive.DSStats.FULL)
+                    .serialize(net.celestiald.dontstarve.survive.DSStats.CODEC)
+                    .build());
+
     private DSAttachments() {
     }
 }
