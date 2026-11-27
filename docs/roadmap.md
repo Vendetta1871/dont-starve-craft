@@ -1,0 +1,150 @@
+# Roadmap
+
+Goal: all of **Don't Starve Together** content in Minecraft, ported faithfully
+(DS prefab ids, stats, loot, behaviour from the DST Lua; no vanilla stand-ins, no
+temporary deviations). Content arrives in nested subsets:
+
+1. **DS** — the base single-player game's content (forest, caves, ruins, DS roster).
+2. **+ RoG** — Reign of Giants (spring/summer, wetness, overheating, new biomes, giants).
+3. **+ DST** — Together-only content (multiplayer systems, characters, ocean, lunar,
+   late bosses, rifts).
+
+Subsets are about *content*, not balance: numbers always come from the current DST
+`tuning.lua`; a DS-only item is ported only if it also exists in DST (see open
+decisions). Ours-by-design, already in place: the islands dimension, Maxwell's
+Codex Umbra entry, the sky-portal escape, ghosts and the all-ghost wipe.
+
+## How each stage is verified
+
+| Mark | Who | What it covers |
+|---|---|---|
+| **A** | me, autotest | Headless server scenarios (`tests/run-all.sh`, RCON) and headless client scenarios: stats and rates, timers (with time skips), loot tables, recipes, worldgen placement, AI state changes visible in NBT, save/load. |
+| **S** | me, screenshots | Headless client in gamescope captures fixed scenes: models, textures, HUD, UI screens, lighting/darkness, particles. I check them and show them to you only when a look is worth your opinion. |
+| **M** | you, by hand | Feel and judgement: combat timing, AI that "looks right", controls and UI ergonomics, pacing of a real run, sound, two real players together, final art. |
+
+Every stage ends with `tests/run-all.sh` green and a commit.
+
+## Stage 0 — infrastructure (before content)
+
+- Screenshot capture for the headless client: a dev-only client command/key that saves
+  a frame after camera placement, plus scene scripts in `demo/` that build a scene
+  and photograph it. **A** (the pipeline itself)
+- Test commands: skip DS time (`/ds time skip <segments>`), set stats, spawn with
+  state; a scenario helper for "wait N DS seconds". **A**
+- Data extraction from the DST Lua into reviewable tables (tuning, recipes, loot,
+  perish times) so ports cite numbers instead of retyping them. **A**
+- Scaling rules written down once and enforced in code: stats ×2/15, time ×2.5,
+  distances ×2 (1 DS unit = 2 blocks), mob speeds (to be measured in game). **A** + **M**
+  (speed feel).
+
+## DS — base game
+
+### DS-1. Survival core
+- Hunger, Sanity, Health as DS stats with DS rates, own HUD meters (badges) replacing
+  the vanilla hunger bar. **A** rates, **S** HUD, **M** readability.
+- DS clock per island: day/dusk/night segments, the clock HUD. **A**, **S**.
+- Darkness and Charlie (the Grue): damage in full darkness, light sources' radii. **A**
+  damage/timing, **S** darkness look, **M** how it feels at night.
+- Temperature with autumn/winter, freezing, insulation. **A**, **S** (frost overlay).
+- Spoilage (freshness, stale/spoiled, rot). **A**.
+
+### DS-2. Crafting and tech
+- The DS crafting menu (tabs, tech levels, prototyping, blueprints) as our own screen;
+  vanilla crafting off on the islands. **A** recipes/tech gating, **S** screen,
+  **M** usability (the biggest UI risk of the whole port).
+- Science Machine, Alchemy Engine, Prestihatitator, Shadow Manipulator. **A**, **S**.
+
+### DS-3. Tools, fire, basic resources
+- Axe, Pickaxe, Shovel, Hammer, Razor, Pitchfork with DS durability. **A**.
+- Evergreen lifecycle (sizes, stumps, pinecones, burnt trees, charcoal), lumpy
+  evergreens, birchnut/deciduous later in RoG; berry bushes, carrots, reeds, flowers,
+  ground flint spawns, regrowth. **A** loot/timers, **S** stages.
+- Fire: campfire, fire pit, fire spread, smouldering, burnables, fuel values. **A**,
+  **S**, **M** (fire spread must not feel like vanilla fire).
+- Torch: rain burn rate (needs rain). **A**.
+
+### DS-4. Food and cooking
+- Cooking on fire, Crock Pot with all DS recipes and priorities, Drying Rack, Ice Box,
+  Bee Box, basic farms. **A** (recipe resolver is fully testable), **S** UI.
+
+### DS-5. Forest fauna
+- Passive/neutral: rabbits (+holes), beefalo (herds, mating, domestication is DST),
+  pigs/pig houses/Pig King, koalefants, birds, butterflies, frogs, bees, mosquitos.
+  **A** loot/stats/spawners, **S** placeholder models, **M** AI feel.
+- Hostile: spiders full (den tiers 1–3, warriors, Spider Queen), tentacles, merms,
+  tallbirds, MacTusk party, Krampus, hound variants (fire/ice), penguins. **A**, **M**.
+- Beardlings → beard hair → Meat Effigy becomes craftable. **A**.
+
+### DS-6. World generation
+- DS biomes (grassland, forest, deciduous later, rocky, savanna, marsh, graveyard,
+  checkerboard, mosaic) and set pieces, wormholes, touch stones, statues,
+  boulders, Pig King set piece, roads. Island size and layout follow DS room/task
+  rules at 8×8 blocks per tile. **A** placement statistics, **S** aerial shots, **M** walk-around feel.
+
+### DS-7. Bosses (DS)
+- Deerclops, Treeguards, Spider Queen. **A** stats/phases/loot, **S**, **M** fights.
+
+### DS-8. Magic and sanity world
+- Shadow creatures (insanity), nightmare fuel, magic items (Night Light, Night Armor,
+  Dark Sword, amulets, staffs), Pan Flute, One-man Band. **A**, **S** insanity
+  visuals, **M**.
+
+### DS-9. Caves and Ruins
+- Caves dimension (sinkholes, light flowers, bunnymen, rock lobsters, slurpers,
+  depth worms, bats, spilagmites, cave bananas, fern/lichen). **A**, **S**, **M**.
+- Ruins: nightmare cycle, clockwork monsters, thulecite, Ancient Pseudoscience
+  Station, Ancient Guardian, ruins loot. **A**, **S**, **M**.
+
+### DS-10. DS characters
+- Character select; Wilson, Willow, Wolfgang, Wendy (+Abigail), WX-78, Wickerbottom,
+  Woodie (+Lucy, werebeaver), Wes, Maxwell (Waxwell) with their DST perks. **A** perk
+  numbers, **S** select screen, **M** each character's play feel.
+
+## RoG — Reign of Giants
+
+- Spring and summer, wetness, overheating, lightning and rods, rain/frog rain,
+  wildfires, smouldering. **A**, **S** rain/heat overlays, **M**.
+- Biomes: desert, deciduous forest (birchnuts, poison birchnut tree), new set pieces.
+  **A**, **S**.
+- Mobs: catcoons, volt goats, moleworms, buzzards, glommer, mosquito changes, hound
+  seasonal variants. **A**, **M**.
+- Giants: Moose/Goose (+moslings), Dragonfly (DST version), Bearger. **A**, **S**, **M**.
+- Items/structures: Ice Flingomatic, Endothermic fire, Luxury Fan, umbrellas, rain
+  gear, Thermal Stone summer use, Hibearnation Vest, Weather Pain, etc. **A**, **S**.
+- Wigfrid and Webber. **A**, **M**.
+
+## DST — Together
+
+- Multiplayer systems: resurrection (Touch Stone, Life Giving Amulet, Telltale Heart,
+  Meat Effigy — partially done), skeletons/graves, shared world events. **A** (two
+  bot players), **M** with two real players.
+- DST character roster: Webber/Wigfrid reworks, Winona, Warly, Wortox, Wormwood,
+  Wurt, Walter, Wanda, Wolfgang/Wilson/etc. skill trees. **A** perks, **M**.
+- Beefalo domestication and riding, Pig King minigames, Hermit Crab island. **A**, **M**.
+- Farming (Reap What You Sow): giant crops, nutrients, plant talk. **A**, **S**.
+- Bosses: Klaus, Bee Queen, Toadstool, Antlion, Ancient Fuelweaver, Malbatross,
+  Crab King, Eye of Terror/Twins, Celestial Champion, Daywalker, rift bosses. **A**,
+  **S**, **M** (each fight).
+- Return of Them: ocean, boats, sea fishing, lunar island, moon storms, Waterlogged,
+  Lunar Grotto, Archive. The sea is plain water around the island. **A**, **S**, **M**.
+- Rifts (lunar and shadow) and their gear. **A**, **S**, **M**.
+- Seasonal events (Winter's Feast, Hallowed Nights, Year of the X) last. **A**, **M**.
+
+## Art
+
+Every entity/block/item first ships with placeholder visuals. Real models and
+textures are our own work, not extracted Klei assets; replacing them is a separate
+pass per stage, checked by **S** then **M**. Player-facing README with screenshots
+comes once a stage is playable end to end.
+
+## Decisions
+
+- **No DS Adventure Mode.** It is DS-only (absent from DST); the islands run stays.
+- **World scale: one DST tile = 8×8 blocks** (4 tiles per chunk side), so one DS
+  distance unit (a tile is 4 units) = 2 blocks. Positions, ranges and radii scale ×2.
+- **Season clock belongs to the run.** All players share one world and one current
+  island; every new island starts at autumn day 1, like a new DST world.
+- **Crafting UI: our own DS-style menu** (tabs, tech levels, prototyping) drawn in
+  the Minecraft GUI style — square slots, grey panels.
+- **Ocean: plain water**, as in DST. The island becomes the DST world surrounded by
+  sea instead of void (with the ocean content in Return of Them).
