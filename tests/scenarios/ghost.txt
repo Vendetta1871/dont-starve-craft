@@ -7,20 +7,23 @@ ds island current
 // Send them to the islands and turn them into a ghost.
 execute in dontstarve:islands run tp {P} {X} 80 {Z}
 #sleep 3
+// Only members of the current run count for the wipe (reading the Codex Umbra sets this).
+ds run {P} join
+#expect joined run
 ds ghost {P} check
-#expect ghost=False dimension=minecraft:overworld
+#expect ghost=false dimension=dontstarve:islands
 ds ghost {P} on
 #expect is now a ghost
-data get entity {P} Abilities
+data get entity {P} abilities
 #expect mayfly: 1
-data get entity {P} ActiveEffects
+data get entity {P} active_effects
 #expect minecraft:invisibility
 ds ghost {P} check
-#expect ghost=True dimension=dontstarve:islands
+#expect ghost=true dimension=dontstarve:islands
 // All island players are ghosts now: the collapse countdown starts.
 #expect-log All survivors have perished 60
 // A living soul walks the island again: the countdown is averted.
 ds ghost {P} off
 #expect-log A living soul walks the island again 60
 ds ghost {P} check
-#expect ghost=False dimension=dontstarve:islands
+#expect ghost=false dimension=dontstarve:islands

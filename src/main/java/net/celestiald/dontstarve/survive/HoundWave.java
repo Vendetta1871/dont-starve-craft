@@ -1,10 +1,11 @@
 package net.celestiald.dontstarve.survive;
 
-import net.celestiald.dontstarve.DSRefs;
-import net.celestiald.dontstarve.init.DSEntities;
-import net.celestiald.dontstarve.world.IslandState;
 import java.util.List;
 import javax.annotation.Nullable;
+import net.celestiald.dontstarve.DSRefs;
+import net.celestiald.dontstarve.entity.Hound;
+import net.celestiald.dontstarve.init.DSEntities;
+import net.celestiald.dontstarve.world.IslandState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -13,23 +14,21 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 /**
  * Hound waves (DST hounded.lua): while a run is live, periodic waves hunt
- * everyone on the island. DST paces them by player age in days with 5-11 day
- * gaps; our runs are minutes long, so the schedule is compressed to DST's
- * proportions (first wave after ~6 min, then every ~8 min, 2 min warning —
- * the intro wave's 120 s warnduration, hounded.lua:54).
+ * the living members of the current island's run. DST paces them by player
+ * age in days with 5-11 day gaps; our runs are minutes long, so the schedule
+ * is compressed to DST's proportions (first wave after ~6 min, then every
+ * ~8 min, 2 min warning — the intro wave's 120 s warnduration, hounded.lua:54).
+ * The clock only runs while living run members are on the island.
  *
- * Wave sizes follow DST's light..heavy bands (2+random(2) ... 4+random(3)),
- * and from the second wave on some hounds are Hairy Hounds — the beard hair
- * that Meat Effigies hunger for.
+ * Wave sizes follow DST's light..heavy bands (2+random(2) ... 4+random(3)).
  */
 public final class HoundWave {
 
@@ -39,6 +38,7 @@ public final class HoundWave {
     public static final int WAVE_GAP_SECONDS = 480;
     /** DST intro warnduration = 120 s of distant howling before the bite. */
     public static final int WARNING_SECONDS = 120;
+    public static final String WAVE_TAG = "dontstarve.hound_wave";
 
     /** Sends wave number {@code wave} (1-based) at once; used by /ds hound now. */
     public static int forceWave(ServerLevel islands, IslandState state, int wave) {
@@ -57,23 +57,19 @@ public final class HoundWave {
             return;
         }
         IslandState state = IslandState.get(overworld);
-        List<ServerPlayer> survivors = new java.util.ArrayList<>(islands.players());
-        survivors.removeIf(GhostState::isGhost);
-        if (survivors.isEmpty()) {
-            return; // no living souls, no dinner
+        if (survivors(islands, state).isEmpty()) {
+            return; // no living souls, no dinner — and the clock stands still
         }
-        if (state.runStartGameTime() < 0) {
-            state.setRunStartGameTime(islands.getGameTime());
-        }
+        state.tickRunSecond();
 
-        long elapsedSeconds = (islands.getGameTime() - state.runStartGameTime()) / 20;
+        int elapsed = state.runSeconds();
         int sent = state.houndWavesSent();
-        long nextWaveAt = FIRST_WAVE_SECONDS + (long) sent * WAVE_GAP_SECONDS;
-        if (elapsedSeconds < nextWaveAt - WARNING_SECONDS) {
+        int nextWaveAt = FIRST_WAVE_SECONDS + sent * WAVE_GAP_SECONDS;
+        if (elapsed < nextWaveAt - WARNING_SECONDS) {
             state.setHoundWarned(false);
             return;
         }
-        if (elapsedSeconds < nextWaveAt) {
+        if (elapsed < nextWaveAt) {
             if (!state.houndWarned()) {
                 state.setHoundWarned(true);
                 warn(server, islands);
@@ -85,7 +81,14 @@ public final class HoundWave {
         state.setHoundWarned(false);
     }
 
-    /** Hairy Hound howl: the warning that a wave is on its way. */
+    /** Living members of the current run who are on the island right now. */
+    private static List<ServerPlayer> survivors(ServerLevel islands, IslandState state) {
+        return islands.players().stream()
+                .filter(p -> !GhostState.isGhost(p) && state.isCurrentRun(p))
+                .toList();
+    }
+
+    /** Hound howl: the warning that a wave is on its way. */
     private static void warn(MinecraftServer server, ServerLevel islands) {
         server.getPlayerList().broadcastSystemMessage(
                 Component.translatable("message.dontstarve.hound_warning")
@@ -99,8 +102,7 @@ public final class HoundWave {
         RandomSource random = islands.getRandom();
         // DST: intro 1, light 2+random(2), med 3+random(3), heavy 4+random(3).
         int count = wave == 1 ? 1 : Math.min(2 + random.nextInt(2 + wave), 7);
-        List<ServerPlayer> prey = islands.players().stream()
-                .filter(p -> !GhostState.isGhost(p)).toList();
+        List<ServerPlayer> prey = survivors(islands, state);
         Vec3 fallback = null;
         if (prey.isEmpty()) {
             // Headless test waves (and DST's "hounds hunt the camp, not the
@@ -112,7 +114,7 @@ public final class HoundWave {
         for (int i = 0; i < count; i++) {
             ServerPlayer target = prey.isEmpty() ? null : prey.get(random.nextInt(prey.size()));
             Vec3 around = target != null ? target.position() : fallback;
-            if (spawnHound(islands, target, around, random, wave >= 2 && random.nextFloat() < 0.3F)) {
+            if (spawnHound(islands, target, around, random)) {
                 spawned++;
             }
         }
@@ -125,31 +127,28 @@ public final class HoundWave {
     }
 
     private static boolean spawnHound(ServerLevel islands, @Nullable ServerPlayer target,
-                                      Vec3 around, RandomSource random, boolean hairy) {
+                                      Vec3 around, RandomSource random) {
         // Arrive from a random bearing, just off-screen, on solid island ground.
         for (int attempt = 0; attempt < 12; attempt++) {
             double angle = random.nextDouble() * Math.PI * 2.0;
             double dist = 24.0 + random.nextDouble() * 12.0;
             int x = (int) Math.round(around.x + Math.cos(angle) * dist);
             int z = (int) Math.round(around.z + Math.sin(angle) * dist);
-            BlockPos pos = islands.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
-                    new BlockPos(x, 0, z));
-            if (!islands.getWorldBorder().isWithinBounds(pos) || !isSolid(islands, pos.below())) {
+            BlockPos pos = islands.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(x, 0, z));
+            if (!islands.getWorldBorder().isWithinBounds(pos)
+                    || !islands.getBlockState(pos.below()).isSolidRender(islands, pos.below())) {
                 continue;
             }
-            Wolf hound = hairy
-                    ? DSEntities.HAIRY_HOUND.get().create(islands)
-                    : EntityType.WOLF.create(islands);
+            Hound hound = DSEntities.HOUND.get().create(islands);
             if (hound == null) {
                 return false;
             }
             hound.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
                     random.nextFloat() * 360.0F, 0.0F);
-            hound.finalizeSpawn(islands, islands.getCurrentDifficultyAt(pos),
-                    MobSpawnType.EVENT, null);
+            hound.finalizeSpawn(islands, islands.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
             // DST hounds never give up and never despawn mid-chase.
             hound.setPersistenceRequired();
-            hound.addTag("dontstarve.hound_wave");
+            hound.addTag(WAVE_TAG);
             if (target != null) {
                 hound.setTarget(target);
             }
@@ -157,10 +156,6 @@ public final class HoundWave {
             return true;
         }
         return false;
-    }
-
-    private static boolean isSolid(ServerLevel level, BlockPos pos) {
-        return level.getBlockState(pos).isSolidRender(level, pos);
     }
 
     private HoundWave() {

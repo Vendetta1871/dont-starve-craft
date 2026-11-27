@@ -12,7 +12,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import javax.annotation.Nullable;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -21,10 +24,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * Meat Effigy (DST "resurrectionstatue"): a living player attunes it by giving
- * it 5 HP of blood — never enough to die, mirroring resurrectionstatue.lua's
- * "don't die from attunement" clamp. When that player dies as a ghost, they
- * can click their attuned effigy to claw their way back at full health.
+ * Meat Effigy (DST "resurrectionstatue"). The builder is linked for free on
+ * placement — the recipe's health ingredient already paid for it
+ * (resurrectionstatue.lua:99-106). Any other living player may attune it by
+ * giving it 5 HP of blood, never enough to die (the "don't die from
+ * attunement" clamp, resurrectionstatue.lua:61-71). When the linked player's
+ * ghost touches it, they come back at full health and the effigy is spent
+ * (ListenForEvent("activateresurrection", inst.Remove), line 176).
  * Attuning a new effigy abandons the old one.
  */
 public class ResurrectionStatueBlock extends Block implements EntityBlock {
@@ -74,12 +80,24 @@ public class ResurrectionStatueBlock extends Block implements EntityBlock {
                             : "message.dontstarve.effigy_taken", String.valueOf(statue.getAttunedName())), true);
             return InteractionResult.SUCCESS;
         }
-        attune(serverLevel, pos, (ServerPlayer) player, statue);
+        attune(serverLevel, pos, (ServerPlayer) player, statue, true);
         return InteractionResult.SUCCESS;
     }
 
+    /** DST onbuilt: the builder is linked without an extra blood price. */
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
+                            ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (level instanceof ServerLevel serverLevel && placer instanceof ServerPlayer player
+                && !GhostState.isGhost(player)
+                && level.getBlockEntity(pos) instanceof ResurrectionStatueBlockEntity statue) {
+            attune(serverLevel, pos, player, statue, false);
+        }
+    }
+
     private void attune(ServerLevel level, BlockPos pos, ServerPlayer player,
-                        ResurrectionStatueBlockEntity statue) {
+                        ResurrectionStatueBlockEntity statue, boolean payBlood) {
         EffigyState state = EffigyState.get(level);
         BlockPos previous = state.getPos(player.getUUID());
         if (previous != null && !previous.equals(pos)
@@ -90,9 +108,11 @@ public class ResurrectionStatueBlock extends Block implements EntityBlock {
         statue.setAttunement(player.getUUID(), player.getGameProfile().getName());
         state.setPos(player.getUUID(), pos);
 
-        // DST: the blood price can never finish you off.
-        player.setHealth(Math.max(1.0F, player.getHealth() - ATTUNE_BLOOD_COST));
-        player.playSound(SoundEvents.PLAYER_HURT, 1.0F, 0.8F);
+        if (payBlood) {
+            // DST: the blood price can never finish you off.
+            player.setHealth(Math.max(1.0F, player.getHealth() - ATTUNE_BLOOD_COST));
+            player.playSound(SoundEvents.PLAYER_HURT, 1.0F, 0.8F);
+        }
         level.sendParticles(ParticleTypes.END_ROD,
                 pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 12, 0.3, 0.5, 0.3, 0.02);
         player.displayClientMessage(
@@ -100,10 +120,16 @@ public class ResurrectionStatueBlock extends Block implements EntityBlock {
     }
 
     private void resurrect(ServerLevel level, BlockPos pos, ServerPlayer player) {
+        // The effigy is spent: it crumbles as its owner climbs out of it.
+        level.removeBlock(pos, false);
+        EffigyState effigies = EffigyState.get(level);
+        if (pos.equals(effigies.getPos(player.getUUID()))) {
+            effigies.clear(player.getUUID());
+        }
         GhostState.clear(player);
         player.setHealth(player.getMaxHealth());
         player.fallDistance = 0.0F;
-        player.connection.teleport(pos.getX() + 0.5, pos.getY() + 1.05, pos.getZ() + 0.5,
+        player.connection.teleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
                 player.getYRot(), player.getXRot());
         level.playSound(null, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 0.7F);
         level.sendParticles(ParticleTypes.END_ROD,

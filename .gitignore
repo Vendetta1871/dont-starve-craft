@@ -8,3 +8,11 @@ run/
 .project
 .settings/
 bin/
+
+# agent files (local only)
+AGENTS.md
+CLAUDE.md
+.claude/
+local/
+.dev/
+run-autotest/

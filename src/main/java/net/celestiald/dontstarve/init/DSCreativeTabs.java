@@ -20,24 +20,30 @@ public final class DSCreativeTabs {
                         output.accept(DSBlocks.MARBLE.get());
                         output.accept(DSBlocks.POLISHED_MARBLE.get());
                         output.accept(DSBlocks.MARBLE_BRICKS.get());
-                        output.accept(DSBlocks.MARBLE_PORTAL.get());
+                        output.accept(DSItems.WAXWELLJOURNAL.get());
                         output.accept(DSBlocks.GRAVE.get());
                         output.accept(DSBlocks.RESURRECTION_STATUE.get());
                         output.accept(DSItems.CUTGRASS.get());
                         output.accept(DSItems.TWIGS.get());
                         output.accept(DSItems.BOARDS.get());
                         output.accept(DSItems.SPIDERGLAND.get());
+                        output.accept(DSItems.SILK.get());
                         output.accept(DSItems.BEARDHAIR.get());
+                        output.accept(DSItems.HOUNDSTOOTH.get());
+                        output.accept(DSItems.MONSTERMEAT.get());
                         output.accept(DSItems.REVIVER.get());
                         output.accept(DSItems.MOONROCKNUGGET.get());
                         output.accept(DSItems.MOONROCKIDOL.get());
                         output.accept(DSBlocks.MOONROCK_CLUSTER.get());
                         output.accept(DSBlocks.MOON_CRYSTAL.get());
                         output.accept(DSBlocks.SKY_PORTAL.get());
-                        output.accept(DSBlocks.CUT_GRASS.get());
-                        output.accept(DSBlocks.SAPLING.get());
+                        output.accept(DSItems.DUG_GRASS.get());
+                        output.accept(DSItems.DUG_SAPLING.get());
+                        output.accept(DSBlocks.ROCK1.get());
+                        output.accept(DSBlocks.ROCK2.get());
+                        output.accept(DSItems.ROCKS.get());
+                        output.accept(DSItems.NITRE.get());
                         output.accept(DSBlocks.SPIDER_DEN.get());
-                        output.accept(DSItems.TORCH.get());
                     })
                     .build());
 

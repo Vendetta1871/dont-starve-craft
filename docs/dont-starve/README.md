@@ -30,6 +30,11 @@ unzip -o "<Steam>/steamapps/common/Don't Starve Together/data/databundles/script
 | [08-worldgen.md](08-worldgen.md) | Levels, room-based forest generation, tasksets, biomes, caves, moon content |
 | [09-reference-entities.md](09-reference-entities.md) | Tables: mobs, items, structures with exact prefab ids and stats |
 | [10-glossary-and-mod-mapping.md](10-glossary-and-mod-mapping.md) | DS term → our mod registry name mapping and naming rules |
+| [content/mobs.md](content/mobs.md) | Per-mob blocks: stats, aggression, loot, spawners (forest/early mobs) |
+| [content/items.md](content/items.md) | Basic resources and early items: stack, perish, edible, fuel, tool stats, sources |
+| [content/recipes.md](content/recipes.md) | Recipes with ingredients, tech level, recipes.lua line |
+| [content/structures.md](content/structures.md) | Resource nodes and structures: work, loot, regrowth, spawned children |
+| [content/mechanics-cheatsheet.md](content/mechanics-cheatsheet.md) | Q&A of commonly misremembered facts, each with a citation |
 
 ## The three rules for not getting names wrong
 

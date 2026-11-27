@@ -3,11 +3,8 @@ package net.celestiald.dontstarve.init;
 import net.celestiald.dontstarve.DontStarveCraft;
 import net.celestiald.dontstarve.revive.ResurrectionStatueBlock;
 import net.celestiald.dontstarve.grave.GraveBlock;
-import net.celestiald.dontstarve.portal.MarbleBlock;
-import net.celestiald.dontstarve.portal.MarblePortalBlock;
 import net.celestiald.dontstarve.portal.SkyPortalBlock;
-import net.celestiald.dontstarve.world.CutGrassBlock;
-import net.celestiald.dontstarve.world.DSSaplingBlock;
+import net.celestiald.dontstarve.world.PickableBlock;
 import net.celestiald.dontstarve.world.SpiderDenBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -22,24 +19,14 @@ public final class DSBlocks {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(DontStarveCraft.MODID);
 
-    public static final DeferredBlock<MarbleBlock> MARBLE =
-            BLOCKS.register("marble", () -> new MarbleBlock(marbleProps()));
+    public static final DeferredBlock<Block> MARBLE =
+            BLOCKS.register("marble", () -> new Block(marbleProps()));
 
-    public static final DeferredBlock<MarbleBlock> POLISHED_MARBLE =
-            BLOCKS.register("polished_marble", () -> new MarbleBlock(marbleProps()));
+    public static final DeferredBlock<Block> POLISHED_MARBLE =
+            BLOCKS.register("polished_marble", () -> new Block(marbleProps()));
 
-    public static final DeferredBlock<MarbleBlock> MARBLE_BRICKS =
-            BLOCKS.register("marble_bricks", () -> new MarbleBlock(marbleProps()));
-
-    public static final DeferredBlock<MarblePortalBlock> MARBLE_PORTAL =
-            BLOCKS.register("marble_portal", () -> new MarblePortalBlock(
-                    BlockBehaviour.Properties.of()
-                            .noCollission()
-                            .noOcclusion()
-                            .instabreak()
-                            .lightLevel(state -> 11)
-                            .sound(SoundType.AMETHYST)
-                            .noLootTable()));
+    public static final DeferredBlock<Block> MARBLE_BRICKS =
+            BLOCKS.register("marble_bricks", () -> new Block(marbleProps()));
 
     public static final DeferredBlock<GraveBlock> GRAVE =
             BLOCKS.register("grave", () -> new GraveBlock(
@@ -83,25 +70,22 @@ public final class DSBlocks {
                             .lightLevel(state -> state.getValue(SkyPortalBlock.LIT) ? 7 : 0)
                             .noOcclusion()));
 
-    // Island flora and fauna — the DS survival kit's raw sources.
-    public static final DeferredBlock<CutGrassBlock> CUT_GRASS =
-            BLOCKS.register("cut_grass", () -> new CutGrassBlock(
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.PLANT)
-                            .noCollission()
-                            .instabreak()
-                            .sound(SoundType.GRASS)
-                            .offsetType(BlockBehaviour.OffsetType.XZ)
-                            .pushReaction(PushReaction.DESTROY)));
+    // Island flora — DS pickables (pick by hand, dig with a shovel).
+    /** Grass tuft (DST "grass"): cutgrass, GRASS_REGROW_TIME 1440 s, GRASS_CYCLES 20 (grass.lua:248-254). */
+    public static final DeferredBlock<PickableBlock> GRASS =
+            BLOCKS.register("grass", () -> new PickableBlock(plantProps(), DSItems.CUTGRASS, 1440, 20));
 
-    public static final DeferredBlock<DSSaplingBlock> SAPLING =
-            BLOCKS.register("sapling", () -> new DSSaplingBlock(
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.PLANT)
-                            .noCollission()
-                            .instabreak()
-                            .sound(SoundType.GRASS)
-                            .pushReaction(PushReaction.DESTROY)));
+    /** Sapling (DST "sapling"): a twig bush, twigs every SAPLING_REGROW_TIME 1920 s, unlimited (sapling.lua:141). */
+    public static final DeferredBlock<PickableBlock> SAPLING =
+            BLOCKS.register("sapling", () -> new PickableBlock(plantProps(), DSItems.TWIGS, 1920, 0));
+
+    /** Boulder (DST "rock1"): rocks, nitre and flint (rocks.lua:65-74). */
+    public static final DeferredBlock<Block> ROCK1 =
+            BLOCKS.register("rock1", () -> new Block(boulderProps()));
+
+    /** Gold-veined boulder (DST "rock2"): rocks, gold and flint (rocks.lua:76-85). */
+    public static final DeferredBlock<Block> ROCK2 =
+            BLOCKS.register("rock2", () -> new Block(boulderProps()));
 
     public static final DeferredBlock<SpiderDenBlock> SPIDER_DEN =
             BLOCKS.register("spider_den", () -> new SpiderDenBlock(
@@ -109,6 +93,27 @@ public final class DSBlocks {
                             .mapColor(MapColor.COLOR_LIGHT_GRAY)
                             .strength(2.0F, 4.0F)
                             .sound(SoundType.WOOL)));
+
+    private static BlockBehaviour.Properties plantProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.PLANT)
+                .noCollission()
+                .strength(0.3F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.GRASS)
+                .offsetType(BlockBehaviour.OffsetType.XZ)
+                .pushReaction(PushReaction.DESTROY);
+    }
+
+    /** ROCKS_MINE 6 pickaxe hits in DS; needs a pickaxe here too. */
+    private static BlockBehaviour.Properties boulderProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.STONE)
+                .instrument(NoteBlockInstrument.BASEDRUM)
+                .requiresCorrectToolForDrops()
+                .strength(3.0F, 6.0F)
+                .sound(SoundType.STONE);
+    }
 
     private static BlockBehaviour.Properties marbleProps() {
         return BlockBehaviour.Properties.of()

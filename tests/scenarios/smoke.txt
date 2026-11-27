@@ -25,8 +25,11 @@ ds check recipe dontstarve:moonrockidol
 #expect OK recipe
 ds check recipe dontstarve:sky_portal
 #expect OK recipe
-ds check tag dontstarve:marble
-#expect OK tag dontstarve:marble \(3 blocks\)
+// The vanilla torch recipe is overridden by the islands-locked variant.
+ds check recipe minecraft:torch
+#expect OK recipe
+ds check tag minecraft:mineable/shovel
+#expect OK tag
 // Negative controls: the checker must actually look things up.
 ds check item dontstarve:not_a_real_item
 #expect MISSING item

@@ -15,7 +15,8 @@ import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.biome.BiomeManager;import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -77,7 +78,7 @@ public final class IslandChunkGenerator extends ChunkGenerator {
                     cursor.set(wx, y, wz);
                     chunk.setBlockState(cursor, state, true);
                 }
-                // Surface flora: DS grass tufts and gravel patches (flint source).
+                // Surface scatter: DS grass tufts and boulders.
                 if (surface >= 0 && isGrassSurface(wx, wz, surface)) {
                     BlockState scatter = scatterBlock(wx, wz, surface);
                     if (scatter != null) {
@@ -182,8 +183,8 @@ public final class IslandChunkGenerator extends ChunkGenerator {
     }
 
     /**
-     * Single-block surface scatter: DS cut grass tufts (the cutgrass source)
-     * and gravel patches (our flint source, DS boulders' stand-in).
+     * Single-block surface scatter: DS grass tufts (the cutgrass source) and
+     * boulders (rocks, flint, nitre; one in five gold-veined).
      */
     @Nullable
     private static BlockState scatterBlock(int wx, int wz, int surface) {
@@ -193,10 +194,10 @@ public final class IslandChunkGenerator extends ChunkGenerator {
         }
         double roll = hashNoise(wx * 5 + 11, wz * 5 + 23);
         if (roll < 0.14) {
-            return DSBlocks.CUT_GRASS.get().defaultBlockState();
+            return DSBlocks.GRASS.get().defaultBlockState();
         }
-        if (roll > 0.965) {
-            return Blocks.GRAVEL.defaultBlockState();
+        if (roll > 0.992) {
+            return (hashNoise(wx * 7 + 3, wz * 7 + 1) < 0.2 ? DSBlocks.ROCK2 : DSBlocks.ROCK1).get().defaultBlockState();
         }
         return null;
     }
@@ -247,6 +248,9 @@ public final class IslandChunkGenerator extends ChunkGenerator {
                 }
                 int wx = cx * denCell + (int) (hashNoise(cx * 3 + 1, cz * 3 + 2) * denCell);
                 int wz = cz * denCell + (int) (hashNoise(cx * 5 + 3, cz * 5 + 4) * denCell);
+                if (wx < startX || wx >= startX + 16 || wz < startZ || wz >= startZ + 16) {
+                    continue; // a den cell spans several chunks; only the owning one places it
+                }
                 double radius = radiusToCenter(wx, wz);
                 if (radius < 30.0 || radius > IslandState.RADIUS - 10.0) {
                     continue;
@@ -264,7 +268,7 @@ public final class IslandChunkGenerator extends ChunkGenerator {
         }
     }
 
-    /** Mature tree most of the time, a sapling otherwise (DST forests regrow). */
+    /** An evergreen most of the time, a twig sapling otherwise (DST forest rooms mix both). */
     private void placeSaplingOrTree(WorldGenLevel level, BlockPos.MutableBlockPos cursor, int wx, int wz) {
         int surface = islandSurfaceHeight(wx, wz);
         if (surface < 0 || !columnBlock(wx, wz, surface, surface).is(Blocks.GRASS_BLOCK)) {
@@ -275,7 +279,11 @@ public final class IslandChunkGenerator extends ChunkGenerator {
             return;
         }
         // Keep the canopy inside this chunk: decoration may not touch neighbours.
-        if (wx % 16 < 3 || wx % 16 > 12 || wz % 16 < 3 || wz % 16 > 12) {
+        // floorMod, not %: negative coordinates (the north half of every island)
+        // would otherwise always fail the check and grow no trees at all.
+        int localX = Math.floorMod(wx, 16);
+        int localZ = Math.floorMod(wz, 16);
+        if (localX < 3 || localX > 12 || localZ < 3 || localZ > 12) {
             return;
         }
         cursor.set(wx, surface + 1, wz);
@@ -283,7 +291,7 @@ public final class IslandChunkGenerator extends ChunkGenerator {
             return;
         }
         if (hashNoise(wx * 13 + 5, wz * 13 + 9) < 0.75) {
-            DSSaplingBlock.growTree(level, level, cursor.immutable(),
+            EvergreenTree.place(level, level, cursor.immutable(),
                     RandomSource.create(wx * 31L + wz * 7919L));
         } else {
             level.setBlock(cursor, DSBlocks.SAPLING.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE);

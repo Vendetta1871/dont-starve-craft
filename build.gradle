@@ -26,6 +26,15 @@ neoForge {
         server {
             server()
         }
+        // Headless test client (tools/autotest.sh): joins the servertest server
+        // straight away. -PautotestServer=host:port -PautotestUser=Name
+        autotestClient {
+            client()
+            gameDirectory = project.file('run-autotest')
+            programArguments.addAll(
+                    '--quickPlayMultiplayer', (project.findProperty('autotestServer') ?: 'localhost:25599').toString(),
+                    '--username', (project.findProperty('autotestUser') ?: 'Tester').toString())
+        }
     }
 
     mods {

@@ -1,42 +1,26 @@
 package net.celestiald.dontstarve.survive;
 
-import com.mojang.serialization.Codec;
-import net.celestiald.dontstarve.DontStarveCraft;
-import net.minecraft.network.codec.ByteBufCodecs;
+import net.celestiald.dontstarve.init.DSAttachments;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import java.util.function.Supplier;
 
 /**
  * Per-player ghost flag, mirroring DST's "playerghost" tag (docs/dont-starve/07).
  * A player who dies inside the islands dimension does not respawn: they linger as
- * an invisible, invulnerable, flying spirit until revived (planned: Meat Effigy /
+ * an invisible, invulnerable, flying spirit until revived (Meat Effigy /
  * Telltale Heart) or until the all-ghost wipe ejects them to the overworld.
- * The flag is synced to clients so future overlays/effects can react to it.
  */
 public final class GhostState {
 
-    public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS =
-            DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, DontStarveCraft.MODID);
-
-    public static final Supplier<AttachmentType<Boolean>> GHOST = ATTACHMENTS.register("ghost",
-            () -> AttachmentType.builder(() -> false)
-                    .serialize(Codec.BOOL)
-                    .sync(ByteBufCodecs.BOOL)
-                    .build());
-
     public static boolean isGhost(Player player) {
-        return player.getData(GHOST.get());
+        return player.getData(DSAttachments.GHOST.get());
     }
 
     public static void becomeGhost(ServerPlayer player) {
-        player.setData(GHOST.get(), true);
+        player.setData(DSAttachments.GHOST.get(), true);
         player.setHealth(player.getMaxHealth());
         applyGhostPerks(player);
         // Mobs that were chasing the player before death lose interest in the spirit.
@@ -48,10 +32,12 @@ public final class GhostState {
     }
 
     public static void clear(ServerPlayer player) {
-        player.setData(GHOST.get(), false);
+        player.setData(DSAttachments.GHOST.get(), false);
         player.removeEffect(MobEffects.INVISIBILITY);
-        player.getAbilities().mayfly = false;
-        player.getAbilities().flying = false;
+        if (!player.isCreative() && !player.isSpectator()) {
+            player.getAbilities().mayfly = false;
+            player.getAbilities().flying = false;
+        }
         player.onUpdateAbilities();
     }
 

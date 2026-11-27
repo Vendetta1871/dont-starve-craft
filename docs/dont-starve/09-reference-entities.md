@@ -4,6 +4,8 @@ Extracted from `scripts/prefabs/*` + `tuning.lua`; key values spot-checked again
 source. **Prefab id** is the save-safe name. DST doubles many boss/elite HP vs DS1
 (`×2` multiplayer modifier baked into TUNING).
 
+> Detailed, per-entry pages with full loot/behaviour: see [content/](content/mobs.md) (mobs, items, recipes, structures, cheat-sheet). Where they differ from the tables below, the content pages are authoritative.
+
 ## Mobs
 
 | Prefab id | Display | HP | Dmg | Atk period | Speed walk/run | Drops | Source |

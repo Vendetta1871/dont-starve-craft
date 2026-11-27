@@ -8,14 +8,17 @@ assertions. Exit code 0 means every check passed.
 ```sh
 python3 tests/servertest.py . tests/scenarios/smoke.txt
 # parallel runs: --port 25711 (game port is 100 lower); DST_JAVA_HOME picks the JDK 21
-bash tests/run-all.sh            # every headless scenario, one command
+python3 tests/servertest.py . tests/scenarios/ghost.txt --client --player Bob
+bash tests/run-all.sh            # every scenario, one command (SKIP_PLAYER=1: server-only)
 ```
 
-Scenarios marked SLOW take minutes. Scenarios marked PLAYER need a real client
-connected: run the harness, and while it waits (it prints `SERVER STARTED`)
-join `localhost:<port - 100>` in a `runClient` session as the `--player` nick,
-e.g. `python3 tests/servertest.py . tests/scenarios/ghost.txt --player Bob`
-then join localhost:25599 as Bob.
+Scenarios marked SLOW take minutes. Scenarios marked PLAYER need an online
+player: `--client` starts one as a headless, silent game client —
+`tools/autotest.sh` runs the `runAutotestClient` Gradle run inside a monitorless
+gamescope on the eGPU (OpenAL null backend, all sound levels zeroed in
+`run-autotest/options.txt`), and the client joins the test server on its own
+via `--quickPlayMultiplayer`. Its log is `build/autotest.log`. Never start a
+client on the desktop for tests.
 
 ## Scenario syntax
 
@@ -38,18 +41,20 @@ indices (`ds island goto 900`).
 
 | Scenario | Checks |
 |---|---|
-| `smoke.txt` | Server boots with the mod; island state, recipes and the marble tag register |
+| `smoke.txt` | Server boots with the mod; island state, items, blocks and recipes register |
 | `grave.txt` | Grave stores items + XP; contents survive breaking via `copy_components` |
 | `meteorite.txt` | Deterministic plaza floor; one moon meteorite per island (island 900) |
-| `portal.txt` | П-frame lights on mob sacrifice; vault put/take round-trip |
-| `island.txt` | Grass/gravel scatter, DS trees, den spawns a spider, hound waves, tuft loot (island 910) |
+| `island.txt` | Grass tufts, no gravel, evergreens on both island halves, dig/mine loot of tufts and boulders, den releases spiders only at night, hound waves, hound and spider loot (island 910) |
+| `codex.txt` | PLAYER: the Codex Umbra drops belongings and joins the run; DS torch burn + light; the way home leads to the reading spot |
 | `ghost.txt` | PLAYER: ghost perks (invisibility, mayfly); all-ghost countdown starts and is averted |
+| `run.txt` | PLAYER: void death puts the grave at the last ground and raises the ghost to it; a member of a wiped run is sent home |
 | `wipe.txt` | PLAYER, SLOW: full all-ghost wipe — countdown, island advance, ejection home |
 
 ## Test-only commands
 
-`/ds island goto <n>` jumps the active island; `/ds vault put|take <pos> [item]`
-stands in for a player being confiscated / ejecting; `/ds ghost <player>
-on|off|check` drives the ghost flow; `/ds hound now <wave>` releases a hound
+`/ds island goto <n>` jumps the active island; `/ds codex <player>` reads a
+Codex Umbra for the player (the right-click path); `/ds ghost <player>
+on|off|check` drives the ghost flow; `/ds run <player> join|check` sets/reads
+run membership (what walking through the portal does); `/ds hound now <wave>` releases a hound
 wave at once. They exist for these scenarios and manual
 probing, not for gameplay.

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "minecraft:book" },
+    { "item": "minecraft:wither_rose" }
+  ],
+  "result": { "id": "dontstarve:waxwelljournal", "count": 1 }
+}

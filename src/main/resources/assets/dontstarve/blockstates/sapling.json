@@ -1,5 +1,10 @@
 {
   "variants": {
-    "": { "model": "dontstarve:block/sapling" }
+    "picked=false": {
+      "model": "dontstarve:block/sapling"
+    },
+    "picked=true": {
+      "model": "dontstarve:block/sapling_picked"
+    }
   }
 }

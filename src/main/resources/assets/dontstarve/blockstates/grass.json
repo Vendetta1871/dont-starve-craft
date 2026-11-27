@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "picked=false": {
+      "model": "dontstarve:block/grass"
+    },
+    "picked=true": {
+      "model": "dontstarve:block/grass_picked"
+    }
+  }
+}

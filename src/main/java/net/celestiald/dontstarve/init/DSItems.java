@@ -1,9 +1,11 @@
 package net.celestiald.dontstarve.init;
 
 import net.celestiald.dontstarve.DontStarveCraft;
+import net.celestiald.dontstarve.item.MonsterMeatItem;
+import net.celestiald.dontstarve.portal.CodexUmbraItem;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -28,12 +30,18 @@ public final class DSItems {
             Item::new, new Item.Properties().stacksTo(10));
     public static final DeferredItem<Item> SPIDERGLAND = ITEMS.registerItem("spidergland",
             Item::new, new Item.Properties().stacksTo(20));
+    /** Spider loot (spider.lua:645-650); the rope/tent material. */
+    public static final DeferredItem<Item> SILK = ITEMS.registerItem("silk",
+            Item::new, new Item.Properties().stacksTo(40));
     public static final DeferredItem<Item> BEARDHAIR = ITEMS.registerItem("beardhair",
             Item::new, new Item.Properties().stacksTo(20));
-
-    /** DS torch (2 cut grass + 2 twigs): places a vanilla torch. */
-    public static final DeferredItem<BlockItem> TORCH = ITEMS.registerItem("torch",
-            properties -> new BlockItem(Blocks.TORCH, properties), new Item.Properties());
+    /** Hound loot (hound.lua:110-113); STACK_SIZE_SMALLITEM = 40. */
+    public static final DeferredItem<Item> HOUNDSTOOTH = ITEMS.registerItem("houndstooth",
+            Item::new, new Item.Properties().stacksTo(40));
+    /** Hound loot; edible with a health penalty, see MonsterMeatItem. */
+    public static final DeferredItem<MonsterMeatItem> MONSTERMEAT = ITEMS.registerItem("monstermeat",
+            MonsterMeatItem::new, new Item.Properties().stacksTo(40)
+                    .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build()));
 
     /** Telltale Heart: a living player revives a ghost with it at 25 % HP. */
     public static final DeferredItem<Item> REVIVER = ITEMS.registerItem("reviver",
@@ -51,17 +59,37 @@ public final class DSItems {
             ITEMS.registerSimpleBlockItem(DSBlocks.MOON_CRYSTAL);
     public static final DeferredItem<BlockItem> SKY_PORTAL =
             ITEMS.registerSimpleBlockItem(DSBlocks.SKY_PORTAL);
-    public static final DeferredItem<BlockItem> CUT_GRASS =
-            ITEMS.registerSimpleBlockItem(DSBlocks.CUT_GRASS);
-    public static final DeferredItem<BlockItem> SAPLING =
-            ITEMS.registerSimpleBlockItem(DSBlocks.SAPLING);
+    /** Dug grass tuft / sapling: replant them (DST "dug_grass", "dug_sapling"). */
+    public static final DeferredItem<BlockItem> DUG_GRASS = ITEMS.registerItem("dug_grass",
+            properties -> new OwnNameBlockItem(DSBlocks.GRASS.get(), properties), new Item.Properties().stacksTo(10));
+    public static final DeferredItem<BlockItem> DUG_SAPLING = ITEMS.registerItem("dug_sapling",
+            properties -> new OwnNameBlockItem(DSBlocks.SAPLING.get(), properties), new Item.Properties().stacksTo(10));
+    public static final DeferredItem<BlockItem> ROCK1 = ITEMS.registerSimpleBlockItem(DSBlocks.ROCK1);
+    public static final DeferredItem<BlockItem> ROCK2 = ITEMS.registerSimpleBlockItem(DSBlocks.ROCK2);
+    /** Boulder loot; STACK_SIZE_SMALLITEM = 40 (inv_rocks.lua:55, nitre.lua:39). */
+    public static final DeferredItem<Item> ROCKS = ITEMS.registerItem("rocks",
+            Item::new, new Item.Properties().stacksTo(40));
+    public static final DeferredItem<Item> NITRE = ITEMS.registerItem("nitre",
+            Item::new, new Item.Properties().stacksTo(40));
     public static final DeferredItem<BlockItem> SPIDER_DEN =
             ITEMS.registerSimpleBlockItem(DSBlocks.SPIDER_DEN);
 
-    // The portal block is normally never obtained as an item; it is registered
-    // for creative testing only.
-    public static final DeferredItem<BlockItem> MARBLE_PORTAL = ITEMS.registerItem(
-            "marble_portal", properties -> new BlockItem(DSBlocks.MARBLE_PORTAL.get(), properties), new Item.Properties());
+    /** Codex Umbra (DST "waxwelljournal"): read it to travel to the islands. */
+    public static final DeferredItem<CodexUmbraItem> WAXWELLJOURNAL = ITEMS.registerItem("waxwelljournal",
+            CodexUmbraItem::new, new Item.Properties().stacksTo(1));
+
+    /** A block item named after itself (DS "Grass Tuft"), not after the block it plants. */
+    private static final class OwnNameBlockItem extends BlockItem {
+
+        OwnNameBlockItem(net.minecraft.world.level.block.Block block, Properties properties) {
+            super(block, properties);
+        }
+
+        @Override
+        public String getDescriptionId() {
+            return getOrCreateDescriptionId();
+        }
+    }
 
     private DSItems() {
     }

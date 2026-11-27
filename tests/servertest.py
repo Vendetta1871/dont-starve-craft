@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Headless scenario test harness for Don't Starve Craft.
 
-Usage: tests/servertest.py <project-dir> <scenario-file> [--port N] [--player NAME] [--keep-world]
+Usage: tests/servertest.py <project-dir> <scenario-file> [--port N] [--player NAME] [--client] [--keep-world]
 
 Starts `gradlew runServer` in <project-dir> (world in ./run), waits for "Done",
 sends the commands of the scenario over RCON, prints responses, evaluates the
 assertions, and stops the server. Exit code 0 = every assertion passed.
-Scenarios that need a real online player pass --player NAME and use {P}.
+Scenarios that need a real online player pass --player NAME and use {P};
+--client also starts that player as a headless, silent game client
+(tools/autotest.sh in gamescope) that joins the test server by itself.
 
 Scenario syntax (one entry per line, commands without the slash):
 - plain command      -> sent over RCON, response printed; a "[x, y, z]" triple
@@ -43,6 +45,10 @@ def rcon_read(sock):
     req_id, ptype = struct.unpack('<ii', data[:8])
     return req_id, data[8:-2].decode('utf-8', 'replace')
 
+def listening_pids(port):
+    out = subprocess.run(['ss', '-ltnpH', f'sport = :{port}'], capture_output=True, text=True).stdout
+    return sorted({int(m) for m in re.findall(r'pid=(\d+)', out)})
+
 def main():
     args = sys.argv[1:]
     port = 25699
@@ -52,6 +58,9 @@ def main():
         i = args.index('--port'); port = int(args[i + 1]); del args[i:i + 2]
     if '--player' in args:
         i = args.index('--player'); player = args[i + 1]; del args[i:i + 2]
+    client = False
+    if '--client' in args:
+        client = True; args.remove('--client')
     if '--keep-world' in args:
         keep = True; args.remove('--keep-world')
     project, cmdfile = args[0], args[1]
@@ -73,8 +82,6 @@ def main():
     with open(os.path.join(run, 'eula.txt'), 'w') as f:
         f.write('eula=true\n')
     game_port = port - 100
-    # spawn-animals must stay true: hound waves are wolf-based (Animal), and
-    # the server discards all Animals when it is false.
     with open(os.path.join(run, 'server.properties'), 'w') as f:
         f.write(f"""enable-rcon=true
 rcon.password={RCON_PASSWORD}
@@ -134,6 +141,14 @@ spawn-animals=true
         proc.kill()
         sys.exit(2)
     print('SERVER STARTED')
+    client_proc = None
+    if client:
+        client_proc = subprocess.Popen(
+            ['sh', 'tools/autotest.sh', 'runAutotestClient',
+             f'-PautotestServer=localhost:{game_port}', f'-PautotestUser={player}'],
+            cwd=project, env=env, stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+        print(f'CLIENT STARTED as {player} (log: build/autotest.log)')
     sock = socket.create_connection(('127.0.0.1', port), timeout=30)
     sock.sendall(rcon_packet(1, 3, RCON_PASSWORD))
     rcon_read(sock)
@@ -147,13 +162,13 @@ spawn-animals=true
             time.sleep(float(cmd.split()[1])); continue
         if cmd.startswith('#wait-player'):
             parts = cmd.split(maxsplit=2)
-            name = parts[1] if len(parts) > 1 else player
+            name = parts[1].replace('{P}', player) if len(parts) > 1 else player
             timeout = int(parts[2]) if len(parts) > 2 else 180
             start = time.time(); online = False
             while time.time() - start < timeout:
                 sock.sendall(rcon_packet(2, 2, f'data get entity {name} UUID'))
                 resp = rcon_read(sock)[1]
-                if 'UUID' in resp and 'not found' not in resp and 'not a valid' not in resp:
+                if 'has the following entity data' in resp:
                     online = True; break
                 time.sleep(2)
             check(f'player {name} online', online)
@@ -195,9 +210,17 @@ spawn-animals=true
         print(f'> {cmd}\n{resp}')
         # Island messages contain decoys like "island 900 centered at 7372800, 0, 0":
         # only accept triples whose first component looks like a coordinate.
-        loc = re.search(r'\[?(-?\d{4,}), (-?\d{1,5}), (-?\d{4,}|-?\d{1,3})\]?', resp)
+        # "centered at X, Y, Z" is always an island centre, even island 0 at the origin.
+        loc = (re.search(r'centered at (-?\d+), (-?\d+), (-?\d+)', resp)
+               or re.search(r'\[?(-?\d{4,}), (-?\d{1,5}), (-?\d{4,}|-?\d{1,3})\]?', resp))
         if loc:
             vars_.update(X=int(loc.group(1)), Y=int(loc.group(2)), Z=int(loc.group(3)))
+    if client_proc is not None:
+        try:
+            os.killpg(client_proc.pid, 15)
+            client_proc.wait(timeout=60)
+        except Exception:
+            pass
     try:
         sock.sendall(rcon_packet(3, 2, 'stop'))
     except Exception:
@@ -206,6 +229,11 @@ spawn-animals=true
         proc.wait(timeout=120)
     except subprocess.TimeoutExpired:
         proc.kill()
+    # The server JVM is a child of the Gradle daemon, not of gradlew: if it did
+    # not stop by itself it would keep the ports, so kill it by its RCON port.
+    for pid in listening_pids(port):
+        print(f'!! server JVM {pid} did not stop, killing it')
+        subprocess.run(['kill', '-9', str(pid)])
 
     failed = [name for name, ok in checks if not ok]
     exceptions = [l for l in lines if re.search(r'Exception|ERROR', l)

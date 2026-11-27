@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "dontstarve:monstermeat", "weight": 2 },
+        { "type": "minecraft:item", "name": "dontstarve:silk", "weight": 1 },
+        { "type": "minecraft:item", "name": "dontstarve:spidergland", "weight": 1 }
+      ]
+    }
+  ]
+}

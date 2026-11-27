@@ -39,6 +39,12 @@ public final class EffigyState extends SavedData {
         setDirty();
     }
 
+    public void clear(UUID player) {
+        if (byPlayer.remove(player) != null) {
+            setDirty();
+        }
+    }
+
     @Override
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
         ListTag effigies = new ListTag();

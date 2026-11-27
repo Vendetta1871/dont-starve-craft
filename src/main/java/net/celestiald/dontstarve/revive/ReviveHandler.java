@@ -19,14 +19,17 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 /**
  * The second resurrection path, ported from DST's Telltale Heart ("reviver"):
  * a living player presses the heart against a ghost and brings them back at
- * 25 % health (REVIVE_HEALTH_PENALTY, tuning.lua:2178). Like DST, crafting
+ * a third of their health (RESURRECT_HEALTH 50 of 150). Like DST, crafting
  * blood-magic costs the crafter 5 HP — the recipe ingredients alone are not
  * the whole price.
  */
 public final class ReviveHandler {
 
-    /** DST REVIVE_HEALTH_PENALTY = 0.25 of max health. */
-    private static final float REVIVE_HEALTH_FRACTION = 0.25F;
+    /**
+     * DST revives at RESURRECT_HEALTH = 50 of Wilson's 150 (player_common_extensions.lua:727).
+     * REVIVE_HEALTH_PENALTY 0.25 is a max-health penalty in DST, not ported yet.
+     */
+    private static final float REVIVE_HEALTH_FRACTION = 50.0F / 150.0F;
 
     /** DST CHARACTER_INGREDIENT.HEALTH baked into effigy/heart recipes. */
     private static final float BLOOD_CRAFT_COST = 5.0F;
@@ -44,6 +47,9 @@ public final class ReviveHandler {
 
         GhostState.clear(ghost);
         ghost.setHealth(ghost.getMaxHealth() * REVIVE_HEALTH_FRACTION);
+        // The spirit may hover high or over the void: it is pulled down to the
+        // living player holding the heart, so it never falls to a second death.
+        ghost.connection.teleport(user.getX(), user.getY(), user.getZ(), ghost.getYRot(), ghost.getXRot());
         ghost.fallDistance = 0.0F;
         if (!user.getAbilities().instabuild) {
             held.shrink(1);

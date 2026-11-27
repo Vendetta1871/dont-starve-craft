@@ -1,47 +1,71 @@
-// Island content: grass scatter, DS trees, spider den population, hound waves,
-// and the new recipes — everything a naked run needs to bootstrap itself.
-// Island 910 keeps the test off the islands real runs will use.
+// Island content: DS pickables, boulders, evergreens, spider den children,
+// hound waves and the DS loot tables. Island 910 keeps the test off the
+// islands real runs will use.
 ds island goto 910
 #expect Current island 910 centered at 7454720, 0, 0
-ds check block dontstarve:cut_grass
+ds check block dontstarve:grass
 #expect OK block
 ds check block dontstarve:sapling
 #expect OK block
+ds check block dontstarve:rock1
+#expect OK block
 ds check block dontstarve:spider_den
 #expect OK block
-ds check item dontstarve:torch
+ds check item dontstarve:waxwelljournal
 #expect OK item
-ds check recipe dontstarve:boards
-#expect OK recipe
 ds check recipe dontstarve:torch
+#expect OK recipe
+ds check recipe dontstarve:waxwelljournal
 #expect OK recipe
 execute in dontstarve:islands run forceload add 7454608 -112 7454832 112
 #sleep 5
 // Grass tufts scatter the meadow (14 % of grass columns in a 24x24 window).
-execute in dontstarve:islands run fill 7454740 70 12 7454763 92 35 minecraft:air replace dontstarve:cut_grass
+execute in dontstarve:islands run fill 7454740 70 12 7454763 92 35 minecraft:air replace dontstarve:grass
 #expect Successfully filled [1-9][0-9]* block
-// Gravel patches (the flint source) show up in the same window.
-execute in dontstarve:islands run fill 7454740 70 12 7454763 92 35 minecraft:air replace minecraft:gravel
+// No gravel stand-in any more: flint comes from boulders.
+execute in dontstarve:islands run fill 7454704 70 -40 7454735 95 -9 minecraft:air replace minecraft:gravel
+#expect No blocks were filled
+// Evergreens (vanilla spruce blocks) on both island halves; the north window
+// holds 3 trees of island 910: (742,-59), (747,-69), (748,-54).
+execute in dontstarve:islands run fill 7454736 70 8 7454767 95 39 minecraft:air replace minecraft:spruce_log
 #expect Successfully filled [1-9][0-9]* block
-// DS trees were decorated during worldgen: trunks of oak logs.
-execute in dontstarve:islands run fill 7454736 70 8 7454767 95 39 minecraft:air replace minecraft:oak_log
+execute in dontstarve:islands run fill 7454736 70 -72 7454767 95 -41 minecraft:air replace minecraft:spruce_log
 #expect Successfully filled [1-9][0-9]* block
-// A hand-placed den restocks itself with a spider within ~20 s.
+// Digging a ripe tuft with a shovel: its cut grass plus the dug tuft (grass.lua:68-86).
+execute in dontstarve:islands run setblock 7454720 76 4 dontstarve:grass
+execute in dontstarve:islands run loot spawn 7454720 77 4 mine 7454720 76 4 minecraft:diamond_shovel
+#expect Dropped 2 items
+// A picked tuft only gives the dug tuft back.
+execute in dontstarve:islands run setblock 7454720 76 4 dontstarve:grass[picked=true]
+execute in dontstarve:islands run loot spawn 7454720 77 4 mine 7454720 76 4 minecraft:diamond_shovel
+#expect Dropped 1 \[Grass Tuft\]
+// A boulder mined with a pickaxe: 3 rocks, nitre, flint (+ chances).
+execute in dontstarve:islands run setblock 7454720 76 6 dontstarve:rock1
+execute in dontstarve:islands run loot spawn 7454720 77 6 mine 7454720 76 6 minecraft:diamond_pickaxe
+#expect Dropped [5-7] items
+// Spider den: a childspawner that lets spiders out only at night.
 execute in dontstarve:islands run setblock 7454728 75 0 dontstarve:spider_den
 #expect Changed the block
-#sleep 25
-execute in dontstarve:islands positioned 7454728 75 0 run data get entity @e[limit=1,type=minecraft:spider,distance=..16] UUID
-#expect Spider has the following entity data
+time set 1000
+#sleep 15
+execute in dontstarve:islands positioned 7454728 75 0 if entity @e[type=dontstarve:spider,distance=..16]
+#expect Test failed
+time set 18000
+#sleep 15
+execute in dontstarve:islands positioned 7454728 75 0 run data get entity @e[limit=1,type=dontstarve:spider,distance=..16] Home
+#expect Spider has the following entity data: \[I; 7454728, 75, 0\]
+time set 1000
 // Hound waves: the intro wave is a single hound, later waves bring 2-5.
 ds hound now 1
 #expect released: 1 hound
 execute in dontstarve:islands positioned 7454720 75 0 run data get entity @e[limit=1,tag=dontstarve.hound_wave,distance=..60] UUID
-#expect Wolf has the following entity data
+#expect Hound has the following entity data
 ds hound now 2
 #expect released: [2-5] hound
-// Breaking a tuft yields cut grass (the reviver and torch ingredient).
-execute in dontstarve:islands run loot spawn 7454720 76 0 loot dontstarve:blocks/cut_grass
-#expect Dropped [1-9] \[Cut Grass\]
-execute in dontstarve:islands positioned 7454720 75 0 run data get entity @e[limit=1,type=minecraft:item,nbt={Item:{id:"dontstarve:cutgrass"}},distance=..8] UUID
-#expect Cut Grass has the following entity data
+// Hound loot (hound.lua:110-113): monster meat always, hound's tooth 12.5 %.
+execute in dontstarve:islands run loot spawn 7454720 76 0 loot dontstarve:entities/hound
+#expect Dropped .*Monster Meat
+// Spider loot (spider.lua:645-650): exactly one of monster meat / silk / spider gland.
+execute in dontstarve:islands run loot spawn 7454720 76 0 loot dontstarve:entities/spider
+#expect Dropped 1 \[(Monster Meat|Silk|Spider Gland)\]
 execute in dontstarve:islands run forceload remove all

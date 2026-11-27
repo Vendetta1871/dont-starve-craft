@@ -4,7 +4,11 @@
     {
       "rolls": 1,
       "entries": [
-        { "type": "minecraft:item", "name": "dontstarve:spider_den" }
+        {
+          "type": "minecraft:item",
+          "name": "dontstarve:silk",
+          "functions": [ { "function": "minecraft:set_count", "count": 2 } ]
+        }
       ]
     }
   ]

@@ -4,17 +4,13 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.celestiald.dontstarve.DSRefs;
-import net.celestiald.dontstarve.portal.PortalStorage;
 import net.celestiald.dontstarve.survive.GhostState;
 import net.celestiald.dontstarve.world.IslandState;
-import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
-import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
-import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -29,9 +25,9 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 /**
  * Operator commands used to drive the island lifecycle during development and
  * in the headless test scenarios: {@code /ds island current|next|goto <n>},
- * the vault helpers {@code /ds vault put|take <pos> [item]} that stand in for
- * a player walking into the portal or right-clicking the frame, and
- * {@code /ds ghost <player> on|off|check} for the ghost/wipe flow and
+ * {@code /ds codex <player>} (reads a Codex Umbra for them), and
+ * {@code /ds ghost <player> on|off|check} for the ghost/wipe flow,
+ * {@code /ds run <player> join|check} for run membership and
  * {@code /ds hound now <wave>} to release a hound wave on demand.
  */
 public final class DSCommands {
@@ -46,19 +42,18 @@ public final class DSCommands {
                         .then(Commands.literal("goto")
                                 .then(Commands.argument("index", IntegerArgumentType.integer(0))
                                         .executes(DSCommands::gotoIsland))))
-                .then(Commands.literal("vault")
-                        .then(Commands.literal("put")
-                                .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                                        .then(Commands.argument("item", ItemArgument.item(buildCtx))
-                                                .executes(DSCommands::vaultPut))))
-                        .then(Commands.literal("take")
-                                .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                                        .executes(DSCommands::vaultTake))))
+                .then(Commands.literal("codex")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(DSCommands::codex)))
                 .then(Commands.literal("ghost")
                         .then(Commands.argument("player", EntityArgument.player())
                                 .then(Commands.literal("on").executes(ctx -> ghost(ctx, true)))
                                 .then(Commands.literal("off").executes(ctx -> ghost(ctx, false)))
                                 .then(Commands.literal("check").executes(DSCommands::ghostCheck))))
+                .then(Commands.literal("run")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .then(Commands.literal("join").executes(DSCommands::runJoin))
+                                .then(Commands.literal("check").executes(DSCommands::runCheck))))
                 .then(Commands.literal("hound")
                         .then(Commands.literal("now")
                                 .then(Commands.argument("wave", IntegerArgumentType.integer(1, 10))
@@ -99,9 +94,8 @@ public final class DSCommands {
         }
         int index = IslandState.get(overworld).advance();
         BlockPos center = IslandState.islandCenter(index);
-        IslandState.pregenArrival(islands, index);
         ctx.getSource().sendSuccess(() -> Component.literal("Island " + index
-                        + " created at " + center.toShortString() + ", arrival area pre-generated")
+                        + " created at " + center.toShortString())
                         .withStyle(ChatFormatting.GREEN),
                 true);
         return 1;
@@ -116,41 +110,23 @@ public final class DSCommands {
         }
         int index = IntegerArgumentType.getInteger(ctx, "index");
         IslandState.get(overworld).setIndex(index);
-        IslandState.pregenArrival(islands, index);
         BlockPos center = IslandState.islandCenter(index);
         ctx.getSource().sendSuccess(() -> Component.literal("Current island " + index
                 + " centered at " + center.toShortString()), true);
         return 1;
     }
 
-    private static int vaultPut(CommandContext<CommandSourceStack> ctx)
-            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
-        ServerLevel overworld = ctx.getSource().getServer().getLevel(Level.OVERWORLD);
-        if (overworld == null) {
+    /** Reads a Codex Umbra for the player, exactly as right-clicking the book does. */
+    private static int codex(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        boolean sent = net.celestiald.dontstarve.portal.CodexUmbraItem.travel(player,
+                new ItemStack(net.celestiald.dontstarve.init.DSItems.WAXWELLJOURNAL.get()));
+        if (!sent) {
+            ctx.getSource().sendFailure(Component.literal("Codex refused: already in the islands"));
             return 0;
         }
-        BlockPos anchor = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
-        ItemStack stack = ItemArgument.getItem(ctx, "item").createItemStack(1, false);
-        PortalStorage.get(overworld).put(anchor, stack);
         ctx.getSource().sendSuccess(() -> Component.literal(
-                "Stored " + stack.getCount() + " " + stack.getDisplayName().getString()
-                        + " in vault " + anchor.toShortString()), true);
-        return 1;
-    }
-
-    private static int vaultTake(CommandContext<CommandSourceStack> ctx)
-            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
-        ServerLevel overworld = ctx.getSource().getServer().getLevel(Level.OVERWORLD);
-        if (overworld == null) {
-            return 0;
-        }
-        BlockPos anchor = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
-        List<ItemStack> items = PortalStorage.get(overworld).take(anchor);
-        for (ItemStack stack : items) {
-            net.minecraft.world.level.block.Block.popResource(overworld, anchor.above(), stack);
-        }
-        ctx.getSource().sendSuccess(() -> Component.literal(
-                "Ejected " + items.size() + " stacks from vault " + anchor.toShortString()), true);
+                player.getGameProfile().getName() + " read the Codex Umbra"), true);
         return 1;
     }
 
@@ -171,6 +147,27 @@ public final class DSCommands {
             throws com.mojang.brigadier.exceptions.CommandSyntaxException {
         ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
         ctx.getSource().sendSuccess(() -> Component.literal("ghost=" + GhostState.isGhost(player)
+                + " dimension=" + player.level().dimension().location()), false);
+        return 1;
+    }
+
+    /** Makes the player a member of the current run, as walking through the portal would. */
+    private static int runJoin(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        ServerLevel overworld = ctx.getSource().getServer().getLevel(Level.OVERWORLD);
+        if (overworld == null) {
+            return 0;
+        }
+        int index = IslandState.get(overworld).islandIndex();
+        player.setData(net.celestiald.dontstarve.init.DSAttachments.RUN_ISLAND.get(), index);
+        ctx.getSource().sendSuccess(() -> Component.literal(
+                player.getGameProfile().getName() + " joined run " + index), true);
+        return 1;
+    }
+
+    private static int runCheck(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        ctx.getSource().sendSuccess(() -> Component.literal("run=" + IslandState.runOf(player)
                 + " dimension=" + player.level().dimension().location()), false);
         return 1;
     }

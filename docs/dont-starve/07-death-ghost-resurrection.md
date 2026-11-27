@@ -32,8 +32,8 @@ Sources: `prefabs/player_common.lua`, `prefabs/player_common_extensions.lua`,
 
 | Path | Prefab | Cost / effect |
 |---|---|---|
-| **Meat Effigy** | `resurrectionstatue` | Recipe: 4 `boards` + 4 `beardhair` + **40 player HP** (`CHARACTER_INGREDIENT.HEALTH`, `recipes.lua:580`, TECH.MAGIC_TWO). Attuning costs 40 HP, never kills you (`resurrectionstatue.lua:61-71`). Ghost clicks it → respawn there. |
-| **Telltale Heart** | `reviver` | Recipe: 3 `cutgrass` + 1 `spidergland` + **40 player HP** (`recipes.lua:420`, TECH.NONE). Another player uses it on the corpse → revive at **25 % HP** (`REVIVE_HEALTH_PENALTY = 0.25`, `tuning.lua:2178`, applied `player_common.lua:358`). |
+| **Meat Effigy** | `resurrectionstatue` | Recipe: 4 `boards` + 4 `beardhair` + **40 player HP** (`CHARACTER_INGREDIENT.HEALTH`, `recipes.lua:580`, TECH.MAGIC_TWO). The builder is linked for free on build — the recipe already took the HP (`resurrectionstatue.lua:99-106`); anyone else attuning pays 40 HP, never lethal (`resurrectionstatue.lua:61-72`). Ghost touches it → respawns there and the effigy is **consumed** (`ListenForEvent("activateresurrection", inst.Remove)`, `resurrectionstatue.lua:176`). |
+| **Telltale Heart** | `reviver` | Recipe: 3 `cutgrass` + 1 `spidergland` + **40 player HP** (`recipes.lua:420`, TECH.NONE). Another player gives it to the ghost (heart consumed, `player_common.lua:354`) → revived **where the ghost is** with current health `RESURRECT_HEALTH` = 50 (`player_common_extensions.lua:727`); `REVIVE_HEALTH_PENALTY = 0.25` (`tuning.lua:2178`) is a **max-health** penalty (`player_common.lua:358`), not the revive health. |
 | Touch effigy as ghost | — | effigy must be attuned by a living player first |
 
 ## Mapping to our mod (islands run)
@@ -42,6 +42,7 @@ Sources: `prefabs/player_common.lua`, `prefabs/player_common_extensions.lua`,
 |---|---|---|
 | death drop scatter | `DropEverything` | grave BE (permanent, matches "never despawn") |
 | ghost | `playerghost` tag | ghost state in `ds:islands` only |
-| effigy revive | `resurrectionstatue` | craftable in-run anti-wipe mechanic (planned) |
-| telltale revive | `reviver` | craftable in-run anti-wipe mechanic (planned) |
+| effigy revive | `resurrectionstatue` | block; builder linked free, others pay 5 HP (40 × 2/15); consumed on use (`revive/ResurrectionStatueBlock`) |
+| telltale revive | `reviver` | item; revives at 50/150 of max health; the ghost is pulled to the reviver (MC ghosts fly, may hover over void); no max-health penalty yet (`revive/ReviveHandler`) |
+| death over the void | — (DS has no void) | ours: grave at the player's last ground, ghost raised to it (`survive/DeathHandler`) |
 | wipe on hopeless | — (DS1: game over) | 120 s all-ghost timer → `IslandState.advance()` |

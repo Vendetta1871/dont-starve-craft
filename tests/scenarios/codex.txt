@@ -1,0 +1,43 @@
+// PLAYER: the Codex Umbra entry and DS torch rules.
+#wait-player {P} 180
+gamemode survival {P}
+execute in minecraft:overworld run tp {P} 0 100 0
+#sleep 2
+execute in minecraft:overworld run fill -6 99 -6 6 99 6 minecraft:stone
+execute in minecraft:overworld run fill -6 100 -6 6 104 6 minecraft:air
+execute in minecraft:overworld run tp {P} 0 100 0
+item replace entity {P} hotbar.0 with minecraft:diamond 5
+#sleep 2
+// Reading the book: belongings fall where the player stood, the player joins the run.
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds run {P} check
+#expect run=\d+ dimension=dontstarve:islands
+execute in minecraft:overworld positioned 0 100 0 run data get entity @e[type=item,limit=1,distance=..8,nbt={Item:{id:"minecraft:diamond"}}] Item.count
+#expect has the following entity data: 5
+// A second read inside the islands is refused.
+ds codex {P}
+#expect Codex refused
+// The torch burns in hand (durability = fuel) and lights the air around the head.
+// The arrival point is the island centre at y75: the head block is y76 there.
+ds island current
+item replace entity {P} weapon.mainhand with minecraft:torch
+#sleep 4
+data get entity {P} SelectedItem.components
+#expect "minecraft:max_damage": 188
+#expect "minecraft:damage": [2-9]
+execute in dontstarve:islands if block {X} 76 {Z} minecraft:light
+#expect Test passed
+// Putting it away puts the light out.
+clear {P} minecraft:torch
+#sleep 2
+execute in dontstarve:islands if block {X} 76 {Z} minecraft:light
+#expect Test failed
+// The run ends (another island became current): home is where the book was read.
+ds island next
+#sleep 3
+ds run {P} check
+#expect run=-1 dimension=minecraft:overworld
+data get entity {P} Pos
+#expect \[0\.5d, 100\.0d, 0\.5d\]

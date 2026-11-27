@@ -1,11 +1,11 @@
 package net.celestiald.dontstarve.world;
 
+import net.celestiald.dontstarve.init.DSAttachments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.phys.Vec3;
 
@@ -30,8 +30,11 @@ public final class IslandState extends SavedData {
     private int islandIndex = 0;
     /** All-ghost wipe countdown in seconds; -1 means inactive. */
     private int wipeSecondsLeft = -1;
-    /** islands-level game time when the current island went active (hound clock). */
-    private long runStartGameTime = -1;
+    /**
+     * Seconds the current run has been played: counted only while living run
+     * members are on the island, so time spent away does not pile up waves.
+     */
+    private int runSeconds = 0;
     /** Hound waves already sent against the current island. */
     private int houndWavesSent = 0;
     /** Whether the warning howl for the next wave has already been broadcast. */
@@ -42,6 +45,7 @@ public final class IslandState extends SavedData {
                 new SavedData.Factory<>(IslandState::new, IslandState::load),
                 NAME);
     }
+
     public int islandIndex() {
         return islandIndex;
     }
@@ -57,9 +61,9 @@ public final class IslandState extends SavedData {
         }
     }
 
-    /** Abandons the current island and activates the next one. */
+    /** Resets the per-run clocks when another island becomes current. */
     private void onIslandChanged() {
-        runStartGameTime = -1; // first tick of HoundWave re-anchors it
+        runSeconds = 0;
         houndWavesSent = 0;
         houndWarned = false;
     }
@@ -79,16 +83,25 @@ public final class IslandState extends SavedData {
         return islandIndex;
     }
 
-    /** Game time (islands level) the current run started at; -1 = not anchored. */
-    public long runStartGameTime() {
-        return runStartGameTime;
+    /** Seconds of live play on the current island (hound clock). */
+    public int runSeconds() {
+        return runSeconds;
     }
 
-    public void setRunStartGameTime(long time) {
-        if (time != runStartGameTime) {
-            runStartGameTime = time;
-            setDirty();
-        }
+    /** Advances the run clock by one second of live play. */
+    public void tickRunSecond() {
+        runSeconds++;
+        setDirty();
+    }
+
+    /** Island run the player belongs to, or -1 when they are not part of a run. */
+    public static int runOf(Player player) {
+        return player.getData(DSAttachments.RUN_ISLAND.get());
+    }
+
+    /** Whether the player is a member of the current island's run. */
+    public boolean isCurrentRun(Player player) {
+        return runOf(player) == islandIndex;
     }
 
     public int houndWavesSent() {
@@ -122,24 +135,11 @@ public final class IslandState extends SavedData {
         return new Vec3(center.getX() + 0.5, PLAZA_Y + 1.0, center.getZ() + 0.5);
     }
 
-    /**
-     * Pre-generates a 5x5 chunk area around the arrival plaza of the given
-     * island so players never fall through ungenerated chunks on arrival.
-     */
-    public static void pregenArrival(ServerLevel islands, int index) {
-        ChunkPos spawnChunk = new ChunkPos(islandCenter(index));
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dz = -2; dz <= 2; dz++) {
-                islands.getChunk(spawnChunk.x + dx, spawnChunk.z + dz, ChunkStatus.FULL, true);
-            }
-        }
-    }
-
     @Override
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
         tag.putInt("island_index", islandIndex);
         tag.putInt("wipe_seconds_left", wipeSecondsLeft);
-        tag.putLong("run_start_game_time", runStartGameTime);
+        tag.putInt("run_seconds", runSeconds);
         tag.putInt("hound_waves_sent", houndWavesSent);
         tag.putBoolean("hound_warned", houndWarned);
         return tag;
@@ -150,7 +150,7 @@ public final class IslandState extends SavedData {
         state.islandIndex = tag.getInt("island_index");
         state.wipeSecondsLeft = tag.contains("wipe_seconds_left")
                 ? tag.getInt("wipe_seconds_left") : -1;
-        state.runStartGameTime = tag.getLong("run_start_game_time");
+        state.runSeconds = tag.getInt("run_seconds");
         state.houndWavesSent = tag.getInt("hound_waves_sent");
         state.houndWarned = tag.getBoolean("hound_warned");
         return state;

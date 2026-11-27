@@ -2,11 +2,10 @@ package net.celestiald.dontstarve.survive;
 
 import net.celestiald.dontstarve.DSRefs;
 import net.celestiald.dontstarve.grave.GraveBlockEntity;
+import net.celestiald.dontstarve.init.DSAttachments;
 import net.celestiald.dontstarve.init.DSBlocks;
 import net.celestiald.dontstarve.portal.ReturnPoints;
-import net.celestiald.dontstarve.survive.GhostState;
 import net.celestiald.dontstarve.world.IslandState;
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -17,13 +16,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.portal.DimensionTransition;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -65,12 +61,7 @@ public final class DeathHandler {
         }
         event.setCanceled(true);
 
-        List<ItemStack> belongings = new ArrayList<>();
-        Inventory inventory = player.getInventory();
-        stealAll(inventory.items, belongings);
-        stealAll(inventory.armor, belongings);
-        stealAll(inventory.offhand, belongings);
-        player.inventoryMenu.broadcastChanges();
+        List<ItemStack> belongings = Belongings.strip(player);
 
         int sealedXp = player.totalExperience;
         player.totalExperience = 0;
@@ -80,6 +71,11 @@ public final class DeathHandler {
 
         BlockPos gravePos = findGraveSpot(level, player);
         level.setBlockAndUpdate(gravePos, DSBlocks.GRAVE.get().defaultBlockState());
+        if (player.getY() < level.getMinBuildHeight()) {
+            // Fell off the island: the spirit rises back to where its grave lies.
+            player.connection.teleport(gravePos.getX() + 0.5, gravePos.getY() + 1.5, gravePos.getZ() + 0.5,
+                    player.getYRot(), player.getXRot());
+        }
         if (level.getBlockEntity(gravePos) instanceof GraveBlockEntity grave) {
             grave.setContents(belongings);
             grave.setGraveXp(sealedXp);
@@ -166,14 +162,26 @@ public final class DeathHandler {
         if (islands == null || overworld == null) {
             return;
         }
+        IslandState state = IslandState.get(overworld);
 
-        List<ServerPlayer> inIslands = List.copyOf(islands.players());
-        for (ServerPlayer player : inIslands) {
+        for (ServerPlayer player : List.copyOf(islands.players())) {
+            int run = IslandState.runOf(player);
+            if (run >= 0 && run != state.islandIndex()) {
+                // Their run was wiped while they were offline: the island is gone for them.
+                ReturnPoints.sendHome(player);
+                player.sendSystemMessage(Component.translatable("message.dontstarve.run_lost")
+                        .withStyle(ChatFormatting.GOLD));
+                continue;
+            }
             GhostState.upkeep(player);
+            if (!GhostState.isGhost(player) && player.onGround()) {
+                player.setData(DSAttachments.LAST_GROUND.get(), player.blockPosition());
+            }
         }
 
-        IslandState state = IslandState.get(overworld);
-        boolean allGhosts = !inIslands.isEmpty() && inIslands.stream().allMatch(GhostState::isGhost);
+        // Only members of the current run decide its fate (admins teleported in do not).
+        List<ServerPlayer> crew = islands.players().stream().filter(state::isCurrentRun).toList();
+        boolean allGhosts = !crew.isEmpty() && crew.stream().allMatch(GhostState::isGhost);
         if (!allGhosts) {
             if (state.wipeSecondsLeft() >= 0) {
                 state.setWipeSecondsLeft(-1);
@@ -191,25 +199,21 @@ public final class DeathHandler {
         left--;
         state.setWipeSecondsLeft(left);
         if (left <= 0) {
-            wipe(server, state, islands, overworld);
+            wipe(server, state, islands, overworld, crew);
         } else if (left <= 10 || left % 30 == 0) {
             broadcast(server, "message.dontstarve.wipe_countdown", left);
         }
     }
 
-    /** Abandons the current island and ejects every ghost into the overworld. */
-    private static void wipe(MinecraftServer server, IslandState state,
-                             ServerLevel islands, ServerLevel overworld) {
-        int index = state.advance();
-        IslandState.pregenArrival(islands, index);
-
-        for (ServerPlayer player : List.copyOf(islands.players())) {
-            GhostState.clear(player);
-            ReturnPoints.Target target = ReturnPoints.of(overworld, player.getUUID());
-            DimensionTransition.PostDimensionTransition post = target.portalCooldown()
-                    ? moved -> moved.setPortalCooldown() : DimensionTransition.DO_NOTHING;
-            player.changeDimension(new DimensionTransition(overworld, target.position(), Vec3.ZERO,
-                    player.getYRot(), player.getXRot(), post));
+    /**
+     * Abandons the current island and ejects its crew into the overworld.
+     * Offline members are sent home on their next login (stale run check).
+     */
+    private static void wipe(MinecraftServer server, IslandState state, ServerLevel islands,
+                             ServerLevel overworld, List<ServerPlayer> crew) {
+        state.advance();
+        for (ServerPlayer player : crew) {
+            ReturnPoints.sendHome(player);
         }
         state.setWipeSecondsLeft(-1);
         broadcast(server, "message.dontstarve.wipe_done");
@@ -217,42 +221,49 @@ public final class DeathHandler {
 
     // -------------------------------------------------------------- utils
 
+    /**
+     * The grave sits on the ground under the spot of death. A death over the
+     * void (fallen off the island) has no ground below, so the grave goes to
+     * where the player last stood, or to the island plaza as a last resort —
+     * belongings are never lost to the void.
+     */
     private static BlockPos findGraveSpot(ServerLevel level, ServerPlayer player) {
         BlockPos feet = player.blockPosition();
-        if (canHoldGrave(level, feet)) {
-            return feet;
+        int top = Math.min(feet.getY(), level.getMaxBuildHeight() - 1);
+        BlockPos onGround = groundBelow(level, feet.getX(), top, feet.getZ());
+        if (onGround != null) {
+            return onGround;
         }
-        for (int dy = 1; dy <= 3; dy++) {
-            BlockPos above = feet.above(dy);
-            if (canHoldGrave(level, above)) {
-                return above;
+        if (player.hasData(DSAttachments.LAST_GROUND.get())) {
+            BlockPos last = player.getData(DSAttachments.LAST_GROUND.get());
+            BlockPos atLast = groundBelow(level, last.getX(), last.getY() + 1, last.getZ());
+            if (atLast != null) {
+                return atLast;
             }
         }
-        for (int dy = 1; dy <= 5; dy++) {
-            BlockPos below = feet.below(dy);
-            if (!canHoldGrave(level, below) && canHoldGrave(level, below.above())) {
-                return below.above();
+        int run = Math.max(IslandState.runOf(player), 0);
+        BlockPos plaza = IslandState.islandCenter(run);
+        BlockPos atPlaza = groundBelow(level, plaza.getX(), IslandState.PLAZA_Y + 4, plaza.getZ());
+        return atPlaza != null ? atPlaza : new BlockPos(plaza.getX(), IslandState.PLAZA_Y + 1, plaza.getZ());
+    }
+
+    /** First free spot resting on a solid block, scanning down from {@code fromY}; null over void. */
+    private static BlockPos groundBelow(ServerLevel level, int x, int fromY, int z) {
+        for (int y = fromY; y > level.getMinBuildHeight(); y--) {
+            BlockPos pos = new BlockPos(x, y, z);
+            if (canHoldGrave(level, pos) && !canHoldGrave(level, pos.below())) {
+                return pos;
             }
         }
-        return feet;
+        return null;
     }
 
     private static boolean canHoldGrave(ServerLevel level, BlockPos pos) {
-        if (pos.getY() < level.getMinBuildHeight() || pos.getY() > level.getMaxBuildHeight()) {
+        if (pos.getY() < level.getMinBuildHeight() || pos.getY() >= level.getMaxBuildHeight()) {
             return false;
         }
         BlockState state = level.getBlockState(pos);
         return state.isAir() || state.canBeReplaced();
-    }
-
-    private static void stealAll(List<ItemStack> from, List<ItemStack> into) {
-        for (int i = 0; i < from.size(); i++) {
-            ItemStack stack = from.get(i);
-            if (!stack.isEmpty()) {
-                into.add(stack.copy());
-                from.set(i, ItemStack.EMPTY);
-            }
-        }
     }
 
     private static void broadcast(MinecraftServer server, String key, Object... args) {

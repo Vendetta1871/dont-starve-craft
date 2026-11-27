@@ -1,35 +1,43 @@
 package net.celestiald.dontstarve.portal;
 
-import java.util.Optional;
-import java.util.UUID;
+import net.celestiald.dontstarve.init.DSAttachments;
+import net.celestiald.dontstarve.survive.GhostState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Where a player returning from the islands lands: inside the marble portal
- * frame they originally entered through (so they can open its vault), or the
- * overworld spawn when that frame is gone or unknown.
+ * The way home from the islands (sky portal escape, all-ghost wipe, stale
+ * run): back to the spot where the player read the Codex Umbra — where their
+ * belongings were dropped — or the world spawn when that place is unknown.
  */
 public final class ReturnPoints {
 
-    public record Target(Vec3 position, boolean portalCooldown) {
-    }
+    /** Sends the player home and ends their run membership. */
+    public static void sendHome(ServerPlayer player) {
+        GhostState.clear(player);
+        player.setData(DSAttachments.RUN_ISLAND.get(), -1);
 
-    public static Target of(ServerLevel overworld, UUID player) {
-        BlockPos anchor = PortalStorage.get(overworld).entryOf(player);
-        if (anchor != null) {
-            Optional<PortalFrame.Frame> frame = PortalFrame.find(overworld, anchor);
-            if (frame.isPresent() && !frame.get().interior().isEmpty()) {
-                // interior() starts at the bottom row; landing there drops the
-                // player safely onto the ground under the frame.
-                return new Target(Vec3.atBottomCenterOf(frame.get().interior().get(0)), true);
-            }
+        ServerLevel target = null;
+        Vec3 landing = null;
+        if (player.hasData(DSAttachments.RETURN_POINT.get())) {
+            GlobalPos point = player.getData(DSAttachments.RETURN_POINT.get());
+            target = player.server.getLevel(point.dimension());
+            landing = Vec3.atBottomCenterOf(point.pos());
         }
-        BlockPos spawn = overworld.getLevelData().getSpawnPos();
-        return new Target(Vec3.atBottomCenterOf(
-                overworld.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, spawn)), false);
+        if (target == null) {
+            target = player.server.getLevel(Level.OVERWORLD);
+            BlockPos spawn = target.getLevelData().getSpawnPos();
+            landing = Vec3.atBottomCenterOf(target.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, spawn));
+        }
+        player.changeDimension(new DimensionTransition(target, landing, Vec3.ZERO,
+                player.getYRot(), player.getXRot(), DimensionTransition.DO_NOTHING));
+        player.fallDistance = 0.0F;
     }
 
     private ReturnPoints() {

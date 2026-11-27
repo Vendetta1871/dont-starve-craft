@@ -1,0 +1,32 @@
+// PLAYER: run membership edge cases — a death over the void keeps the
+// belongings (grave at the last ground), and a member whose run was wiped
+// while away is sent home instead of haunting the abandoned island.
+#wait-player {P} 180
+ds island goto 920
+ds island current
+execute in dontstarve:islands run tp {P} {X} 75 {Z}
+ds run {P} join
+#expect joined run 920
+// Stand on the plaza long enough for the last-ground tracker (1 s period).
+#sleep 4
+gamemode survival {P}
+item replace entity {P} hotbar.0 with minecraft:diamond 3
+// Off the island edge into the void.
+execute in dontstarve:islands run tp {P} {X+200} -100 {Z}
+#sleep 4
+ds ghost {P} check
+#expect ghost=true dimension=dontstarve:islands
+// The grave sits where they last stood, not in the void; the spirit rose to it.
+execute in dontstarve:islands if block {X} 75 {Z} dontstarve:grave
+#expect Test passed
+execute in dontstarve:islands run data get block {X} 75 {Z} Items
+#expect diamond
+data get entity {P} Pos[1]
+#expect 7[5-9]\.|8[0-9]\.
+// Another island becomes current (a wipe elsewhere): the stale member goes home.
+ds island next
+#sleep 3
+ds run {P} check
+#expect run=-1 dimension=minecraft:overworld
+ds ghost {P} check
+#expect ghost=false

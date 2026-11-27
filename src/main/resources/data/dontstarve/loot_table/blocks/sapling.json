@@ -3,8 +3,29 @@
   "pools": [
     {
       "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "dontstarve:sapling",
+          "properties": {
+            "picked": "false"
+          }
+        }
+      ],
       "entries": [
-        { "type": "minecraft:item", "name": "dontstarve:sapling" }
+        {
+          "type": "minecraft:item",
+          "name": "dontstarve:twigs"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "dontstarve:dug_sapling"
+        }
       ]
     }
   ]

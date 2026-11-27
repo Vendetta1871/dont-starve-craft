@@ -20,9 +20,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * The escape route home (our invention, DS-flavored after the Moon Portal:
@@ -54,6 +52,9 @@ public class SkyPortalBlock extends Block {
         if (!(level instanceof ServerLevel serverLevel) || !(player instanceof ServerPlayer serverPlayer)) {
             return InteractionResult.FAIL;
         }
+        if (net.celestiald.dontstarve.survive.GhostState.isGhost(player)) {
+            return InteractionResult.FAIL;
+        }
         if (state.getValue(LIT)) {
             escape(serverLevel, serverPlayer);
             return InteractionResult.SUCCESS;
@@ -82,11 +83,7 @@ public class SkyPortalBlock extends Block {
         if (overworld == null) {
             return;
         }
-        ReturnPoints.Target target = ReturnPoints.of(overworld, player.getUUID());
-        DimensionTransition.PostDimensionTransition post = target.portalCooldown()
-                ? moved -> moved.setPortalCooldown() : DimensionTransition.DO_NOTHING;
-        player.changeDimension(new DimensionTransition(overworld, target.position(), Vec3.ZERO,
-                player.getYRot(), player.getXRot(), post));
+        ReturnPoints.sendHome(player);
         islands.getServer().getPlayerList().broadcastSystemMessage(
                 Component.translatable("message.dontstarve.escaped", player.getDisplayName())
                         .withStyle(ChatFormatting.AQUA), false);
