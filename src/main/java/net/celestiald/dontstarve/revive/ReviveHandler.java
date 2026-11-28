@@ -11,9 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /**
@@ -30,9 +28,6 @@ public final class ReviveHandler {
      * REVIVE_HEALTH_PENALTY 0.25 is a max-health penalty in DST, not ported yet.
      */
     private static final float REVIVE_HEALTH_FRACTION = 50.0F / 150.0F;
-
-    /** DST CHARACTER_INGREDIENT.HEALTH baked into effigy/heart recipes. */
-    private static final float BLOOD_CRAFT_COST = 5.0F;
 
     public static void onInteractWithGhost(PlayerInteractEvent.EntityInteract event) {
         if (event.getLevel().isClientSide
@@ -65,23 +60,6 @@ public final class ReviveHandler {
                         .withStyle(ChatFormatting.LIGHT_PURPLE), false);
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);
-    }
-
-    /** Blood-magic recipes (DST CHARACTER_INGREDIENT.HEALTH) drink the crafter's HP. */
-    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
-        if (event.getEntity().level().isClientSide) {
-            return;
-        }
-        Item crafted = event.getCrafting().getItem();
-        if (crafted != DSItems.REVIVER.get() && crafted != DSItems.RESURRECTION_STATUE.get()) {
-            return;
-        }
-        Player player = event.getEntity();
-        player.setHealth(Math.max(1.0F, player.getHealth() - BLOOD_CRAFT_COST));
-        player.playSound(SoundEvents.PLAYER_HURT, 1.0F, 0.8F);
-        player.displayClientMessage(
-                Component.translatable("message.dontstarve.craft_blood_cost").withStyle(ChatFormatting.DARK_RED),
-                true);
     }
 
     private ReviveHandler() {

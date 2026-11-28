@@ -63,6 +63,27 @@ overheating sources (RoG).
 - Spoilage (freshness, stale/spoiled, rot). **A**.
 
 ### DS-2. Crafting and tech
+
+Done: the DS crafting menu replaces the vanilla 2x2 grid in the islands inventory (grey
+Minecraft panels: DST filter tabs, recipe grid coloured by build state, details with
+ingredient counts and Build / Prototype / Place or the prototyper hint); vanilla crafting
+yields nothing on the islands (crafting table included). Recipes come straight from the
+DST data (`recipes.json`, `crafting.json` in the jar): a recipe is in the book once its
+product and ingredients exist in the mod. Builder rules from `builder.lua`: NONE recipes
+known, one tech level up hinted, prototyping at the closest prototyper within 4 blocks
+teaches the recipe (+15 sanity), nounlock recipes need the station every time, missing
+intermediates are crafted first, health/sanity ingredients, structures are paid first
+(buffered) and placed with a green/red preview (left click place, right click cancel),
+min_spacing kept. Science Machine, Alchemy Engine, Prestihatitator, Shadow Manipulator
+with their PROTOTYPER_TREES; Cut Stone, Rope, Electrical Doodad. Vanilla equivalents:
+DST `goldnugget`, `flint`, `log` are the vanilla gold nugget, flint and logs.
+Known gaps: blueprints (with their loot sources), hammering structures (DS-3), the
+Prestihatitator and Shadow Manipulator recipes appear with rabbits, top hats, living
+logs, gems and nightmare fuel; build animations and DS sounds (placeholders).
+The sky-portal escape follows DST: the Moon Rock Idol is the DST recipe (moon rock +
+purple gem at a Celestial Orb, never learned) and the portal is not in the menu; it
+corresponds to DST's Celestial Portal, a construction site (boards + rope plans, then a
+purple moon eye and 20 moon rocks), and becomes buildable with the moon content.
 - The DS crafting menu (tabs, tech levels, prototyping, blueprints) as our own screen;
   vanilla crafting off on the islands. **A** recipes/tech gating, **S** screen,
   **M** usability (the biggest UI risk of the whole port).

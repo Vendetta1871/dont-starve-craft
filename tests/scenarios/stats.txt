@@ -28,14 +28,14 @@ ds stats {P} set sanity 200
 ds stats {P}
 #expect sanity (198\.9\d|199\.0\d) sane temperature [-.0-9]+ light 0\.8
 // Night in the dark: -0.833/s, and the grue hunts (resistance keeps the tester alive;
-// each hit still costs 20 sanity).
+// each hit still costs 20 sanity). 12 DS s = 30 s of attacks every 5-11 s: 1 to 6 hits.
 clear {P} minecraft:torch
 effect give {P} minecraft:resistance 120 4 true
 ds stats {P} set sanity 200
 #ds-wait 12
 #expect-log The grue attacks Tester 5
 ds stats {P}
-#expect sanity 1[0-7]\d\.\d+ (sane|insane) temperature [-.0-9]+ light 0\.00
+#expect sanity (6[5-9]|[7-9]\d|1[0-7]\d)\.\d+ (sane|insane) temperature [-.0-9]+ light 0\.00
 #shot hud_night_dark hud
 // Starvation at 0 hunger: 1.25 health per DS s (8 s -> -10).
 effect clear {P}

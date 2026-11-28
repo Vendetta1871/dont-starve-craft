@@ -13,6 +13,9 @@ craft your way out, and bring the spoils back to the overworld.
 '''
 authors = "CelestialD"
 
+[[mixins]]
+config = "dontstarve.mixins.json"
+
 [[dependencies.dontstarve]]
 modId = "neoforge"
 type = "required"

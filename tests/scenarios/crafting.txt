@@ -1,0 +1,130 @@
+// PLAYER: DS crafting (components/builder.lua, recipes_filter.lua, craftingmenu_hud.lua):
+// the vanilla grid is off on the islands; NONE recipes are known from the start,
+// one tech level up is hinted; the Science Machine is built as a buffered structure
+// and placed; prototyping teaches a recipe (+15 sanity); missing intermediates are
+// crafted first; health is a character ingredient; placement keeps min_spacing.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+// Overworld: vanilla crafting works.
+ds grid {P}
+#expect grid result minecraft:oak_planks x4
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock set 1 day 100
+ds island current
+execute in dontstarve:islands run fill {X+18} 75 {Z-8} {X+32} 75 {Z+8} minecraft:stone
+// Open to the sky (the island under the platform differs per run): no grue in daylight.
+execute in dontstarve:islands run fill {X+18} 76 {Z-8} {X+32} 100 {Z+8} minecraft:air
+execute in dontstarve:islands run tp {P} {X+25} 76 {Z} 0 30
+#sleep 2
+ds grid {P}
+#expect grid result none
+ds builder {P}
+#expect Tester known \[\] buffered \[\] tech \{\} at none
+ds recipes {P}
+#expect torch=no_ingredients
+#expect researchlab=no_ingredients
+#expect reviver=no_ingredients
+#expect boards=hint
+#expect researchlab2=hint
+#expect ^(?!.*resurrectionstatue)
+// Torch (NONE): crafted straight into the empty hand with its fuel gauge.
+clear {P}
+give {P} dontstarve:cutgrass 2
+give {P} dontstarve:twigs 2
+ds craft {P} torch
+#expect known \[torch\] buffered \[\]
+data get entity {P} SelectedItem
+#expect "minecraft:max_damage": 188
+clear {P}
+// Science Machine: paid now (buffered), placed later.
+give {P} minecraft:gold_nugget 1
+give {P} minecraft:spruce_log 4
+give {P} dontstarve:rocks 4
+ds craft {P} researchlab
+#expect buffered \[researchlab\] tech \{\} at none
+clear {P} dontstarve:rocks 0
+#expect No items were found
+ds place {P} researchlab {X+25} 76 {Z+3}
+#expect placed researchlab
+ds builder {P}
+#expect buffered \[\] tech \{MAGIC=1, SCIENCE=1\} at researchlab
+ds recipes {P}
+#expect boards=prototype
+#expect cutstone=prototype
+#expect researchlab2=prototype
+#expect resurrectionstatue=hint
+// Prototyping boards teaches the recipe and restores 15 sanity.
+ds stats {P} set sanity 100
+give {P} minecraft:spruce_log 4
+ds craft {P} boards
+#expect known \[torch, researchlab, boards\]
+ds stats {P}
+#expect sanity 115\.\d\d
+clear {P} dontstarve:boards 0
+#expect Found 1 matching
+// Away from the machine: learned recipes stay buildable, the rest is a hint again.
+execute in dontstarve:islands run tp {P} {X+25} 76 {Z-7}
+#sleep 1
+ds recipes {P}
+#expect boards=no_ingredients
+#expect cutstone=hint
+execute in dontstarve:islands run tp {P} {X+25} 76 {Z} 0 30
+#sleep 1
+// Transistor without Cut Stone: the first press makes the missing Cut Stone.
+give {P} minecraft:gold_nugget 2
+give {P} dontstarve:rocks 3
+ds craft {P} transistor
+#expect cutstone
+clear {P} dontstarve:cutstone 0
+#expect Found 1 matching
+ds craft {P} transistor
+#expect transistor
+clear {P} dontstarve:transistor 0
+#expect Found 1 matching
+// Telltale Heart costs 40 health (CHARACTER_INGREDIENT.HEALTH).
+give {P} dontstarve:cutgrass 3
+give {P} dontstarve:spidergland 1
+ds craft {P} reviver
+ds stats {P}
+#expect health 110\.00
+// MAGIC 2 at a Prestihatitator: the Meat Effigy can be prototyped there.
+// (setblock replies "Changed the block at x, y, z": capture the island centre again.)
+execute in dontstarve:islands run setblock {X+25} 76 {Z-2} dontstarve:researchlab4
+ds island current
+#sleep 1
+ds builder {P}
+#expect tech \{MAGIC=2\} at researchlab4
+ds recipes {P}
+#expect resurrectionstatue=prototype
+execute in dontstarve:islands run setblock {X+25} 76 {Z-2} minecraft:air
+ds island current
+// min_spacing 2: no structure right next to the machine.
+give {P} minecraft:gold_nugget 1
+give {P} minecraft:spruce_log 4
+give {P} dontstarve:rocks 4
+ds craft {P} researchlab
+#expect buffered \[researchlab\]
+ds place {P} researchlab {X+25} 76 {Z+4}
+#expect cannot place researchlab
+ds place {P} researchlab {X+22} 76 {Z+3}
+#expect placed researchlab
+// The menu: Prototypers tab at the Science Machine, then the Refine tab.
+give {P} minecraft:spruce_log 3
+give {P} dontstarve:rocks 2
+give {P} dontstarve:cutgrass 5
+ds ui {P} PROTOTYPERS researchlab2
+#shot menu_prototypers hud
+ds ui {P} REFINE rope
+#shot menu_refine hud
+// Placement preview: a buffered Science Machine aimed at the floor.
+give {P} minecraft:gold_nugget 1
+give {P} minecraft:spruce_log 4
+give {P} dontstarve:rocks 4
+ds craft {P} researchlab
+#expect buffered \[researchlab\]
+execute in dontstarve:islands run tp {P} {X+28} 76 {Z-4} 0 45
+ds ui {P} PLACE researchlab
+#shot placement hud

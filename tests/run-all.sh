@@ -1,23 +1,27 @@
 #!/usr/bin/env bash
-# Runs every scenario. Exit code is non-zero if any scenario fails. PLAYER
-# scenarios get a headless, silent game client (servertest.py --client ->
-# tools/autotest.sh in gamescope); SKIP_PLAYER=1 runs only the server-only ones.
+# Runs scenarios in one server session (one server start, one headless client for the
+# scenarios that need a player); `ds test reset` gives each scenario a clean slate.
+#   bash tests/run-all.sh                 # every scenario
+#   bash tests/run-all.sh crafting smoke  # just these, in the canonical order below
+#   SKIP_PLAYER=1 bash tests/run-all.sh   # only the scenarios without a player
+# Exit code is non-zero if any scenario fails.
 set -u
 cd "$(dirname "$0")/.."
 export JAVA_HOME="${DST_JAVA_HOME:-/usr/lib/jvm/java-21-openjdk}"
-port=${1:-25699}
-status=0
-player_scenarios="ghost run codex harness clockview stats perish wipe"
-[ -n "${SKIP_PLAYER:-}" ] && player_scenarios=""
-for scenario in smoke grave meteorite island speed clock $player_scenarios; do
-    echo "=== $scenario ==="
-    extra=""
-    case " $player_scenarios " in *" $scenario "*) extra="--client --player Tester" ;; esac
-    python3 tests/servertest.py . "tests/scenarios/$scenario.txt" --port "$port" $extra 2>&1 |
-        grep -E '^(PASS|FAIL|===|SERVER|CLIENT|SHOT|port|!!)'
-    rc=${PIPESTATUS[0]}
-    [ "$rc" -ne 0 ] && status=1
-    port=$((port + 10))
+port=${PORT:-25699}
+# Server-only scenarios first (no player around), wipe last (it ends the run); smoke
+# must stay first, it checks the fresh world's island 0.
+all="smoke grave meteorite island speed clock ghost run codex harness clockview stats perish crafting wipe"
+for s in "$@"; do
+    [[ " $all " == *" $s "* ]] || { echo "unknown scenario: $s" >&2; exit 2; }
 done
-echo "=== all: $([ "$status" -eq 0 ] && echo OK || echo FAILED) ==="
-exit "$status"
+files=()
+for s in $all; do
+    [ $# -gt 0 ] && [[ " $* " != *" $s "* ]] && continue
+    f="tests/scenarios/$s.txt"
+    [ -n "${SKIP_PLAYER:-}" ] && grep -q '{P}' "$f" && continue
+    files+=("$f")
+done
+python3 tests/servertest.py . "${files[@]}" --port "$port" 2>&1 |
+    grep -E '^(PASS|FAIL|===|SERVER|CLIENT|SHOT|port|!!|---)'
+exit "${PIPESTATUS[0]}"

@@ -67,9 +67,9 @@ public final class IslandChunkGenerator extends ChunkGenerator {
                 }
                 long index = Math.round((double) wx / IslandState.SPACING);
                 double meteorDist = distanceToMeteorite(index, wx, wz);
-                int top = meteorDist <= 1.0 ? surface + 3 : surface;
+                int top = meteorDist <= 1.0 ? surface + 1 : surface;
                 for (int y = 0; y <= top; y++) {
-                    BlockState meteorite = meteoriteBlock(meteorDist, wx, wz, y, surface);
+                    BlockState meteorite = meteoriteBlock(meteorDist, y, surface);
                     BlockState state = meteorite != null ? meteorite
                             : (y <= surface ? columnBlock(wx, wz, y, surface) : null);
                     if (state == null) {
@@ -111,29 +111,13 @@ public final class IslandChunkGenerator extends ChunkGenerator {
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    /** Moonrock debris of the meteorite, or null to keep natural terrain. */
+    /**
+     * The meteorite impact: DST large meteors leave "rock_moon" boulders
+     * (shadowmeteor.lua:245-256), here a small cluster on the surface.
+     */
     @Nullable
-    private static BlockState meteoriteBlock(double dist, int wx, int wz, int y, int surface) {
-        if (dist > 4.5) {
-            return null;
-        }
-        if (dist <= 1.0) {
-            // Impact core: a moonrock stump with a glowing crystal tip.
-            if (y >= surface - 1 && y <= surface + 2) {
-                return DSBlocks.MOONROCK_CLUSTER.get().defaultBlockState();
-            }
-            if (y == surface + 3) {
-                return DSBlocks.MOON_CRYSTAL.get().defaultBlockState();
-            }
-            return null;
-        }
-        if (dist <= 3.0 && (y == surface || y == surface - 1)) {
-            return DSBlocks.MOONROCK_CLUSTER.get().defaultBlockState();
-        }
-        if (dist <= 4.5 && y == surface && hashNoise(wx * 3 + 17, wz * 3 + 29) < 0.5) {
-            return DSBlocks.MOONROCK_CLUSTER.get().defaultBlockState();
-        }
-        return null;
+    private static BlockState meteoriteBlock(double dist, int y, int surface) {
+        return dist <= 1.0 && y == surface + 1 ? DSBlocks.ROCK_MOON.get().defaultBlockState() : null;
     }
 
     /** Y of the top solid block of the island column, or -1 for void. */

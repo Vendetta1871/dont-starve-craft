@@ -1,5 +1,5 @@
-// Every island carries one deterministic moon meteorite: hand-mineable Moon Rock
-// plus a crystal core, the raw material of the escape route.
+// Every island carries one deterministic moon meteorite: a cluster of DST "rock_moon"
+// boulders, the only Moon Rock source and the raw material of the escape route.
 // Island 900 keeps the test off the islands real runs will use.
 ds island goto 900
 #expect Current island 900 centered at 7372800, 0, 0
@@ -10,8 +10,12 @@ execute in dontstarve:islands run setblock {X} 74 {Z} minecraft:diamond_block ke
 #expect Could not set the block
 execute in dontstarve:islands run setblock {X} 74 {Z} dontstarve:polished_marble
 // Count meteorite blocks around the computed center (island 900: x=7372805, z=-44).
-execute in dontstarve:islands run fill 7372787 66 -62 7372823 88 -26 minecraft:air replace dontstarve:moonrock_cluster
-#expect Successfully filled ([5-9][0-9]|[0-9]{3,}) block
-execute in dontstarve:islands run fill 7372787 66 -62 7372823 88 -26 minecraft:air replace dontstarve:moon_crystal
-#expect Successfully filled [1-9] block
+ds check block dontstarve:rock_moon
+#expect OK
+execute in dontstarve:islands run fill 7372787 66 -62 7372823 88 -26 minecraft:air replace dontstarve:rock_moon
+#expect Successfully filled [1-5] block
+// rock_moon loot (rocks.lua:111-118): rocks, flint, 2 moon rocks, +0.6 and +0.3 moon rock.
+execute in dontstarve:islands run setblock 7372800 75 3 dontstarve:rock_moon
+execute in dontstarve:islands run loot spawn 7372800 76 3 mine 7372800 75 3 minecraft:diamond_pickaxe
+#expect Dropped [4-6] items
 execute in dontstarve:islands run forceload remove all

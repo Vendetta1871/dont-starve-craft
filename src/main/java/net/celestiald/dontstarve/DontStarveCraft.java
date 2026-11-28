@@ -10,7 +10,6 @@ import net.celestiald.dontstarve.init.DSDataComponents;
 import net.celestiald.dontstarve.init.DSEntities;
 import net.celestiald.dontstarve.init.DSItems;
 import net.celestiald.dontstarve.item.DSTorch;
-import net.celestiald.dontstarve.item.NotInIslandsShapedRecipe;
 import net.celestiald.dontstarve.portal.CodexUmbraItem;
 import net.celestiald.dontstarve.revive.ReviveHandler;
 import net.celestiald.dontstarve.survive.DeathHandler;
@@ -37,7 +36,6 @@ public final class DontStarveCraft {
         DSDataComponents.DATA_COMPONENTS.register(modBus);
         DSEntities.ENTITIES.register(modBus);
         DSAttachments.ATTACHMENTS.register(modBus);
-        NotInIslandsShapedRecipe.SERIALIZERS.register(modBus);
 
         modBus.addListener(DontStarveCraft::registerWorldgen);
         modBus.addListener(DontStarveCraft::createAttributes);
@@ -45,6 +43,7 @@ public final class DontStarveCraft {
 
         NeoForge.EVENT_BUS.addListener(CodexUmbraItem::onPlayerLoggedIn);
         NeoForge.EVENT_BUS.addListener(DSCommands::register);
+        NeoForge.EVENT_BUS.addListener(TestReset::register);
 
         NeoForge.EVENT_BUS.addListener(DeathHandler::onLivingDeath);
         NeoForge.EVENT_BUS.addListener(DeathHandler::onIncomingDamage);
@@ -58,7 +57,9 @@ public final class DontStarveCraft {
         NeoForge.EVENT_BUS.addListener(DeathHandler::onServerTick);
 
         NeoForge.EVENT_BUS.addListener(ReviveHandler::onInteractWithGhost);
-        NeoForge.EVENT_BUS.addListener(ReviveHandler::onItemCrafted);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.craft.CraftCommands::register);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.craft.CraftEvents::onLoggedIn);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.craft.CraftEvents::onChangedDimension);
 
         NeoForge.EVENT_BUS.addListener(HoundWave::onServerTick);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.DSBlockDrops::onBlockDrops);

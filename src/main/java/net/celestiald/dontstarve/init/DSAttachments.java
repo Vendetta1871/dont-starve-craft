@@ -60,6 +60,13 @@ public final class DSAttachments {
                     .serialize(net.celestiald.dontstarve.survive.DSStats.CODEC)
                     .build());
 
+    /** builder.lua state: learned recipes and buffered structures. A new run resets it. */
+    public static final Supplier<AttachmentType<net.celestiald.dontstarve.craft.BuilderData>> BUILDER = ATTACHMENTS.register("builder",
+            () -> AttachmentType.builder(() -> net.celestiald.dontstarve.craft.BuilderData.EMPTY)
+                    .serialize(net.celestiald.dontstarve.craft.BuilderData.CODEC)
+                    .copyOnDeath()
+                    .build());
+
     private DSAttachments() {
     }
 }

@@ -24,6 +24,11 @@ public final class DSClient {
         modBus.addListener(DSClient::onRegisterGuiLayers);
         modBus.addListener(net.celestiald.dontstarve.client.FreshnessDisplay::onRegisterDecorations);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.FreshnessDisplay::onTooltip);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.CraftingScreen::onScreenOpening);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.CraftingScreen::onToast);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.Placement::onClientTick);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.Placement::onInteraction);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.Placement::onRenderLevel);
     }
 
     private void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -39,6 +44,7 @@ public final class DSClient {
     private static void onRegisterGuiLayers(net.neoforged.neoforge.client.event.RegisterGuiLayersEvent event) {
         event.registerAboveAll(DontStarveCraft.rl("clock"), net.celestiald.dontstarve.client.ClockHud::render);
         event.registerAboveAll(DontStarveCraft.rl("stats"), net.celestiald.dontstarve.client.StatsHud::render);
+        event.registerAboveAll(DontStarveCraft.rl("placement"), net.celestiald.dontstarve.client.Placement::renderHud);
         event.registerAbove(net.neoforged.neoforge.client.gui.VanillaGuiLayers.CAMERA_OVERLAYS, DontStarveCraft.rl("frost"),
                 net.celestiald.dontstarve.client.StatsHud::renderFrost);
     }

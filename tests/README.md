@@ -1,24 +1,34 @@
 # Server tests
 
-Headless scenario tests: `servertest.py` starts a dedicated server for this
-checkout (fresh world, seed `dst-test`, RCON on a private port), sends the
-commands of a scenario over RCON, prints the responses and evaluates the
-assertions. Exit code 0 means every check passed.
+Headless scenario tests: `servertest.py` starts one dedicated server for this checkout
+(fresh world, seed `dst-test`, RCON on a private port) and runs any number of scenarios
+in that single session, sending their commands over RCON, printing the responses and
+evaluating the assertions. Exit code 0 means every check of every scenario passed.
 
 ```sh
-python3 tests/servertest.py . tests/scenarios/smoke.txt
-# parallel runs: --port 25711 (game port is 100 lower); DST_JAVA_HOME picks the JDK 21
-python3 tests/servertest.py . tests/scenarios/ghost.txt --client --player Bob
-bash tests/run-all.sh            # every scenario, one command (SKIP_PLAYER=1: server-only)
+bash tests/run-all.sh                  # every scenario, one server session (~10 min)
+bash tests/run-all.sh crafting smoke   # only these, in this order
+SKIP_PLAYER=1 bash tests/run-all.sh    # only the scenarios without a player
+python3 tests/servertest.py . tests/scenarios/smoke.txt tests/scenarios/ghost.txt --port 25711
 ```
 
-Scenarios marked SLOW take minutes. Scenarios marked PLAYER need an online
-player: `--client` starts one as a headless, silent game client —
-`tools/autotest.sh` runs the `runAutotestClient` Gradle run inside a monitorless
-gamescope on the eGPU (OpenAL null backend, all sound levels zeroed in
-`run-autotest/options.txt`), and the client joins the test server on its own
-via `--quickPlayMultiplayer`. Its log is `build/autotest.log`. Never start a
-client on the desktop for tests.
+While iterating, run only the scenarios a change touches; the full suite runs once
+before a commit.
+
+One session, clean slates: before every scenario but the first, `ds test reset @a`
+(`TestReset.java`) moves the run to a fresh island (new run clock, no hound waves, no
+wipe countdown), restores the test switches and game rules (hound pause, mob spawning,
+daylight cycle, tick rate) and sends the player home to the overworld spawn as a fresh
+survivor (alive, survival, empty inventory, full stats, no learned recipes, no run).
+Scenarios therefore never assume island 0 (except `smoke`, which runs first) and pin
+their islands with `ds island goto N` or read them with `ds island current`.
+
+Scenarios that use `{P}` need an online player: before the first of them the runner
+starts it once as a headless, silent game client — `tools/autotest.sh` runs the
+`runAutotestClient` Gradle run inside a monitorless gamescope on the eGPU (OpenAL null
+backend, all sound levels zeroed in `run-autotest/options.txt`), and the client joins
+the test server on its own via `--quickPlayMultiplayer` and stays for the rest of the
+session. Its log is `build/autotest.log`. Never start a client on the desktop for tests.
 
 ## Scenario syntax
 
@@ -36,11 +46,13 @@ One entry per line, commands without the slash:
   first with `tp {P} x y z yaw pitch`.
 - `{X}` `{Y}` `{Z}` — coordinates captured from the last response containing
   `[x, y, z]` or from `centered at X, Y, Z` (`ds island current`); `{X+16}` arithmetic works.
+  Any reply with an `x, y, z` triple recaptures them (vanilla `setblock` says
+  "Changed the block at x, y, z"): run `ds island current` again after such commands,
+  and keep commas out of positions in our own command replies.
 - `{P}` — the `--player` name.
 
-The world is deleted before each run (unless `--keep-world`), so island indices
-start from 0; scenarios that must not collide with real runs use high island
-indices (`ds island goto 900`).
+The world is deleted before each session (unless `--keep-world`); scenarios that must
+not collide with real runs use high island indices (`ds island goto 900`).
 
 ## Scenarios
 
@@ -48,7 +60,7 @@ indices (`ds island goto 900`).
 |---|---|
 | `smoke.txt` | Server boots with the mod; island state, items, blocks and recipes register |
 | `grave.txt` | Grave stores items + XP; contents survive breaking via `copy_components` |
-| `meteorite.txt` | Deterministic plaza floor; one moon meteorite per island (island 900) |
+| `meteorite.txt` | Deterministic plaza floor; one moon meteorite (`rock_moon` boulders) per island, its DST loot (island 900) |
 | `island.txt` | Grass tufts, no gravel, evergreens on both island halves, dig/mine loot of tufts and boulders, den releases spiders only at night, hound waves, hound and spider loot (island 910) |
 | `speed.txt` | Hound and spider move at their DST speeds in blocks/s (`/ds speed`), zombie as the control of the 43.17 × attribute² law |
 | `codex.txt` | PLAYER: the Codex Umbra drops belongings and joins the run; DS torch burn + light; the way home leads to the reading spot |
@@ -57,6 +69,7 @@ indices (`ds island goto 900`).
 | `harness.txt` | PLAYER: the test tools — `#ds-wait` burns a held torch by DS time, `#shot` saves screenshots with and without HUD |
 | `clock.txt` | DST clock and seasons: day/dusk/night split per season (incl. the slide between seasons), season lengths, moon cycle, ambient light, world temperature |
 | `clockview.txt` | PLAYER: the run clock runs with a member present; screenshots of day, dusk, night, torch at night, full moon |
+| `crafting.txt` | PLAYER: vanilla grid off on the islands; DS recipe states (known / hint / prototype), Science Machine built buffered and placed, prototyping (+15 sanity), auto-crafted intermediates, health as an ingredient, MAGIC tech at a Prestihatitator, min_spacing; screenshots of the menu and the placement preview |
 | `stats.txt` | PLAYER: hunger burn, starvation, sanity by light (torch vs dark), the grue, freezing, eating, ghost stats; HUD and frost screenshots |
 | `perish.txt` | PLAYER: food spoilage carried and on the ground, stale/spoiled food values, rot, merging stacks |
 | `wipe.txt` | PLAYER, SLOW: full all-ghost wipe — countdown, island advance, ejection home |

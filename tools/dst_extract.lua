@@ -3,6 +3,7 @@ Extracts DST data tables from the shipped Lua scripts into JSON so the port cite
 numbers instead of retyping them:
   tuning.json  - every TUNING value after Tune() (numbers, strings, booleans, tables of them)
   recipes.json - Recipe2/Recipe/DeconstructRecipe: ingredients, tech level, config
+  crafting.json - crafting menu filters (tab order, recipe lists) and TECH levels
   loot.json    - SetSharedLootTable tables declared at the top level of prefabs/*.lua
 
 Usage (LuaJIT, DST is Lua 5.1):
@@ -144,6 +145,25 @@ loaded["recipe"] = true -- keep the recording constructors above
 local rok, rerr = run(SRC .. "/recipes.lua")
 assert(rok, "recipes.lua failed: " .. tostring(rerr))
 write("recipes.json", recipes)
+
+-- Crafting menu: the filter tabs in their on-screen order with their recipe lists,
+-- and the tech level each TECH constant requires (zero levels left out).
+local frok, frerr = run(SRC .. "/recipes_filter.lua")
+assert(frok, "recipes_filter.lua failed: " .. tostring(frerr))
+local filters = {}
+for _, def in ipairs(rawget(G, "CRAFTING_FILTER_DEFS") or {}) do
+    local list = rawget(G, "CRAFTING_FILTERS")[def.name].recipes
+    filters[#filters + 1] = {name = def.name, recipes = type(list) == "table" and list or {}}
+end
+local tech = {}
+for name, levels in pairs(rawget(G, "TECH") or {}) do
+    local t = {}
+    for tree, level in pairs(levels) do
+        if type(level) == "number" and level > 0 then t[tree] = level end
+    end
+    tech[name] = t
+end
+write("crafting.json", {filters = filters, tech = tech})
 
 -- Shared loot tables from the prefab files.
 local loot, failed = {}, {}

@@ -97,6 +97,7 @@ public final class Survival {
         GRUES.remove(player.getUUID());
         STARVE_DEBT.remove(player.getUUID());
         TEMPERATURE_DEBT.remove(player.getUUID());
+        net.celestiald.dontstarve.craft.Builder.freshStart(player);
     }
 
     /** Becoming a ghost (player_common_extensions.lua): sanity to 50 %, hunger to 2/3. */

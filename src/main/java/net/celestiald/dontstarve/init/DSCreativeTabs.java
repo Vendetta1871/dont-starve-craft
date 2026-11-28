@@ -35,16 +35,22 @@ public final class DSCreativeTabs {
                         output.accept(DSItems.REVIVER.get());
                         output.accept(DSItems.MOONROCKNUGGET.get());
                         output.accept(DSItems.MOONROCKIDOL.get());
-                        output.accept(DSBlocks.MOONROCK_CLUSTER.get());
-                        output.accept(DSBlocks.MOON_CRYSTAL.get());
                         output.accept(DSBlocks.SKY_PORTAL.get());
                         output.accept(DSItems.DUG_GRASS.get());
                         output.accept(DSItems.DUG_SAPLING.get());
                         output.accept(DSBlocks.ROCK1.get());
                         output.accept(DSBlocks.ROCK2.get());
+                        output.accept(DSBlocks.ROCK_MOON.get());
                         output.accept(DSItems.ROCKS.get());
                         output.accept(DSItems.NITRE.get());
                         output.accept(DSBlocks.SPIDER_DEN.get());
+                        output.accept(DSItems.CUTSTONE.get());
+                        output.accept(DSItems.ROPE.get());
+                        output.accept(DSItems.TRANSISTOR.get());
+                        output.accept(DSBlocks.RESEARCHLAB.get());
+                        output.accept(DSBlocks.RESEARCHLAB2.get());
+                        output.accept(DSBlocks.RESEARCHLAB4.get());
+                        output.accept(DSBlocks.RESEARCHLAB3.get());
                     })
                     .build());
 

@@ -43,24 +43,6 @@ public final class DSBlocks {
                             .strength(1.5F, 4.0F)
                             .sound(SoundType.BONE_BLOCK)));
 
-    // Moon meteorite debris. Deliberately hand-mineable: the escape route must
-    // work for a player who arrived with nothing.
-    public static final DeferredBlock<Block> MOONROCK_CLUSTER =
-            BLOCKS.register("moonrock_cluster", () -> new Block(
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.QUARTZ)
-                            .instrument(NoteBlockInstrument.BASEDRUM)
-                            .strength(1.2F, 3.0F)
-                            .sound(SoundType.CALCITE)));
-
-    public static final DeferredBlock<Block> MOON_CRYSTAL =
-            BLOCKS.register("moon_crystal", () -> new Block(
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.QUARTZ)
-                            .strength(1.2F, 3.0F)
-                            .sound(SoundType.AMETHYST)
-                            .lightLevel(state -> 4)));
-
     public static final DeferredBlock<SkyPortalBlock> SKY_PORTAL =
             BLOCKS.register("sky_portal", () -> new SkyPortalBlock(
                     BlockBehaviour.Properties.of()
@@ -69,6 +51,31 @@ public final class DSBlocks {
                             .sound(SoundType.AMETHYST)
                             .lightLevel(state -> state.getValue(SkyPortalBlock.LIT) ? 7 : 0)
                             .noOcclusion()));
+
+    // Prototypers (prefabs/researchlab*.lua) with TUNING.PROTOTYPER_TREES. Not hand-breakable:
+    // DS structures come down with a hammer.
+    public static final DeferredBlock<net.celestiald.dontstarve.craft.PrototyperBlock> RESEARCHLAB =
+            BLOCKS.register("researchlab", () -> prototyper(MapColor.METAL,
+                    java.util.Map.of("SCIENCE", 1, "MAGIC", 1), net.minecraft.sounds.SoundEvents.NOTE_BLOCK_CHIME.value()));
+    public static final DeferredBlock<net.celestiald.dontstarve.craft.PrototyperBlock> RESEARCHLAB2 =
+            BLOCKS.register("researchlab2", () -> prototyper(MapColor.COLOR_ORANGE,
+                    java.util.Map.of("SCIENCE", 2, "MAGIC", 1), net.minecraft.sounds.SoundEvents.NOTE_BLOCK_BELL.value()));
+    public static final DeferredBlock<net.celestiald.dontstarve.craft.PrototyperBlock> RESEARCHLAB4 =
+            BLOCKS.register("researchlab4", () -> prototyper(MapColor.COLOR_BLACK,
+                    java.util.Map.of("MAGIC", 2), net.minecraft.sounds.SoundEvents.ILLUSIONER_CAST_SPELL));
+    public static final DeferredBlock<net.celestiald.dontstarve.craft.PrototyperBlock> RESEARCHLAB3 =
+            BLOCKS.register("researchlab3", () -> prototyper(MapColor.COLOR_PURPLE,
+                    java.util.Map.of("MAGIC", 3), net.minecraft.sounds.SoundEvents.EVOKER_CAST_SPELL));
+
+    private static net.celestiald.dontstarve.craft.PrototyperBlock prototyper(
+            MapColor color, java.util.Map<String, Integer> trees, net.minecraft.sounds.SoundEvent ding) {
+        return new net.celestiald.dontstarve.craft.PrototyperBlock(BlockBehaviour.Properties.of()
+                .mapColor(color)
+                .strength(-1.0F, 6.0F)
+                .sound(SoundType.WOOD)
+                .pushReaction(PushReaction.BLOCK)
+                .noOcclusion(), trees, ding);
+    }
 
     // Island flora — DS pickables (pick by hand, dig with a shovel).
     /** Grass tuft (DST "grass"): cutgrass, GRASS_REGROW_TIME 1440 s, GRASS_CYCLES 20 (grass.lua:248-254). */
@@ -86,6 +93,10 @@ public final class DSBlocks {
     /** Gold-veined boulder (DST "rock2"): rocks, gold and flint (rocks.lua:76-85). */
     public static final DeferredBlock<Block> ROCK2 =
             BLOCKS.register("rock2", () -> new Block(boulderProps()));
+
+    /** Moon rock boulder (DST "rock_moon", name "Boulder"): rocks, flint, moon rock (rocks.lua:111-118, 378-388). */
+    public static final DeferredBlock<Block> ROCK_MOON =
+            BLOCKS.register("rock_moon", () -> new Block(boulderProps().mapColor(MapColor.QUARTZ)));
 
     public static final DeferredBlock<SpiderDenBlock> SPIDER_DEN =
             BLOCKS.register("spider_den", () -> new SpiderDenBlock(

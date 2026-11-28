@@ -17,15 +17,24 @@ ds check item dontstarve:reviver
 #expect OK item
 ds check item dontstarve:cutgrass
 #expect OK item
-ds check recipe dontstarve:reviver
-#expect OK recipe
-ds check recipe dontstarve:resurrectionstatue
-#expect OK recipe
-ds check recipe dontstarve:moonrockidol
-#expect OK recipe
-ds check recipe dontstarve:sky_portal
-#expect OK recipe
-// The vanilla torch recipe is overridden by the islands-locked variant.
+// DS recipes come from the DST data through the DS crafting menu.
+ds check dsrecipe reviver
+#expect OK dsrecipe reviver tech \{\} filters \[RESTORATION\]
+ds check dsrecipe resurrectionstatue
+#expect OK dsrecipe resurrectionstatue tech \{MAGIC=2\} placer
+ds check dsrecipe researchlab
+#expect OK dsrecipe researchlab tech \{\} placer filters \[PROTOTYPERS, STRUCTURES\]
+ds check dsrecipe researchlab2
+#expect OK dsrecipe researchlab2 tech \{SCIENCE=1\} placer
+ds check block dontstarve:researchlab3
+#expect OK block
+// Recipes for content not ported yet stay out of the book: the Prestihatitator
+// (rabbit, top hat) and the Moon Rock Idol (purple gem, at a Celestial Orb).
+ds check dsrecipe researchlab4
+#expect MISSING dsrecipe
+ds check dsrecipe moonrockidol
+#expect MISSING dsrecipe
+// The vanilla torch recipe is vanilla again: the grid is off on the islands anyway.
 ds check recipe minecraft:torch
 #expect OK recipe
 ds check tag minecraft:mineable/shovel

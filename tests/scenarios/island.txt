@@ -13,8 +13,8 @@ ds check block dontstarve:spider_den
 #expect OK block
 ds check item dontstarve:waxwelljournal
 #expect OK item
-ds check recipe dontstarve:torch
-#expect OK recipe
+ds check dsrecipe torch
+#expect OK dsrecipe torch tech \{\} filters \[LIGHT\]
 ds check recipe dontstarve:waxwelljournal
 #expect OK recipe
 execute in dontstarve:islands run forceload add 7454608 -112 7454832 112

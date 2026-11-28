@@ -43,3 +43,11 @@ neoForge {
         }
     }
 }
+
+// The extracted DST data ships in the jar: the crafting menu reads its recipes at runtime.
+processResources {
+    from('docs/dont-starve/data') {
+        include 'recipes.json', 'crafting.json'
+        into 'data/dontstarve/dst'
+    }
+}

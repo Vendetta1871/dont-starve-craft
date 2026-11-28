@@ -59,10 +59,6 @@ public final class DSItems {
             Item::new, new Item.Properties().stacksTo(20));
     public static final DeferredItem<Item> MOONROCKIDOL = ITEMS.registerItem("moonrockidol",
             Item::new, new Item.Properties().stacksTo(20));
-    public static final DeferredItem<BlockItem> MOONROCK_CLUSTER =
-            ITEMS.registerSimpleBlockItem(DSBlocks.MOONROCK_CLUSTER);
-    public static final DeferredItem<BlockItem> MOON_CRYSTAL =
-            ITEMS.registerSimpleBlockItem(DSBlocks.MOON_CRYSTAL);
     public static final DeferredItem<BlockItem> SKY_PORTAL =
             ITEMS.registerSimpleBlockItem(DSBlocks.SKY_PORTAL);
     /** Dug grass tuft / sapling: replant them (DST "dug_grass", "dug_sapling"). */
@@ -72,6 +68,7 @@ public final class DSItems {
             properties -> new OwnNameBlockItem(DSBlocks.SAPLING.get(), properties), new Item.Properties().stacksTo(10));
     public static final DeferredItem<BlockItem> ROCK1 = ITEMS.registerSimpleBlockItem(DSBlocks.ROCK1);
     public static final DeferredItem<BlockItem> ROCK2 = ITEMS.registerSimpleBlockItem(DSBlocks.ROCK2);
+    public static final DeferredItem<BlockItem> ROCK_MOON = ITEMS.registerSimpleBlockItem(DSBlocks.ROCK_MOON);
     /** Boulder loot; STACK_SIZE_SMALLITEM = 40 (inv_rocks.lua:55, nitre.lua:39). */
     public static final DeferredItem<Item> ROCKS = ITEMS.registerItem("rocks",
             Item::new, new Item.Properties().stacksTo(40));
@@ -79,6 +76,21 @@ public final class DSItems {
             Item::new, new Item.Properties().stacksTo(40));
     public static final DeferredItem<BlockItem> SPIDER_DEN =
             ITEMS.registerSimpleBlockItem(DSBlocks.SPIDER_DEN);
+
+    // Prototyper structures: built through the crafting menu's placer, never carried in survival.
+    public static final DeferredItem<BlockItem> RESEARCHLAB = ITEMS.registerSimpleBlockItem(DSBlocks.RESEARCHLAB);
+    public static final DeferredItem<BlockItem> RESEARCHLAB2 = ITEMS.registerSimpleBlockItem(DSBlocks.RESEARCHLAB2);
+    public static final DeferredItem<BlockItem> RESEARCHLAB4 = ITEMS.registerSimpleBlockItem(DSBlocks.RESEARCHLAB4);
+    public static final DeferredItem<BlockItem> RESEARCHLAB3 = ITEMS.registerSimpleBlockItem(DSBlocks.RESEARCHLAB3);
+
+    // Refined materials (REFINE tab). Stack sizes: cutstone/transistor STACK_SIZE_LARGEITEM 10,
+    // rope the stackable default STACK_SIZE_MEDITEM 20.
+    public static final DeferredItem<Item> CUTSTONE = ITEMS.registerItem("cutstone",
+            Item::new, new Item.Properties().stacksTo(10));
+    public static final DeferredItem<Item> ROPE = ITEMS.registerItem("rope",
+            Item::new, new Item.Properties().stacksTo(20));
+    public static final DeferredItem<Item> TRANSISTOR = ITEMS.registerItem("transistor",
+            Item::new, new Item.Properties().stacksTo(10));
 
     /** Codex Umbra (DST "waxwelljournal"): read it to travel to the islands. */
     public static final DeferredItem<CodexUmbraItem> WAXWELLJOURNAL = ITEMS.registerItem("waxwelljournal",

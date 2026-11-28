@@ -51,6 +51,22 @@ public final class DSTorch {
         return player.level().dimension().equals(DSRefs.ISLANDS);
     }
 
+    /** A torch fresh from the crafting menu: full fuel, DST TORCH_DAMAGE 17 (2.27 attack, 1 of it the fist). */
+    public static ItemStack crafted() {
+        ItemStack stack = new ItemStack(Items.TORCH);
+        stack.set(DataComponents.MAX_STACK_SIZE, 1);
+        stack.set(DataComponents.MAX_DAMAGE, BURN_SECONDS);
+        stack.set(DataComponents.DAMAGE, 0);
+        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, net.minecraft.world.item.component.ItemAttributeModifiers.builder()
+                .add(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,
+                        new net.minecraft.world.entity.ai.attributes.AttributeModifier(
+                                net.celestiald.dontstarve.DontStarveCraft.rl("torch_damage"), DSScale.stat(17) - 1.0,
+                                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE),
+                        net.minecraft.world.entity.EquipmentSlotGroup.MAINHAND)
+                .build());
+        return stack;
+    }
+
     /** Gives a plain vanilla torch the DS fuel gauge (one torch per stack, like DS). */
     public static void makeBurnable(ServerPlayer player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);

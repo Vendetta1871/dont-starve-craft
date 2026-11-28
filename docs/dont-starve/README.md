@@ -35,7 +35,7 @@ unzip -o "<Steam>/steamapps/common/Don't Starve Together/data/databundles/script
 | [content/recipes.md](content/recipes.md) | Recipes with ingredients, tech level, recipes.lua line |
 | [content/structures.md](content/structures.md) | Resource nodes and structures: work, loot, regrowth, spawned children |
 | [content/mechanics-cheatsheet.md](content/mechanics-cheatsheet.md) | Q&A of commonly misremembered facts, each with a citation |
-| [data/](data/) | Generated JSON straight from the DST Lua: `tuning.json` (every TUNING value), `recipes.json` (ingredients, tech, config), `loot.json` (shared loot tables). Regenerate with `tools/dst_extract.sh` after a DST update |
+| [data/](data/) | Generated JSON straight from the DST Lua: `tuning.json` (every TUNING value), `recipes.json` (ingredients, tech, config), `crafting.json` (crafting menu filters in tab order with their recipe lists, TECH levels), `loot.json` (shared loot tables). `recipes.json` and `crafting.json` ship in the jar (`data/dontstarve/dst/`, copied by `processResources`): the DS crafting menu reads them at runtime. Regenerate with `tools/dst_extract.sh` after a DST update |
 
 All conversions to Minecraft units go through `DSScale` (stats ×2/15, world time ×2.5,
 1 DS unit = 1 block, one tile = 4×4 blocks, mob speeds via `DSScale.mobSpeed`; combat
