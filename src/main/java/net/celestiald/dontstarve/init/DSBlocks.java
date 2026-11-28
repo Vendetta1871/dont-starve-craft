@@ -77,6 +77,25 @@ public final class DSBlocks {
                     net.celestiald.dontstarve.fire.FueledFireBlock.properties(MapColor.STONE, SoundType.STONE),
                     net.celestiald.dontstarve.fire.FueledFireBlock.Kind.FIREPIT));
 
+    /** Drying Rack (prefabs/meatrack2.lua): wooden, hammered in 4 hits, medium burnable. */
+    public static final DeferredBlock<net.celestiald.dontstarve.storage.DryingRackBlock> MEATRACK =
+            BLOCKS.register("meatrack", () -> new net.celestiald.dontstarve.storage.DryingRackBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.WOOD)
+                            .strength(2.0F, 6.0F)
+                            .sound(SoundType.WOOD)
+                            .noOcclusion()
+                            .pushReaction(PushReaction.BLOCK)));
+    /** Ice Box (prefabs/icebox.lua): metal, hammered in 2 hits, not burnable. */
+    public static final DeferredBlock<net.celestiald.dontstarve.storage.IceboxBlock> ICEBOX =
+            BLOCKS.register("icebox", () -> new net.celestiald.dontstarve.storage.IceboxBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.ICE)
+                            .strength(2.0F, 6.0F)
+                            .sound(SoundType.METAL)
+                            .noOcclusion()
+                            .pushReaction(PushReaction.BLOCK)));
+
     private static net.celestiald.dontstarve.craft.PrototyperBlock prototyper(
             MapColor color, java.util.Map<String, Integer> trees, net.minecraft.sounds.SoundEvent ding) {
         return new net.celestiald.dontstarve.craft.PrototyperBlock(BlockBehaviour.Properties.of()

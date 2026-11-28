@@ -17,14 +17,22 @@ public class MonsterMeatItem extends DSFoodItem {
 
     public static final Edible EDIBLE = new Edible(18.75F, -20.0F, -15.0F);
 
+    private final Edible edible;
+
     public MonsterMeatItem(Properties properties) {
-        super(properties, EDIBLE, 6 * 480.0F, () -> net.celestiald.dontstarve.init.DSItems.SPOILED_FOOD.get());
+        this(properties, EDIBLE, 6 * 480.0F);
+    }
+
+    /** Cooked monster meat and monster jerky: same monster food, other values and perish times. */
+    public MonsterMeatItem(Properties properties, Edible edible, float perishTime) {
+        super(properties, edible, perishTime, () -> net.celestiald.dontstarve.init.DSItems.SPOILED_FOOD.get());
+        this.edible = edible;
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity eater) {
         if (!level.isClientSide && !level.dimension().equals(DSRefs.ISLANDS)) {
-            eater.hurt(level.damageSources().magic(), DSScale.stat(-EDIBLE.health()));
+            eater.hurt(level.damageSources().magic(), DSScale.stat(-edible.health()));
         }
         return super.finishUsingItem(stack, level, eater);
     }

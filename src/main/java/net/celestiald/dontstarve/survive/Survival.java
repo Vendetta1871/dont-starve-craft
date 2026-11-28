@@ -81,6 +81,14 @@ public final class Survival {
     private static final Map<UUID, Grue> GRUES = new HashMap<>();
     private static final Map<UUID, Float> STARVE_DEBT = new HashMap<>();
     private static final Map<UUID, Float> TEMPERATURE_DEBT = new HashMap<>();
+    /**
+     * temperature.lua SetTemperatureInBelly: warm or cold food eaten recently; {degrees, DS seconds left}.
+     * Not saved across a server restart.
+     */
+    private static final Map<UUID, float[]> BELLY = new HashMap<>();
+    /** TUNING.HOT_FOOD_WARMING_THRESHOLD / COLD_FOOD_CHILLING_THRESHOLD. */
+    private static final float HOT_FOOD_WARMING_THRESHOLD = 62.0F;
+    private static final float COLD_FOOD_CHILLING_THRESHOLD = 12.0F;
 
     public static DSStats stats(Player player) {
         return player.getData(DSAttachments.STATS.get());
@@ -97,6 +105,7 @@ public final class Survival {
         GRUES.remove(player.getUUID());
         STARVE_DEBT.remove(player.getUUID());
         TEMPERATURE_DEBT.remove(player.getUUID());
+        BELLY.remove(player.getUUID());
         net.celestiald.dontstarve.craft.Builder.freshStart(player);
     }
 
@@ -166,6 +175,7 @@ public final class Survival {
             float ambient = (float) net.celestiald.dontstarve.clock.WorldTemperature.at(clock, island.islandIndex());
             float heaters = (float) net.celestiald.dontstarve.fire.DSFire.heaterDelta(player.serverLevel(),
                     player.position(), stats.temperature());
+            heaters += bellyDelta(player, stats.temperature(), dt);
             stats = stats.withTemperature(stats.temperature() + temperatureRate(stats.temperature(), ambient, heaters) * dt);
             set(player, stats);
             if (stats.temperature() < 0.0F) {
@@ -277,7 +287,32 @@ public final class Survival {
     public static void eat(ServerPlayer player, ItemStack stack) {
         if (stack.getItem() instanceof DSFoodItem food) {
             eat(player, net.celestiald.dontstarve.item.Perishable.effective(stack, food.edible()));
+            if (food.belly() != null && food.belly().delta() != 0.0F && food.belly().duration() > 0.0F) {
+                BELLY.put(player.getUUID(), new float[] {food.belly().delta(), food.belly().duration()});
+            }
         }
+    }
+
+    /** The belly food pull while it lasts (temperature.lua OnUpdate: only while it can still warm or chill). */
+    private static float bellyDelta(ServerPlayer player, float temperature, float dt) {
+        float[] belly = BELLY.get(player.getUUID());
+        if (belly == null) {
+            return 0.0F;
+        }
+        belly[1] -= dt;
+        if (belly[1] <= 0.0F) {
+            BELLY.remove(player.getUUID());
+            return 0.0F;
+        }
+        boolean applies = (belly[0] > 0.0F && temperature < HOT_FOOD_WARMING_THRESHOLD)
+                || (belly[0] < 0.0F && temperature > COLD_FOOD_CHILLING_THRESHOLD);
+        return applies ? belly[0] : 0.0F;
+    }
+
+    /** Test access: the belly effect left as "degrees seconds", or null. */
+    public static String bellyReport(ServerPlayer player) {
+        float[] belly = BELLY.get(player.getUUID());
+        return belly == null ? null : String.format(java.util.Locale.ROOT, "%.0f %.1f", belly[0], belly[1]);
     }
 
     public static void eat(ServerPlayer player, DSFoodItem.Edible edible) {

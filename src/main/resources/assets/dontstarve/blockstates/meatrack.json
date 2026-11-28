@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "burnt=false": {
+      "model": "dontstarve:block/meatrack"
+    },
+    "burnt=true": {
+      "model": "dontstarve:block/meatrack_burnt"
+    }
+  }
+}

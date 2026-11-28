@@ -32,6 +32,16 @@ public final class DSBlockEntities {
                     () -> BlockEntityType.Builder.of(net.celestiald.dontstarve.fire.FueledFireBlockEntity::new,
                             DSBlocks.CAMPFIRE.get(), DSBlocks.FIREPIT.get()).build(null));
 
+    public static final Supplier<BlockEntityType<net.celestiald.dontstarve.storage.DryingRackBlockEntity>> DRYING_RACK =
+            BLOCK_ENTITIES.register("drying_rack",
+                    () -> BlockEntityType.Builder.of(net.celestiald.dontstarve.storage.DryingRackBlockEntity::new,
+                            DSBlocks.MEATRACK.get()).build(null));
+
+    public static final Supplier<BlockEntityType<net.celestiald.dontstarve.storage.IceboxBlockEntity>> ICEBOX =
+            BLOCK_ENTITIES.register("icebox",
+                    () -> BlockEntityType.Builder.of(net.celestiald.dontstarve.storage.IceboxBlockEntity::new,
+                            DSBlocks.ICEBOX.get()).build(null));
+
     private DSBlockEntities() {
     }
 }

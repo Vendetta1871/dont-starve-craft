@@ -36,6 +36,7 @@ public final class DontStarveCraft {
         DSDataComponents.DATA_COMPONENTS.register(modBus);
         DSEntities.ENTITIES.register(modBus);
         DSAttachments.ATTACHMENTS.register(modBus);
+        net.celestiald.dontstarve.cook.CookInit.register(modBus);
 
         modBus.addListener(DontStarveCraft::registerWorldgen);
         modBus.addListener(DontStarveCraft::createAttributes);
@@ -84,6 +85,8 @@ public final class DontStarveCraft {
 
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.fire.DSFire::onServerTick);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.fire.FireCommands::register);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.cook.CookCommands::register);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.storage.StorageCommands::register);
     }
 
     public static ResourceLocation rl(String path) {

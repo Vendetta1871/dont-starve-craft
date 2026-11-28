@@ -72,6 +72,14 @@ public final class DSCreativeTabs {
                         output.accept(DSItems.CUTREEDS.get());
                         output.accept(DSBlocks.CAMPFIRE.get());
                         output.accept(DSBlocks.FIREPIT.get());
+                        output.accept(DSItems.BERRIES_COOKED.get());
+                        output.accept(DSItems.CARROT_COOKED.get());
+                        output.accept(DSItems.COOKEDMONSTERMEAT.get());
+                        output.accept(DSItems.MONSTERMEAT_DRIED.get());
+                        output.accept(DSBlocks.MEATRACK.get());
+                        output.accept(DSBlocks.ICEBOX.get());
+                        output.accept(net.celestiald.dontstarve.cook.CookInit.COOKPOT_ITEM.get());
+                        net.celestiald.dontstarve.cook.CookInit.FOODS.values().forEach(food -> output.accept(food.get()));
                     })
                     .build());
 

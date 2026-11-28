@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "burnt=false,phase=empty": {
+      "model": "dontstarve:block/cookpot_empty"
+    },
+    "burnt=false,phase=cooking": {
+      "model": "dontstarve:block/cookpot_cooking"
+    },
+    "burnt=false,phase=done": {
+      "model": "dontstarve:block/cookpot_done"
+    },
+    "burnt=true,phase=empty": {
+      "model": "dontstarve:block/cookpot_burnt"
+    },
+    "burnt=true,phase=cooking": {
+      "model": "dontstarve:block/cookpot_burnt"
+    },
+    "burnt=true,phase=done": {
+      "model": "dontstarve:block/cookpot_burnt"
+    }
+  }
+}

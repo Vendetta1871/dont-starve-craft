@@ -131,10 +131,23 @@ public class FueledFireBlock extends Block implements EntityBlock, DSBurnable, D
         return (l, p, s, be) -> ((FueledFireBlockEntity) be).serverTick((ServerLevel) l, p, s);
     }
 
-    /** ACTIONS.ADDFUEL: right-click with a fuel item feeds the fire (fueled:TakeFuelItem). */
+    /**
+     * ACTIONS.COOK: right-click with a cookable item on a burning fire cooks one of it (cooker.lua);
+     * ACTIONS.ADDFUEL: right-click with a fuel item feeds the fire (fueled:TakeFuelItem).
+     */
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                               Player player, InteractionHand hand, BlockHitResult hit) {
+        if (Cooking.cookedItem(stack) != null && level.dimension().equals(DSRefs.ISLANDS)) {
+            if (state.getValue(SECTION) <= 0) {
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            }
+            if (level.isClientSide) {
+                return ItemInteractionResult.SUCCESS;
+            }
+            return Cooking.cook((ServerLevel) level, pos, player, stack).isPresent()
+                    ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
         OptionalDouble value = FuelValues.of(stack);
         if (value.isEmpty() || !level.dimension().equals(DSRefs.ISLANDS)) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

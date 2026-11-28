@@ -48,7 +48,24 @@ public final class DSItems {
                     .food(new FoodProperties.Builder().nutrition(0).saturationModifier(0.0F).alwaysEdible().build()));
 
     public static final DeferredItem<MonsterMeatItem> MONSTERMEAT = ITEMS.registerItem("monstermeat",
-            MonsterMeatItem::new, new Item.Properties().stacksTo(40)
+            p -> {
+                MonsterMeatItem meat = new MonsterMeatItem(p);
+                // meats.lua:284: cookable -> cookedmonstermeat, dryable -> monstermeat_dried in DRY_FAST (1 day).
+                meat.cookInto(() -> DSItems.COOKEDMONSTERMEAT.get()).dryInto(() -> DSItems.MONSTERMEAT_DRIED.get(), 480.0F);
+                return meat;
+            }, new Item.Properties().stacksTo(40)
+                    .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build()));
+
+    /** Cooked Monster Meat (meats.lua:306-321): hunger 18.75, health -HEALING_SMALL 3, sanity -SANITY_SMALL 10, PERISH_SLOW 15 days. */
+    public static final DeferredItem<MonsterMeatItem> COOKEDMONSTERMEAT = ITEMS.registerItem("cookedmonstermeat",
+            p -> new MonsterMeatItem(p, new net.celestiald.dontstarve.item.DSFoodItem.Edible(18.75F, -3.0F, -10.0F), 15 * 480.0F),
+            new Item.Properties().stacksTo(40)
+                    .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build()));
+
+    /** Monster Jerky (meats.lua:323-337): hunger 18.75, health -3, sanity -SANITY_TINY 5, PERISH_PRESERVED 20 days. */
+    public static final DeferredItem<MonsterMeatItem> MONSTERMEAT_DRIED = ITEMS.registerItem("monstermeat_dried",
+            p -> new MonsterMeatItem(p, new net.celestiald.dontstarve.item.DSFoodItem.Edible(18.75F, -3.0F, -5.0F), 20 * 480.0F),
+            new Item.Properties().stacksTo(40)
                     .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build()));
 
     /** Telltale Heart: a living player revives a ghost with it at 25 % HP. */
@@ -88,6 +105,10 @@ public final class DSItems {
     // Fueled fires: built through the crafting menu's placer (campfire, firepit recipes).
     public static final DeferredItem<BlockItem> CAMPFIRE = ITEMS.registerSimpleBlockItem(DSBlocks.CAMPFIRE);
     public static final DeferredItem<BlockItem> FIREPIT = ITEMS.registerSimpleBlockItem(DSBlocks.FIREPIT);
+
+    // Food structures: built through the crafting menu's placer (meatrack; the icebox needs gears).
+    public static final DeferredItem<BlockItem> MEATRACK = ITEMS.registerSimpleBlockItem(DSBlocks.MEATRACK);
+    public static final DeferredItem<BlockItem> ICEBOX = ITEMS.registerSimpleBlockItem(DSBlocks.ICEBOX);
 
     // Refined materials (REFINE tab). Stack sizes: cutstone/transistor STACK_SIZE_LARGEITEM 10,
     // rope the stackable default STACK_SIZE_MEDITEM 20.
@@ -139,9 +160,15 @@ public final class DSItems {
     // Foods perish into rot; PERISH_FAST 6 days = 2880 s, PERISH_MED 10 days = 4800 s (day 480 s);
     // calories: TINY 9.375, SMALL 12.5; HEALING_TINY 1. Textures are vanilla placeholders.
     /** Berries (veggies.lua:85): hunger CALORIES_TINY, no health, PERISH_FAST. */
-    public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> BERRIES = food("berries", 9.375F, 0.0F, 2880.0F);
+    public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> BERRIES = food("berries", 9.375F, 0.0F, 2880.0F,
+            f -> f.cookInto(() -> DSItems.BERRIES_COOKED.get()));
+    /** Roasted Berries (veggies.lua:85 cooked values): hunger CALORIES_SMALL, health HEALING_TINY, PERISH_SUPERFAST 3 days. */
+    public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> BERRIES_COOKED = food("berries_cooked", 12.5F, 1.0F, 1440.0F);
+    /** Roasted Carrot (veggies.lua:45 cooked values): hunger CALORIES_SMALL, health HEALING_SMALL 3, PERISH_FAST 6 days. */
+    public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> CARROT_COOKED = food("carrot_cooked", 12.5F, 3.0F, 2880.0F);
     /** Carrot (veggies.lua:45): hunger CALORIES_SMALL, health HEALING_TINY, PERISH_MED. */
-    public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> CARROT = food("carrot", 12.5F, 1.0F, 4800.0F);
+    public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> CARROT = food("carrot", 12.5F, 1.0F, 4800.0F,
+            f -> f.cookInto(() -> DSItems.CARROT_COOKED.get()));
     /** Petals (petals.lua:96-118): health HEALING_TINY, no hunger, PERISH_FAST. */
     public static final DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> PETALS = food("petals", 0.0F, 1.0F, 2880.0F);
     /** Cut reeds (cutreeds.lua): STACK_SIZE_SMALLITEM 40; roughage, not edible by players. */
@@ -162,10 +189,20 @@ public final class DSItems {
 
     private static DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> food(String id, float hunger, float health,
                                                                                 float perishDsSeconds) {
+        return food(id, hunger, health, perishDsSeconds, f -> { });
+    }
+
+    private static DeferredItem<net.celestiald.dontstarve.item.DSFoodItem> food(String id, float hunger, float health,
+                                                                                float perishDsSeconds,
+                                                                                java.util.function.Consumer<net.celestiald.dontstarve.item.DSFoodItem> setup) {
         return ITEMS.registerItem(id,
-                p -> new net.celestiald.dontstarve.item.DSFoodItem(p,
-                        new net.celestiald.dontstarve.item.DSFoodItem.Edible(hunger, health, 0.0F),
-                        perishDsSeconds, () -> SPOILED_FOOD.get()),
+                p -> {
+                    net.celestiald.dontstarve.item.DSFoodItem item = new net.celestiald.dontstarve.item.DSFoodItem(p,
+                            new net.celestiald.dontstarve.item.DSFoodItem.Edible(hunger, health, 0.0F),
+                            perishDsSeconds, () -> SPOILED_FOOD.get());
+                    setup.accept(item);
+                    return item;
+                },
                 new Item.Properties().stacksTo(40)
                         .food(new FoodProperties.Builder().nutrition(0).saturationModifier(0.0F).alwaysEdible().build()));
     }

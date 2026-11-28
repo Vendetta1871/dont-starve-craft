@@ -13,7 +13,7 @@ python3 tests/servertest.py . tests/scenarios/smoke.txt tests/scenarios/ghost.tx
 ```
 
 While iterating, run only the scenarios a change touches; the full suite runs once
-before a commit.
+before a release.
 
 One session, clean slates: before every scenario but the first, `ds test reset @a`
 (`TestReset.java`) moves the run to a fresh island (new run clock, no hound waves, no
@@ -75,6 +75,8 @@ not collide with real runs use high island indices (`ds island goto 900`).
 | `perish.txt` | PLAYER: food spoilage carried and on the ground, stale/spoiled food values, rot, merging stacks |
 | `flora.txt` | PLAYER: forest flora — pick by hand (berry bush, carrot, flower, rose, reeds), food values and spoilage, transplant barrenness, fertilize and cycles, dig loot, ground flint, regrowth manager (night/winter/player range), berry regrow time, worldgen scatter |
 | `fire.txt` | PLAYER: DST fire — campfire/fire pit build, fuel sections over `#ds-wait`, fuel items, light and warmth, campfire burns out to ash (charcoal when queued), fire pit stays and relights, hammering; prototyper burning, heat spread with smouldering, fire damage, burnt wreck, torch LIGHT |
+| `cooking.txt` | PLAYER: DST cooking and food keeping — COOK on a burning campfire/fire pit (products, freshness carry-over, edible values, perish times, not cookable / unlit), Drying Rack placement through the crafting menu, 3 slots, monster meat dries in 480 DS s without perishing, early take and resume, harvest, hammer, burning; Ice Box item filter, spoilage at half rate, hammer |
+| `cookpot.txt` | PLAYER: DST Crock Pot — the cooking.lua resolver (tags, priorities, ties, wet goop, cooked names and aliases, items that do not exist yet), a placed pot: fill, cook over `#ds-wait`, finished dish, harvest freshness, spoiling into rot, eating, belly temperature, hammer loot with loaded ingredients and dish, burning to a wreck |
 | `wipe.txt` | PLAYER, SLOW: full all-ghost wipe — countdown, island advance, ejection home |
 
 ## Test-only commands
@@ -92,6 +94,9 @@ the DS stats and spoilage; `/ds hound pause on|off` keeps hound waves away from 
 builds and drives evergreens (`TreeCommands`); `/ds pick <player> <pos>` picks a plant by hand, `/ds fertilize <pos>`
 fertilizes a barren plant, `/ds regrow status|advance <ds seconds>` reads or advances the flora regrowth manager;
 `/ds fire ignite|extinguish|smoulder|check <pos>`, `heat <pos> <amount>`, `light <player> <pos>` (torch LIGHT action),
-`feed <player> <pos>` (main-hand item as fuel) and `fuel <pos> set|add <ds seconds>` drive and read the fire engine.
+`feed <player> <pos>` (main-hand item as fuel) and `fuel <pos> set|add <ds seconds>` drive and read the fire engine;
+`/ds cookfire <player> <pos>` cooks the main-hand item on a fire; `/ds dryer <pos> put <player>|check|slot <n>|harvest <player>`
+and `/ds icebox <pos> put <player>|check|slot <n>|take <player> <n>` drive the Drying Rack and the Ice Box.
+`/ds cook calc <ingredients...>` runs the Crock Pot resolver on prefab names or item ids; `/ds cookpot <pos> put <player>|cook|check|advance <ds seconds>|harvest <player>` drives a pot (`CookCommands`), `/ds cook belly <player>` reads the warm-food effect.
 They exist for these scenarios and manual
 probing, not for gameplay.

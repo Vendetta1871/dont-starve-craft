@@ -117,8 +117,24 @@ fire (DS-4), birchnut trees (RoG).
 - Torch: rain burn rate (needs rain). **A**.
 
 ### DS-4. Food and cooking
-- Cooking on fire, Crock Pot with all DS recipes and priorities, Drying Rack, Ice Box,
-  Bee Box, basic farms. **A** (recipe resolver is fully testable), **S** UI.
+
+Done: cooking on a burning campfire or fire pit (`cooker.lua`/`cookable.lua`: cooked
+berries, carrot, monster meat; the product keeps part of the freshness). The Crock Pot
+(`stewer.lua`, `cooking.lua`, `preparedfoods.lua`): every ingredient value and every
+base cookpot recipe with its test, priority and weight, wet goop as the fallback, all
+prepared foods as items with DST hunger/health/sanity, perish times and warm/cold
+belly temperature; cook time from BASE_COOK_TIME, the finished dish spoils in the pot,
+hammer and burning. The Drying Rack (`dryingrack.lua`, 3 slots, dried items do not
+perish while drying, monster meat jerky) and the Ice Box (9 slots, food only,
+PERISH_FRIDGE_MULT 0.5; its recipe appears with gears). A recipe is usable once its
+ingredients exist; most dishes wait for the fauna and farm ingredients.
+Known gaps: on-eat effects of jellybeans, sweet tea and the mushroom dishes; the belly
+temperature is not saved across restarts; spices, Warly's portable cookware and the
+cookbook; rain pausing the rack; art is placeholder. Moved: the Bee Box to DS-5 (bees,
+honeycomb), farming to DS-5 (DST replaced the old farm plots with the
+gardening overhaul: tilled soil, nutrients, moisture, giant crops).
+- Cooking on fire, Crock Pot with all DS recipes and priorities, Drying Rack, Ice Box.
+  **A** (recipe resolver is fully testable), **S** UI.
 
 ### DS-5. Forest fauna
 - Passive/neutral: rabbits (+holes), beefalo (herds, mating, domestication is DST),
@@ -127,6 +143,9 @@ fire (DS-4), birchnut trees (RoG).
 - Hostile: spiders full (den tiers 1–3, warriors, Spider Queen), tentacles, merms,
   tallbirds, MacTusk party, Krampus, hound variants (fire/ice), penguins. **A**, **M**.
 - Beardlings → beard hair → Meat Effigy becomes craftable. **A**.
+- Bee Box (bees, honeycomb, honey production) with the bees. **A**.
+- Farming, DST gardening (Garden Digamajig, tilled soil, seeds from birds, nutrients,
+  moisture, plant stress, giant crops) once birds drop seeds. **A**, **S**.
 
 ### DS-6. World generation
 - DS biomes (grassland, forest, deciduous later, rocky, savanna, marsh, graveyard,

@@ -95,7 +95,7 @@ public final class Perishable {
     }
 
     /** Ages a stack; returns the stack to keep in its place (rot once it perished). */
-    static ItemStack age(ItemStack stack, float dsSeconds) {
+    public static ItemStack age(ItemStack stack, float dsSeconds) {
         float left = remaining(stack) - dsSeconds;
         if (left <= 0.0F && stack.getItem() instanceof DSFoodItem food) {
             return new ItemStack(food.spoilsInto(), stack.getCount());
@@ -104,19 +104,34 @@ public final class Perishable {
         return stack;
     }
 
+    /** TUNING.PERISH_FRIDGE_MULT: food in an Ice Box (perishable.lua: owner tagged "fridge"). */
+    public static final float FRIDGE_MULT = 0.5F;
+
+    /**
+     * DS seconds a perishable ages in one Minecraft second (20 ticks) at the current world
+     * temperature (perishable.lua: x0.75 below 0, x1.25 above OVERHEAT_TEMP); 0 when the islands
+     * are not loaded. Containers that tick their own contents use it with their own multiplier.
+     */
+    public static float updateDt(MinecraftServer server) {
+        ServerLevel overworld = server.getLevel(Level.OVERWORLD);
+        if (server.getLevel(DSRefs.ISLANDS) == null || overworld == null) {
+            return 0.0F;
+        }
+        double ambient = WorldTemperature.at(RunClock.state(server), IslandState.get(overworld).islandIndex());
+        float mult = ambient < 0 ? WINTER_MULT : ambient > DSStats.OVERHEAT_TEMP ? SUMMER_MULT : 1.0F;
+        return DS_SECONDS_PER_UPDATE * mult;
+    }
+
     public static void onServerTick(ServerTickEvent.Post event) {
         MinecraftServer server = event.getServer();
         if (server.getTickCount() % 20 != 0) {
             return;
         }
         ServerLevel islands = server.getLevel(DSRefs.ISLANDS);
-        ServerLevel overworld = server.getLevel(Level.OVERWORLD);
-        if (islands == null || overworld == null) {
+        float dt = updateDt(server);
+        if (islands == null) {
             return;
         }
-        double ambient = WorldTemperature.at(RunClock.state(server), IslandState.get(overworld).islandIndex());
-        float mult = ambient < 0 ? WINTER_MULT : ambient > DSStats.OVERHEAT_TEMP ? SUMMER_MULT : 1.0F;
-        float dt = DS_SECONDS_PER_UPDATE * mult;
         for (ServerPlayer player : islands.players()) {
             Inventory inventory = player.getInventory();
             for (int i = 0; i < inventory.getContainerSize(); i++) {

@@ -1,0 +1,284 @@
+// PLAYER: DST Crock Pot (cooking.lua, preparedfoods.lua, stewer.lua, cookpot.lua): the resolver
+// (tags, priorities, ties, wet goop, cooked and aliased names, items that do not exist yet), the
+// pot block (fill, cook over DS time, finished dish, harvest with freshness, spoiling into rot,
+// eating, belly temperature), hammering (loot, loaded ingredients) and burning.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock set 1 day 100
+ds island current
+execute in dontstarve:islands run fill {X+5} 76 {Z-18} {X+45} 96 {Z+18} minecraft:air
+execute in dontstarve:islands run fill {X+5} 75 {Z-18} {X+45} 75 {Z+18} minecraft:stone
+// Loose worldgen flint that fell onto the platform would mix into the item checks.
+execute in dontstarve:islands run kill @e[type=item,x={X+5},y=70,z={Z-18},dx=41,dy=27,dz=37]
+execute in dontstarve:islands run tp {P} {X+22} 76 {Z-10} 0 30
+#sleep 2
+ds island current
+// ---- The recipe is in the DS book (cutstone 3, charcoal 6, twigs 6, SCIENCE_ONE, placer).
+ds check dsrecipe cookpot
+#expect OK dsrecipe cookpot tech \{SCIENCE=1\} placer
+// ---- Resolver (cooking.lua GetCandidateRecipes: only the top priority group, CalculateRecipe picks
+// among them by weight). Replies: product, its priority and cook time, candidates, summed tags.
+// meatballs (priority -1) beats nothing else here; wet goop is -10.
+ds cook calc meat berries berries berries
+#expect cook calc meatballs priority -1 cooktime 0\.75 candidates meatballs tags fruit=1\.5/meat=1
+// Items by registry id work like prefab names: 4 berries make jam (priority 0, fruit 2).
+ds cook calc dontstarve:berries dontstarve:berries dontstarve:berries dontstarve:berries
+#expect cook calc jammypreserves priority 0 cooktime 0\.5 candidates jammypreserves tags fruit=2
+ds cook calc carrot carrot carrot carrot
+#expect cook calc ratatouille priority 0 cooktime 1 candidates ratatouille tags veggie=4
+// Priority: bonestew (0, meat >= 3) beats meatballs (-1).
+ds cook calc meat meat meat meat
+#expect cook calc bonestew priority 0 cooktime 0\.75 candidates bonestew tags meat=4
+// kabobs (5): meat and twigs, at most 1 inedible.
+ds cook calc meat twigs berries berries
+#expect cook calc kabobs priority 5 cooktime 2 candidates kabobs tags fruit=1/inedible=1/meat=1
+// Two twigs too many make no kabobs; monster meat x2 rules out the kabobs and the lasagna (twigs):
+// the fallback is wet goop (priority -10).
+ds cook calc monstermeat monstermeat berries twigs
+#expect cook calc wetgoop priority -10 cooktime 0\.25 candidates wetgoop
+// A tie in the top priority group (hotchili and turkeydinner, both 10): both are candidates.
+ds cook calc drumstick drumstick meat carrot carrot
+#expect cook calc (hotchili|turkeydinner) priority 10 cooktime (0\.5|3) candidates hotchili/turkeydinner
+// Cooked names carry the precook tag; the alias cookedmonstermeat is monstermeat_cooked.
+ds cook calc butter berries_cooked egg
+#expect cook calc waffles priority 10 cooktime 0\.5 candidates waffles tags dairy=1/egg=1/fat=1/fruit=0\.5/precook=1
+ds cook calc cookedmonstermeat cookedmonstermeat cookedmonstermeat berries
+#expect cook calc monsterlasagna priority 10 cooktime 0\.5 candidates monsterlasagna tags fruit=0\.5/meat=3/monster=3/precook=3
+// Mod items: twigs only is beefalo feed (-5); vanilla flint is no ingredient and adds nothing.
+ds cook calc dontstarve:twigs dontstarve:twigs dontstarve:twigs dontstarve:twigs
+#expect cook calc beefalofeed priority -5 cooktime 0\.5 candidates beefalofeed tags inedible=4
+ds cook calc minecraft:flint berries
+#expect cook calc jammypreserves priority 0 cooktime 0\.5 candidates jammypreserves tags fruit=0\.5
+// Dried variants of meat count as meat too (jerky: meat_dried is its own prefab with the dried tag).
+ds cook calc meat_dried meat_dried meat_dried meat_dried
+#expect cook calc bonestew .* tags dried=4/meat=4
+// ---- Prepared food items: DST edible values (meatballs CALORIES_SMALL*5 = 62.5 hunger), perishable
+// into rot, wet goop is plain nothing.
+item replace entity {P} weapon.mainhand with dontstarve:meatballs 1
+ds perish {P}
+#expect Meatballs x1 fresh 100\.0%
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger 112\.[45]\d
+item replace entity {P} weapon.mainhand with dontstarve:wetgoop 1
+ds perish {P}
+#expect Wet Goop x1 fresh 100\.0%
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger (49\.9\d|50\.0\d)
+clear {P}
+// ================= Pot A: fill, a full cook over DS time, the finished dish, harvest, eating =================
+execute in dontstarve:islands run setblock {X+10} 76 {Z+4} dontstarve:cookpot
+ds island current
+ds cookpot {X+10} 76 {Z+4} check
+#expect cookpot state empty burnt false items 0 product none cookticks 0 spoilticks -1 spoilage 1\.000
+ds cookpot {X+10} 76 {Z+4} cook
+#expect cookpot cannot cook not full
+// Only cooking ingredients go in (rocks have no ingredient values), one item per slot.
+item replace entity {P} weapon.mainhand with dontstarve:rocks 1
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot cannot put rocks
+item replace entity {P} weapon.mainhand with dontstarve:berries 5
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put berries slot 0
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put berries slot 1
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put berries slot 2
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put berries slot 3
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot cannot put berries full or busy
+ds cookpot {X+10} 76 {Z+4} check
+#expect cookpot state empty burnt false items 4
+// 4 berries = jammypreserves; cooktime 0.5 x BASE_COOK_TIME 19.998 = 9.999 DS s = 500 ticks.
+ds cookpot {X+10} 76 {Z+4} cook
+#expect cookpot cooking jammypreserves ticks 500
+ds cookpot {X+10} 76 {Z+4} check
+#expect cookpot state cooking burnt false items 0 product jammypreserves cookticks (4[5-9]\d|500) spoilticks -1 spoilage 1\.000
+execute in dontstarve:islands if block {X+10} 76 {Z+4} dontstarve:cookpot[phase=cooking]
+#expect Test passed
+// A cooking pot takes nothing and gives nothing.
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot cannot put berries full or busy
+ds cookpot {X+10} 76 {Z+4} harvest {P}
+#expect cookpot nothing to harvest
+ds cookpot {X+10} 76 {Z+4} cook
+#expect cookpot cannot cook busy
+#ds-wait 5
+ds cookpot {X+10} 76 {Z+4} check
+#expect cookpot state cooking .* cookticks (1[5-9]|2[0-5])\d spoilticks -1
+#ds-wait 6
+ds cookpot {X+10} 76 {Z+4} check
+#expect cookpot state done burnt false items 0 product jammypreserves cookticks 0 spoilticks 359\d\d\d spoilage 1\.000
+execute in dontstarve:islands if block {X+10} 76 {Z+4} dontstarve:cookpot[phase=done]
+#expect Test passed
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot cannot put berries full or busy
+// Harvest: the dish lands in the inventory, still fresh (spoilage 1 x time left of PERISH_SLOW).
+clear {P}
+ds cookpot {X+10} 76 {Z+4} harvest {P}
+#expect cookpot harvested jammypreserves x1 fresh (99\.\d|100\.0)
+ds cookpot {X+10} 76 {Z+4} check
+#expect cookpot state empty burnt false items 0 product none cookticks 0 spoilticks -1 spoilage 1\.000
+// Jam: CALORIES_SMALL*3 = 37.5 hunger.
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger 87\.[45]\d
+// Warm food (kabobs: monster meat, twigs, 2 berries; HOT_FOOD_BONUS_TEMP 40 for FOOD_TEMP_LONG 15 s).
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 1
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put monstermeat slot 0
+item replace entity {P} weapon.mainhand with dontstarve:twigs 1
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put twigs slot 1
+item replace entity {P} weapon.mainhand with dontstarve:berries 2
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put berries slot 2
+ds cookpot {X+10} 76 {Z+4} put {P}
+#expect cookpot put berries slot 3
+ds cookpot {X+10} 76 {Z+4} cook
+#expect cookpot cooking kabobs ticks 2000
+ds cookpot {X+10} 76 {Z+4} advance 41
+#expect cookpot state done .* product kabobs cookticks 0
+clear {P}
+ds cookpot {X+10} 76 {Z+4} harvest {P}
+#expect cookpot harvested kabobs x1 fresh (99\.\d|100\.0)
+ds cook belly {P}
+#expect cook belly none
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger 87\.[45]\d
+ds cook belly {P}
+#expect cook belly 40 1[45]\.\d
+// ================= Pot B: freshness of the dish, spoiling in the pot, rot =================
+execute in dontstarve:islands run setblock {X+18} 76 {Z+4} dontstarve:cookpot
+ds island current
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 2
+ds perish {P} 1
+#expect x2 spoiled 1\.0%
+ds cookpot {X+18} 76 {Z+4} put {P}
+#expect cookpot put monstermeat slot 0
+ds cookpot {X+18} 76 {Z+4} put {P}
+#expect cookpot put monstermeat slot 1
+item replace entity {P} weapon.mainhand with dontstarve:berries 1
+ds perish {P} 1
+ds cookpot {X+18} 76 {Z+4} put {P}
+#expect cookpot put berries slot 2
+item replace entity {P} weapon.mainhand with dontstarve:carrot 1
+ds perish {P} 1
+ds cookpot {X+18} 76 {Z+4} put {P}
+#expect cookpot put carrot slot 3
+// 2 monster meat, no twigs: monsterlasagna (PERISH_FAST 2880 s). Ingredients at 1 % freshness: the dish
+// starts at 1 - (1 - 0.01) * 0.5 = 0.505 of its perish time (stewer.lua StartCooking).
+ds cookpot {X+18} 76 {Z+4} cook
+#expect cookpot cooking monsterlasagna ticks 500
+ds cookpot {X+18} 76 {Z+4} check
+#expect product monsterlasagna .* spoilage 0\.505
+// stewer:LongUpdate: 20 DS s finish the cooking and start the spoil timer (2880 x 0.505 = 1454.4 s = 72720 ticks).
+ds cookpot {X+18} 76 {Z+4} advance 20
+#expect cookpot state done .* product monsterlasagna cookticks 0 spoilticks 72[12]\d\d spoilage 0\.505
+// Half of that time later the dish is 0.505 x 0.49 = 24.9 % fresh: stale.
+ds cookpot {X+18} 76 {Z+4} advance 727.2
+clear {P}
+ds cookpot {X+18} 76 {Z+4} harvest {P}
+#expect cookpot harvested monsterlasagna x1 fresh 2[45]\.\d
+ds perish {P}
+#expect x1 stale 2[45]\.\d%
+// A second dish left in the pot past its perish time becomes rot.
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:berries 4
+ds cookpot {X+18} 76 {Z+4} put {P}
+ds cookpot {X+18} 76 {Z+4} put {P}
+ds cookpot {X+18} 76 {Z+4} put {P}
+ds cookpot {X+18} 76 {Z+4} put {P}
+ds cookpot {X+18} 76 {Z+4} cook
+#expect cookpot cooking jammypreserves ticks 500
+ds cookpot {X+18} 76 {Z+4} advance 10
+#expect cookpot state done .* product jammypreserves
+ds cookpot {X+18} 76 {Z+4} advance 7300
+#expect cookpot state done .* product spoiled_food cookticks 0 spoilticks -1
+clear {P}
+ds cookpot {X+18} 76 {Z+4} harvest {P}
+#expect cookpot harvested spoiled_food x1 fresh 100\.0
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger (39\.9\d|40\.0\d)
+// ================= Pot C: hammered with loaded ingredients =================
+execute in dontstarve:islands run setblock {X+26} 76 {Z+4} dontstarve:cookpot
+ds island current
+item replace entity {P} weapon.mainhand with dontstarve:berries 3
+ds cookpot {X+26} 76 {Z+4} put {P}
+#expect cookpot put berries slot 0
+ds cookpot {X+26} 76 {Z+4} put {P}
+ds cookpot {X+26} 76 {Z+4} put {P}
+// Half the recipe back (cutstone 3 -> 2, charcoal 6 -> 3, twigs 6 -> 3) and the loaded berries drop.
+item replace entity {P} weapon.mainhand with dontstarve:hammer
+ds work {P} {X+26} 76 {Z+4} 3
+#expect worked dontstarve:cookpot hits 3 left 1
+ds work {P} {X+26} 76 {Z+4}
+#expect finished dontstarve:cookpot hits 1
+#sleep 1
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:cutstone",count:2}},x={X+26},y=76,z={Z+4},distance=..5]
+#expect Killed
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:charcoal",count:3}},x={X+26},y=76,z={Z+4},distance=..5]
+#expect Killed
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:twigs",count:3}},x={X+26},y=76,z={Z+4},distance=..5]
+#expect Killed
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:berries"}},x={X+26},y=76,z={Z+4},distance=..5]
+#expect Killed (Berries|[23] entities)
+execute in dontstarve:islands if block {X+26} 76 {Z+4} minecraft:air
+#expect Test passed
+// ================= Pot D: hammered with a finished dish inside =================
+execute in dontstarve:islands run setblock {X+30} 76 {Z+4} dontstarve:cookpot
+ds island current
+item replace entity {P} weapon.mainhand with dontstarve:berries 4
+ds cookpot {X+30} 76 {Z+4} put {P}
+ds cookpot {X+30} 76 {Z+4} put {P}
+ds cookpot {X+30} 76 {Z+4} put {P}
+ds cookpot {X+30} 76 {Z+4} put {P}
+ds cookpot {X+30} 76 {Z+4} cook
+#expect cookpot cooking jammypreserves
+ds cookpot {X+30} 76 {Z+4} advance 20
+#expect cookpot state done
+item replace entity {P} weapon.mainhand with dontstarve:hammer
+ds work {P} {X+30} 76 {Z+4} 3
+#expect worked dontstarve:cookpot hits 3 left 1
+ds work {P} {X+30} 76 {Z+4}
+#expect finished dontstarve:cookpot hits 1
+#sleep 1
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:jammypreserves"}},x={X+30},y=76,z={Z+4},distance=..5]
+#expect Killed
+// ================= Pot E: burning while cooking =================
+execute in dontstarve:islands run setblock {X+38} 76 {Z+4} dontstarve:cookpot
+ds island current
+item replace entity {P} weapon.mainhand with dontstarve:berries 4
+ds cookpot {X+38} 76 {Z+4} put {P}
+ds cookpot {X+38} 76 {Z+4} put {P}
+ds cookpot {X+38} 76 {Z+4} put {P}
+ds cookpot {X+38} 76 {Z+4} put {P}
+ds cookpot {X+38} 76 {Z+4} cook
+#expect cookpot cooking jammypreserves
+ds fire ignite {X+38} 76 {Z+4}
+#expect ignited cookpot
+// MakeMediumBurnable: 20 DS s of burning, then the burnt wreck (no more cooking, the dish pops out).
+#ds-wait 25
+ds cookpot {X+38} 76 {Z+4} check
+#expect cookpot state empty burnt true items 0 product none
+ds cookpot {X+38} 76 {Z+4} cook
+#expect cookpot cannot cook busy
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:jammypreserves"}},x={X+38},y=76,z={Z+4},distance=..5]
+#expect Killed
+// One hammer hit brings the wreck down for a quarter of the recipe.
+item replace entity {P} weapon.mainhand with dontstarve:hammer
+ds work {P} {X+38} 76 {Z+4}
+#expect finished dontstarve:cookpot hits 1
+#sleep 1
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:cutstone",count:1}},x={X+38},y=76,z={Z+4},distance=..5]
+#expect Killed

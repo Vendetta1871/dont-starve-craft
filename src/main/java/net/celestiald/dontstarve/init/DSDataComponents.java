@@ -27,6 +27,13 @@ public final class DSDataComponents {
                     .networkSynchronized(ByteBufCodecs.FLOAT)
                     .build());
 
+    /** DS seconds of drying left on an item taken off a Drying Rack early (dryingrack_drytime); absent = none. */
+    public static final Supplier<DataComponentType<Float>> DRY_LEFT = DATA_COMPONENTS.register("dry_left",
+            () -> new DataComponentType.Builder<Float>()
+                    .persistent(Codec.FLOAT)
+                    .networkSynchronized(ByteBufCodecs.FLOAT)
+                    .build());
+
     private DSDataComponents() {
     }
 }

@@ -23,6 +23,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  * {@code /ds fire ignite|extinguish|smoulder|check <pos>}, {@code /ds fire heat <pos> <amount>},
  * {@code /ds fire light <player> <pos>} (the torch LIGHT action),
  * {@code /ds fire feed <player> <pos>} (the main-hand item as fuel, ADDFUEL) and
+ * {@code /ds cookfire <player> <pos>} (the COOK action with the main-hand item) and
  * {@code /ds fire fuel <pos> set|add <ds seconds>} (fueled fires).
  */
 public final class FireCommands {
@@ -47,7 +48,10 @@ public final class FireCommands {
                                 .then(Commands.literal("set").then(Commands.argument("ds", DoubleArgumentType.doubleArg(0))
                                         .executes(ctx -> fuel(ctx, false))))
                                 .then(Commands.literal("add").then(Commands.argument("ds", DoubleArgumentType.doubleArg(0))
-                                        .executes(ctx -> fuel(ctx, true))))))));
+                                        .executes(ctx -> fuel(ctx, true)))))))
+                .then(Commands.literal("cookfire")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .then(pos().executes(ctx -> cook(ctx))))));
     }
 
     private static com.mojang.brigadier.builder.RequiredArgumentBuilder<CommandSourceStack, ?> pos() {
@@ -118,6 +122,21 @@ public final class FireCommands {
             return reply(ctx, "not fuel for " + name(level, pos), false);
         }
         return reply(ctx, describe(level, pos) + " left " + stack.getCount(), true);
+    }
+
+    /** The COOK action with the main-hand item on the fire: "cooked X into Y left N" or "cannot cook X". */
+    private static int cook(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        ServerLevel level = level(ctx);
+        BlockPos pos = pos(ctx);
+        var stack = player.getMainHandItem();
+        String raw = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath();
+        var product = Cooking.cook(level, pos, player, stack);
+        if (product.isEmpty()) {
+            return reply(ctx, "cannot cook " + raw, false);
+        }
+        return reply(ctx, "cooked " + raw + " into "
+                + BuiltInRegistries.ITEM.getKey(product.get().getItem()).getPath() + " left " + stack.getCount(), true);
     }
 
     private static int fuel(CommandContext<CommandSourceStack> ctx, boolean add) throws CommandSyntaxException {

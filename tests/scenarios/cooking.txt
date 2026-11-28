@@ -1,0 +1,311 @@
+// PLAYER: DST cooking and food keeping (cooker.lua, cookable.lua, dryer/dryingrack.lua, dryable.lua,
+// icebox.lua, perishable.lua): cooking on a burning campfire or fire pit, the Drying Rack
+// (3 slots, DRY_FAST monster meat, hammer, burning) and the Ice Box (PERISH_FRIDGE_MULT).
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock set 1 day 100
+ds island current
+// A wide clearing: fire range reaches 8 blocks, natural plants past the edge would catch fire.
+execute in dontstarve:islands run fill {X+8} 76 {Z-20} {X+42} 96 {Z+20} minecraft:air
+execute in dontstarve:islands run fill {X+8} 75 {Z-20} {X+42} 75 {Z+20} minecraft:stone
+execute in dontstarve:islands run kill @e[type=item,x={X+8},y=70,z={Z-20},dx=34,dy=27,dz=40]
+execute in dontstarve:islands run tp {P} {X+25} 76 {Z} 0 30
+#sleep 2
+ds island current
+clear {P}
+// ---- COOK on a campfire: one item of the held stack per action, the product goes to the player.
+execute in dontstarve:islands run setblock {X+25} 76 {Z+3} dontstarve:campfire
+ds island current
+#sleep 2
+item replace entity {P} weapon.mainhand with dontstarve:berries 3
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cooked berries into berries_cooked left 2
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cooked berries into berries_cooked left 1
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cooked berries into berries_cooked left 0
+clear {P} dontstarve:berries_cooked 0
+#expect Found 3 matching
+clear {P} dontstarve:berries 0
+#expect No items were found
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:carrot 2
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cooked carrot into carrot_cooked left 1
+clear {P} dontstarve:carrot_cooked 0
+#expect Found 1 matching
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 1
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cooked monstermeat into cookedmonstermeat left 0
+clear {P} dontstarve:cookedmonstermeat 0
+#expect Found 1 matching
+// ---- Not cookable: other items, cooked food, rot, an empty hand.
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:rocks 2
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cannot cook rocks
+item replace entity {P} weapon.mainhand with dontstarve:berries_cooked 2
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cannot cook berries_cooked
+item replace entity {P} weapon.mainhand with dontstarve:spoiled_food 2
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cannot cook spoiled_food
+clear {P}
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cannot cook air
+// ---- Freshness: the product keeps 1 - (1 - percent) * 0.5 of its freshness (cookable.lua).
+item replace entity {P} weapon.mainhand with dontstarve:berries 1
+ds perish {P} 60
+#expect Berries x1 fresh 60\.0%
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cooked berries into berries_cooked left 0
+ds perish {P}
+#expect Roasted Berries x1 fresh (79\.[5-9]|80\.0)%
+item replace entity {P} weapon.mainhand with dontstarve:carrot 1
+ds perish {P} 10
+ds cookfire {P} {X+25} 76 {Z+3}
+#expect cooked carrot into carrot_cooked left 0
+ds perish {P}
+#expect Roasted Carrot x1 fresh (54\.[5-9]|55\.0)%
+// ---- Edible values of the cooked foods (veggies.lua, meats.lua), at full freshness.
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:berries_cooked 1
+ds stats {P} set hunger 50
+ds eat {P}
+#expect health (149\.\d+|150\.00) hunger 62\.[45]\d
+item replace entity {P} weapon.mainhand with dontstarve:cookedmonstermeat 1
+ds stats {P} set hunger 50
+ds stats {P} set sanity 100
+ds eat {P}
+#expect health 14[67]\.\d+ hunger 68\.[67]\d sanity (90\.00|89\.9\d)
+item replace entity {P} weapon.mainhand with dontstarve:carrot_cooked 1
+ds stats {P} set hunger 50
+ds eat {P}
+#expect health (149\.\d+|150\.00) hunger 62\.[45]\d
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat_dried 1
+ds stats {P} set hunger 50
+ds stats {P} set sanity 100
+ds eat {P}
+#expect health 14[67]\.\d+ hunger 68\.[67]\d sanity (95\.00|94\.9\d)
+// ---- The fire pit cooks too, but only while it burns (cooker: fuel not empty).
+execute in dontstarve:islands run setblock {X+28} 76 {Z+3} dontstarve:firepit
+ds island current
+#sleep 2
+ds fire fuel {X+28} 76 {Z+3} set 0
+#expect section 0
+clear {P}
+item replace entity {P} weapon.mainhand with dontstarve:berries 1
+ds cookfire {P} {X+28} 76 {Z+3}
+#expect cannot cook berries
+clear {P} dontstarve:berries 0
+#expect Found 1 matching
+ds fire fuel {X+28} 76 {Z+3} set 100
+ds cookfire {P} {X+28} 76 {Z+3}
+#expect cooked berries into berries_cooked left 0
+// ---- Perish times of the cooked foods: PERISH_SUPERFAST 1440, PERISH_FAST 2880, PERISH_SLOW 7200,
+// PERISH_PRESERVED 9600 (144 DS s cost 10 / 5 / 2 / 1.5 %).
+execute in dontstarve:islands run setblock {X+25} 76 {Z+3} minecraft:air
+ds island current
+execute in dontstarve:islands run setblock {X+28} 76 {Z+3} minecraft:air
+ds island current
+clear {P}
+item replace entity {P} hotbar.1 with dontstarve:berries_cooked 1
+item replace entity {P} hotbar.2 with dontstarve:carrot_cooked 1
+item replace entity {P} hotbar.3 with dontstarve:cookedmonstermeat 1
+item replace entity {P} hotbar.4 with dontstarve:monstermeat_dried 1
+ds stats {P} set hunger 150
+#ds-wait 144
+item replace entity {P} weapon.mainhand from entity {P} hotbar.1
+ds perish {P}
+#expect Roasted Berries x1 fresh (89\.[5-9]|90\.[0-3])%
+item replace entity {P} weapon.mainhand from entity {P} hotbar.2
+ds perish {P}
+#expect Roasted Carrot x1 fresh (94\.[5-9]|95\.[0-3])%
+item replace entity {P} weapon.mainhand from entity {P} hotbar.3
+ds perish {P}
+#expect Cooked Monster Meat x1 fresh (97\.[5-9]|98\.[0-3])%
+item replace entity {P} weapon.mainhand from entity {P} hotbar.4
+ds perish {P}
+#expect Monster Jerky x1 fresh (98\.[2-9]|99\.[0-3])%
+// ---- Placement through the crafting menu: the Drying Rack (3 twigs, 2 charcoal, 3 rope; SCIENCE_ONE).
+clear {P}
+execute in dontstarve:islands run setblock {X+14} 76 {Z+10} dontstarve:researchlab
+ds island current
+execute in dontstarve:islands run tp {P} {X+17} 76 {Z+10} 0 30
+ds island current
+#sleep 2
+give {P} dontstarve:twigs 3
+give {P} dontstarve:charcoal 2
+give {P} dontstarve:rope 3
+ds craft {P} meatrack
+#expect buffered \[meatrack\]
+ds place {P} meatrack {X+20} 76 {Z+10}
+#expect placed meatrack
+ds dryer {X+20} 76 {Z+10} check
+#expect rack used 0 of 3 burnt false
+execute in dontstarve:islands run fill {X+12} 76 {Z+8} {X+22} 77 {Z+12} minecraft:air
+ds island current
+execute in dontstarve:islands run tp {P} {X+25} 76 {Z} 0 30
+ds island current
+clear {P}
+// ---- Drying Rack: three slots, only dryables, one item each. Monster meat dries in DRY_FAST 480 DS s;
+// it does not perish on the rack while it dries.
+execute in dontstarve:islands run setblock {X+25} 76 {Z-8} dontstarve:meatrack
+ds island current
+#sleep 1
+ds dryer {X+25} 76 {Z-8} check
+#expect rack used 0 of 3 burnt false
+item replace entity {P} weapon.mainhand with dontstarve:berries 1
+ds dryer {X+25} 76 {Z-8} put {P}
+#expect rack cannot take berries
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 4
+ds perish {P} 50
+ds dryer {X+25} 76 {Z-8} put {P}
+#expect rack took monstermeat slot 0
+ds dryer {X+25} 76 {Z-8} put {P}
+#expect rack took monstermeat slot 1
+ds dryer {X+25} 76 {Z-8} put {P}
+#expect rack took monstermeat slot 2
+ds dryer {X+25} 76 {Z-8} put {P}
+#expect rack cannot take monstermeat
+ds dryer {X+25} 76 {Z-8} check
+#expect rack used 3 of 3 burnt false
+ds dryer {X+25} 76 {Z-8} slot 0
+#expect rack slot 0 monstermeat drying (479|480)\.\d fresh 50\.0%
+// ---- Ice Box: only perishable food and rot go in; its contents spoil at PERISH_FRIDGE_MULT 0.5.
+execute in dontstarve:islands run setblock {X+35} 76 {Z-8} dontstarve:icebox
+ds island current
+#sleep 1
+item replace entity {P} weapon.mainhand with dontstarve:rocks 2
+ds icebox {X+35} 76 {Z-8} put {P}
+#expect icebox rejects rocks
+item replace entity {P} weapon.mainhand with dontstarve:spoiled_food 2
+ds icebox {X+35} 76 {Z-8} put {P}
+#expect icebox took spoiled_food x2
+item replace entity {P} weapon.mainhand with dontstarve:berries 2
+ds icebox {X+35} 76 {Z-8} put {P}
+#expect icebox took berries x2
+ds icebox {X+35} 76 {Z-8} slot 1
+#expect icebox slot 1 berries x2 fresh 100\.0%
+// A berry at 1 % carried and the same berry in the box: rot after 29 DS s outside, 58 inside.
+item replace entity {P} weapon.mainhand with dontstarve:berries 1
+ds perish {P} 1
+item replace entity {P} hotbar.5 from entity {P} weapon.mainhand
+ds icebox {X+35} 76 {Z-8} put {P}
+#expect icebox took berries x1
+item replace entity {P} hotbar.6 with dontstarve:berries 1
+ds icebox {X+35} 76 {Z-8} check
+#expect icebox used 3 of 9
+ds stats {P} set hunger 150
+#ds-wait 40
+clear {P} dontstarve:spoiled_food 0
+#expect Found 1 matching
+ds icebox {X+35} 76 {Z-8} slot 2
+#expect icebox slot 2 berries x1 fresh 0\.[1-5]%
+// The rack after 40 DS s: still drying, the raw meat on it does not perish.
+ds dryer {X+25} 76 {Z-8} slot 1
+#expect rack slot 1 monstermeat drying (43\d|44\d)\.\d fresh 50\.0%
+// 60 more DS s (100 in all) cost the carried berry 3.47 % and the boxed ones 1.74 %; the 1 % berry in the box rots.
+ds stats {P} set hunger 150
+#ds-wait 60
+item replace entity {P} weapon.mainhand from entity {P} hotbar.6
+ds perish {P}
+#expect Berries x1 fresh 96\.[3-7]%
+ds icebox {X+35} 76 {Z-8} slot 1
+#expect icebox slot 1 berries x2 fresh 98\.[1-4]%
+ds icebox {X+35} 76 {Z-8} slot 2
+#expect icebox slot 2 spoiled_food x1
+// ---- Hammer: the first hit shakes the contents out (icebox onhit), the second finishes it.
+// Its recipe needs gears, which are not ported yet, so no recipe loot comes back (yet).
+execute in dontstarve:islands run tp {P} {X+25} 76 {Z+4} 0 30
+ds island current
+item replace entity {P} weapon.mainhand with dontstarve:hammer
+ds work {P} {X+35} 76 {Z-8}
+#expect worked dontstarve:icebox hits 1 left 1
+ds icebox {X+35} 76 {Z-8} check
+#expect icebox used 0 of 9
+execute in dontstarve:islands positioned {X+35} 76 {Z-8} if entity @e[type=item,nbt={Item:{id:"dontstarve:berries"}},distance=..4]
+#expect Test passed
+ds work {P} {X+35} 76 {Z-8}
+#expect finished dontstarve:icebox hits 1
+execute in dontstarve:islands positioned {X+35} 76 {Z-8} run kill @e[type=item,distance=..5]
+#expect Killed
+// ---- Drying Rack: take an item off early, put it back and it resumes its time left (>= 10 DS s).
+clear {P}
+ds dryer {X+25} 76 {Z-8} harvest {P}
+#expect harvested monstermeat
+ds dryer {X+25} 76 {Z-8} slot 0
+#expect rack slot 0 empty
+ds dryer {X+25} 76 {Z-8} check
+#expect rack used 2 of 3 burnt false
+item replace entity {P} weapon.mainhand from entity {P} hotbar.0
+ds dryer {X+25} 76 {Z-8} put {P}
+#expect rack took monstermeat slot 0
+ds dryer {X+25} 76 {Z-8} slot 0
+#expect rack slot 0 monstermeat drying (37\d|38\d)\.\d fresh 50\.0%
+// ---- Dried: after 480 DS s in all each slot holds Monster Jerky (PERISH_PRESERVED), fresh again.
+ds clock set 1 day 100
+ds stats {P} set hunger 150
+#ds-wait 190
+ds clock set 1 day 100
+ds stats {P} set hunger 150
+#ds-wait 190
+ds dryer {X+25} 76 {Z-8} slot 0
+#expect rack slot 0 monstermeat_dried done fresh (99\.\d|100\.0)%
+ds dryer {X+25} 76 {Z-8} slot 1
+#expect rack slot 1 monstermeat_dried done fresh (99\.\d|100\.0)%
+ds dryer {X+25} 76 {Z-8} slot 2
+#expect rack slot 2 monstermeat_dried done fresh (99\.\d|100\.0)%
+// Harvest: the product goes to the player, one item per click, and perishes from then on.
+clear {P}
+ds dryer {X+25} 76 {Z-8} harvest {P}
+#expect harvested monstermeat_dried
+clear {P} dontstarve:monstermeat_dried 0
+#expect Found 1 matching
+ds dryer {X+25} 76 {Z-8} check
+#expect rack used 2 of 3 burnt false
+// Two dropped stacks of one item may already have merged into one entity.
+// Hammer: 4 hits; what is on the rack drops, then half the recipe (2 twigs, 1 charcoal, 2 rope).
+item replace entity {P} weapon.mainhand with dontstarve:hammer
+ds work {P} {X+25} 76 {Z-8} 3
+#expect worked dontstarve:meatrack hits 3 left 1
+ds work {P} {X+25} 76 {Z-8}
+#expect finished dontstarve:meatrack hits 1
+execute in dontstarve:islands positioned {X+25} 76 {Z-8} if entity @e[type=item,nbt={Item:{id:"dontstarve:monstermeat_dried"}},distance=..4]
+#expect Test passed, count: [12]
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:twigs",count:2}},x={X+25},y=76,z={Z-8},distance=..4]
+#expect Killed Twigs
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:charcoal",count:1}},x={X+25},y=76,z={Z-8},distance=..4]
+#expect Killed Charcoal
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:rope",count:2}},x={X+25},y=76,z={Z-8},distance=..4]
+#expect Killed Rope
+execute in dontstarve:islands run kill @e[type=item,x={X+25},y=76,z={Z-8},distance=..5]
+// ---- A burning rack (MakeMediumBurnable, 20 DS s): when it burns down the meat on it is dried at once,
+// the structure stays as a burnt wreck with one hammer hit left (and cannot be lit again).
+execute in dontstarve:islands run setblock {X+25} 76 {Z-16} dontstarve:meatrack
+ds island current
+#sleep 1
+item replace entity {P} weapon.mainhand with dontstarve:monstermeat 2
+ds dryer {X+25} 76 {Z-16} put {P}
+#expect rack took monstermeat slot 0
+ds dryer {X+25} 76 {Z-16} put {P}
+#expect rack took monstermeat slot 1
+ds fire ignite {X+25} 76 {Z-16}
+#expect ignited meatrack
+#ds-wait 24
+ds dryer {X+25} 76 {Z-16} check
+#expect rack used 0 of 3 burnt true
+ds fire light {P} {X+25} 76 {Z-16}
+#expect cannot light meatrack
+execute in dontstarve:islands positioned {X+25} 76 {Z-16} if entity @e[type=item,nbt={Item:{id:"dontstarve:monstermeat_dried"}},distance=..6]
+#expect Test passed, count: [12]
+execute in dontstarve:islands run kill @e[type=item,x={X+25},y=76,z={Z-16},distance=..6]
+item replace entity {P} weapon.mainhand with dontstarve:hammer
+ds work {P} {X+25} 76 {Z-16}
+#expect finished dontstarve:meatrack hits 1
+execute in dontstarve:islands run kill @e[type=item,x={X+25},y=76,z={Z-16},distance=..6]
