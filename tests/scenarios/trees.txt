@@ -1,0 +1,211 @@
+// PLAYER: DST evergreen lifecycle (prefabs/evergreens.lua, planted_tree.lua): stages with their
+// chop counts and loot, the tree as one object (chopping a crown block works the trunk), stump
+// digging, forced growth steps, pinecone planting and natural growth, burning (burnt tree, stump,
+// sapling) and the lumpy build. Island blocks are cleared with fill; the player stands 10+ blocks
+// away so nothing is picked up before `ds tree sweep` counts and deletes the loot.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock set 1 day 100
+ds island current
+execute in dontstarve:islands run fill {X+18} 76 {Z-16} {X+40} 110 {Z+16} minecraft:air
+execute in dontstarve:islands run fill {X+18} 75 {Z-16} {X+40} 75 {Z+16} minecraft:stone
+execute in dontstarve:islands run kill @e[type=item,x={X+30},y=76,z={Z},distance=..60]
+execute in dontstarve:islands run tp {P} {X+19} 76 {Z} 0 30
+#sleep 2
+item replace entity {P} weapon.mainhand with dontstarve:axe
+
+// ---- short: EVERGREEN_CHOPS_SMALL 5, loot {log}; bare hands do nothing; a crown block works the same tree
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} short
+#expect placed evergreen short
+execute in dontstarve:islands run ds tree info {X+30} 77 {Z}
+#expect tree evergreen stage short left 5
+execute in dontstarve:islands if block {X+31} 77 {Z} dontstarve:evergreen_crown
+#expect Test passed
+execute in dontstarve:islands if block {X+30} 78 {Z} dontstarve:evergreen_crown
+#expect Test passed
+item replace entity {P} weapon.mainhand with minecraft:stick
+ds work {P} {X+30} 76 {Z}
+#expect wrong tool for dontstarve:evergreen
+item replace entity {P} weapon.mainhand with dontstarve:axe
+ds work {P} {X+31} 77 {Z} swing
+#expect swing
+execute in dontstarve:islands run ds tree info {X+30} 76 {Z}
+#expect tree evergreen stage short left 4
+ds work {P} {X+30} 77 {Z} 3
+#expect worked dontstarve:evergreen hits 3 left 1
+ds work {P} {X+30} 76 {Z}
+#expect finished dontstarve:evergreen hits 1
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items minecraft:spruce_log=1$
+// The whole tree is gone but the stump.
+execute in dontstarve:islands if block {X+30} 76 {Z} dontstarve:evergreen_stump
+#expect Test passed
+execute in dontstarve:islands if block {X+30} 77 {Z} minecraft:air
+#expect Test passed
+execute in dontstarve:islands if block {X+31} 77 {Z} minecraft:air
+#expect Test passed
+// Stump: an axe cannot touch it, one shovel hit digs it up for a log.
+ds work {P} {X+30} 76 {Z}
+#expect wrong tool for dontstarve:evergreen_stump
+item replace entity {P} weapon.mainhand with dontstarve:shovel
+ds work {P} {X+30} 76 {Z}
+#expect finished dontstarve:evergreen_stump hits 1
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items minecraft:spruce_log=1$
+execute in dontstarve:islands if block {X+30} 76 {Z} minecraft:air
+#expect Test passed
+
+// ---- normal: EVERGREEN_CHOPS_NORMAL 10, loot {log, log, pinecone}
+item replace entity {P} weapon.mainhand with dontstarve:axe
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} normal
+execute in dontstarve:islands run ds tree info {X+30} 76 {Z}
+#expect stage normal left 10
+ds work {P} {X+30} 79 {Z} 9
+#expect worked dontstarve:evergreen hits 9 left 1
+ds work {P} {X+30} 76 {Z}
+#expect finished dontstarve:evergreen hits 1
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items dontstarve:pinecone=1 minecraft:spruce_log=2$
+execute in dontstarve:islands run fill {X+27} 76 {Z-3} {X+33} 90 {Z+3} minecraft:air
+
+// ---- tall: EVERGREEN_CHOPS_TALL 15, loot {log x3, pinecone x2}
+item replace entity {P} weapon.mainhand with dontstarve:axe
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} tall
+execute in dontstarve:islands run ds tree info {X+30} 76 {Z}
+#expect stage tall left 15
+ds work {P} {X+30} 76 {Z} 14
+#expect worked dontstarve:evergreen hits 14 left 1
+ds work {P} {X+30} 80 {Z}
+#expect finished dontstarve:evergreen hits 1
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items dontstarve:pinecone=2 minecraft:spruce_log=3$
+execute in dontstarve:islands run fill {X+27} 76 {Z-3} {X+33} 90 {Z+3} minecraft:air
+
+// ---- old: a single chop, loot {pinecone}
+item replace entity {P} weapon.mainhand with dontstarve:axe
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} old
+execute in dontstarve:islands run ds tree info {X+30} 76 {Z}
+#expect stage old left 1
+ds work {P} {X+30} 76 {Z}
+#expect finished dontstarve:evergreen hits 1
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items dontstarve:pinecone=1$
+execute in dontstarve:islands run fill {X+27} 76 {Z-3} {X+33} 90 {Z+3} minecraft:air
+
+// ---- lumpy (evergreen_sparse): no pinecones, normal {log, log}, old {}
+item replace entity {P} weapon.mainhand with dontstarve:axe
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} normal lumpy
+#expect placed evergreen_sparse normal
+ds work {P} {X+30} 76 {Z} 10
+#expect finished dontstarve:evergreen_sparse hits 10
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items minecraft:spruce_log=2$
+execute in dontstarve:islands run fill {X+27} 76 {Z-3} {X+33} 90 {Z+3} minecraft:air
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} old lumpy
+ds work {P} {X+30} 76 {Z}
+#expect finished dontstarve:evergreen_sparse hits 1
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items none
+execute in dontstarve:islands run fill {X+27} 76 {Z-3} {X+33} 90 {Z+3} minecraft:air
+
+// ---- growth steps (growable loopstages): short > normal > tall > old > short, the silhouette
+// follows the stage and the chops left are reset
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} short
+ds work {P} {X+30} 76 {Z} 2
+#expect left 3
+execute in dontstarve:islands if block {X+30} 80 {Z} minecraft:air
+#expect Test passed
+execute in dontstarve:islands run ds tree grow {X+30} 76 {Z}
+#expect grown normal
+execute in dontstarve:islands run ds tree info {X+30} 76 {Z}
+#expect stage normal left 10
+execute in dontstarve:islands if block {X+30} 81 {Z} dontstarve:evergreen_crown
+#expect Test passed
+execute in dontstarve:islands run ds tree grow {X+30} 76 {Z}
+#expect grown tall
+execute in dontstarve:islands if block {X+30} 83 {Z} dontstarve:evergreen_crown
+#expect Test passed
+execute in dontstarve:islands if block {X+30} 82 {Z} dontstarve:evergreen_crown
+#expect Test passed
+execute in dontstarve:islands run ds tree grow {X+30} 76 {Z}
+#expect grown old
+execute in dontstarve:islands if block {X+30} 83 {Z} minecraft:air
+#expect Test passed
+execute in dontstarve:islands run ds tree info {X+30} 76 {Z}
+#expect stage old left 1
+execute in dontstarve:islands run ds tree grow {X+30} 76 {Z}
+#expect grown short
+execute in dontstarve:islands run ds tree info {X+30} 76 {Z}
+#expect stage short left 5
+execute in dontstarve:islands if block {X+30} 80 {Z} minecraft:air
+#expect Test passed
+execute in dontstarve:islands run fill {X+27} 76 {Z-3} {X+33} 90 {Z+3} minecraft:air
+
+// ---- burning: the tree becomes a burnt tree of the same height, one chop gives charcoal
+execute in dontstarve:islands run ds tree place {X+30} 76 {Z} normal
+execute in dontstarve:islands run ds tree burn {X+30} 77 {Z}
+#expect burnt evergreen
+execute in dontstarve:islands if block {X+30} 79 {Z} dontstarve:evergreen_burnt
+#expect Test passed
+execute in dontstarve:islands if block {X+30} 80 {Z} minecraft:air
+#expect Test passed
+execute in dontstarve:islands if block {X+31} 79 {Z} minecraft:air
+#expect Test passed
+execute in dontstarve:islands run ds tree burn {X+30} 77 {Z}
+#expect cannot burn evergreen_burnt
+// 10 DS seconds after burning the pinecone task has run (burntcone).
+execute in dontstarve:islands if block {X+30} 76 {Z} dontstarve:evergreen_burnt[cone=false]
+#expect Test passed
+#ds-wait 11
+execute in dontstarve:islands if block {X+30} 76 {Z} dontstarve:evergreen_burnt[cone=true]
+#expect Test passed
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+item replace entity {P} weapon.mainhand with dontstarve:axe
+ds work {P} {X+30} 78 {Z}
+#expect finished dontstarve:evergreen_burnt hits 1
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect dontstarve:charcoal=1
+execute in dontstarve:islands if block {X+30} 76 {Z} minecraft:air
+#expect Test passed
+// A stump burns into ash (DefaultBurntFn), a sapling too.
+execute in dontstarve:islands run ds tree stump {X+30} 76 {Z}
+execute in dontstarve:islands run ds tree burn {X+30} 76 {Z}
+#expect burnt evergreen_stump
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items dontstarve:ash=1$
+execute in dontstarve:islands run ds tree sapling {X+30} 76 {Z}
+execute in dontstarve:islands run ds tree burn {X+30} 76 {Z}
+#expect burnt pinecone_sapling
+execute in dontstarve:islands run ds tree sweep {X+30} 76 {Z}
+#expect items dontstarve:ash=1$
+
+// ---- pinecone: planted on the ground by a right click, a shovel digs the sapling up for twigs
+item replace entity {P} weapon.mainhand with dontstarve:pinecone 3
+ds tree plant {P} {X+36} 75 {Z-10}
+#expect planted pinecone_sapling
+data get entity {P} SelectedItem.count
+#expect has the following entity data: 2$
+ds tree plant {P} {X+36} 75 {Z-6}
+#expect planted pinecone_sapling
+item replace entity {P} weapon.mainhand with dontstarve:shovel
+ds work {P} {X+36} 76 {Z-6}
+#expect finished dontstarve:pinecone_sapling hits 1
+execute in dontstarve:islands run ds tree sweep {X+36} 76 {Z-6}
+#expect items dontstarve:twigs=1$
+
+// ---- natural growth (#ds-wait): the sapling (PINECONE_GROWTIME 225 +- 75) becomes a short evergreen;
+// a short tree (1.5 days +- 0.5 = 300..600 DS s) becomes normal (normal lasts 900..2100)
+execute in dontstarve:islands run ds tree place {X+24} 76 {Z+10} short
+execute in dontstarve:islands run ds tree info {X+24} 76 {Z+10}
+#expect tick true
+#sleep 1
+#ds-wait 310
+execute in dontstarve:islands run ds tree info {X+36} 76 {Z-10}
+#expect tree evergreen stage short left 5
+#ds-wait 340
+execute in dontstarve:islands run ds tree info {X+24} 76 {Z+10}
+#expect tree evergreen stage normal left 10

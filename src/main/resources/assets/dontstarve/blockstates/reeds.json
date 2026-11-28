@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "picked=false": {
+      "model": "dontstarve:block/reeds"
+    },
+    "picked=true": {
+      "model": "dontstarve:block/reeds_picked"
+    }
+  }
+}

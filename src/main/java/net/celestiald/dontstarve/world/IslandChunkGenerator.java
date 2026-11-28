@@ -167,7 +167,25 @@ public final class IslandChunkGenerator extends ChunkGenerator {
     }
 
     /**
-     * Single-block surface scatter: DS grass tufts (the cutgrass source) and
+     * Density of the generic grassland room BGGrass (map/rooms/forest/terrain_grass.lua, the room
+     * the island meadow stands for) in distributeprefabs units: grass 0.2, berrybush 0.05,
+     * carrot_planted 0.05, flower 0.112, flint 0.05 (also rock1/rock2 0.01 each in the burnt variant).
+     * The island's grass density of 14 % of grass columns stands for the DST grass 0.2, so every
+     * other prefab is scaled by the same factor 0.14 / 0.2 = 0.7 and keeps its DST ratio to grass:
+     * berry bush 3.5 %, carrot 3.5 %, flower 7.84 %, flint 3.5 % of the grass columns. Berry
+     * bushes are the plain "berrybush" (rooms never place berrybush2); berrybush_juicy (0.025)
+     * is not ported.
+     */
+    private static final double DST_TO_ISLAND = 0.14 / 0.2;
+    private static final double GRASS_P = 0.2 * DST_TO_ISLAND;
+    private static final double BERRYBUSH_P = 0.05 * DST_TO_ISLAND;
+    private static final double CARROT_P = 0.05 * DST_TO_ISLAND;
+    private static final double FLOWER_P = 0.112 * DST_TO_ISLAND;
+    private static final double FLINT_P = 0.05 * DST_TO_ISLAND;
+
+    /**
+     * Single-block surface scatter: DS grass tufts (the cutgrass source), berry bushes, carrots
+     * and flowers (one roll split into consecutive bands, see {@link #DST_TO_ISLAND}) and
      * boulders (rocks, flint, nitre; one in five gold-veined).
      */
     @Nullable
@@ -177,13 +195,48 @@ public final class IslandChunkGenerator extends ChunkGenerator {
             return null; // keep the plaza and the beach shore clean
         }
         double roll = hashNoise(wx * 5 + 11, wz * 5 + 23);
-        if (roll < 0.14) {
+        if (roll < GRASS_P) {
             return DSBlocks.GRASS.get().defaultBlockState();
         }
-        if (roll > 0.992) {
+        roll -= GRASS_P;
+        if (roll < BERRYBUSH_P) {
+            return DSBlocks.BERRYBUSH.get().defaultBlockState();
+        }
+        roll -= BERRYBUSH_P;
+        if (roll < CARROT_P) {
+            return DSBlocks.CARROT_PLANTED.get().defaultBlockState();
+        }
+        roll -= CARROT_P;
+        if (roll < FLOWER_P) {
+            return DSBlocks.FLOWER.get().randomVariant(RandomSource.create(wx * 31L + wz * 7919L));
+        }
+        if (hashNoise(wx * 5 + 11, wz * 5 + 23) > 0.992) {
             return (hashNoise(wx * 7 + 3, wz * 7 + 1) < 0.2 ? DSBlocks.ROCK2 : DSBlocks.ROCK1).get().defaultBlockState();
         }
         return null;
+    }
+
+    /**
+     * Where DST would scatter loose flint (distributeprefabs flint, {@link #FLINT_P} of the grass
+     * columns that hold no other scatter), as item positions on top of the surface of one chunk.
+     */
+    public static List<BlockPos> groundFlint(ChunkPos chunkPos) {
+        List<BlockPos> flint = new java.util.ArrayList<>();
+        for (int lx = 0; lx < 16; lx++) {
+            for (int lz = 0; lz < 16; lz++) {
+                int wx = chunkPos.getMinBlockX() + lx;
+                int wz = chunkPos.getMinBlockZ() + lz;
+                int surface = islandSurfaceHeight(wx, wz);
+                if (surface < 0 || !isGrassSurface(wx, wz, surface) || scatterBlock(wx, wz, surface) != null) {
+                    continue;
+                }
+                double radius = radiusToCenter(wx, wz);
+                if (radius >= 10.0 && radius <= IslandState.RADIUS - 4.0 && hashNoise(wx * 3 + 17, wz * 3 + 41) < FLINT_P) {
+                    flint.add(new BlockPos(wx, surface + 1, wz));
+                }
+            }
+        }
+        return flint;
     }
 
     private static double radiusToCenter(int wx, int wz) {
@@ -275,8 +328,11 @@ public final class IslandChunkGenerator extends ChunkGenerator {
             return;
         }
         if (hashNoise(wx * 13 + 5, wz * 13 + 9) < 0.75) {
-            EvergreenTree.place(level, level, cursor.immutable(),
-                    RandomSource.create(wx * 31L + wz * 7919L));
+            // DST "evergreen" spawns at a random stage 1..3 (evergreens.lua growable:SetStage(math.random(1, 3)));
+            // forest rooms pick between "evergreen" and "evergreen_sparse" (the lumpy build): one in three here.
+            int stage = (int) (hashNoise(wx * 19 + 11, wz * 23 + 17) * 3.0) % 3;
+            boolean lumpy = hashNoise(wx * 7 + 29, wz * 37 + 31) < 1.0 / 3.0;
+            EvergreenTree.place(level, cursor.immutable(), stage, lumpy);
         } else {
             level.setBlock(cursor, DSBlocks.SAPLING.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE);
         }

@@ -97,6 +97,8 @@ view-distance=6
 simulation-distance=6
 motd=dst-test
 max-tick-time=-1
+# The test world is throwaway: fsync per chunk write stalls worldgen on slow disks.
+sync-chunk-writes=false
 spawn-npcs=false
 allow-flight=true
 spawn-animals=true

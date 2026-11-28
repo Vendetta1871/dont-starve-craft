@@ -29,7 +29,7 @@ id and the docs must say it's ours.
 | Hound | `hound` (150 HP / 20 dmg, `tuning.lua:1490-1491`) | own `hound` mob (`entity/Hound`, placeholder wolf-shaped model); loot monstermeat 100 % + houndstooth 12.5 % (`hound.lua:110-114`). No hound drops beardhair — see `content/mechanics-cheatsheet.md` |
 | Grass tuft | `grass` (`grass.lua:248-254`) | `grass` block, pickable by hand: 1 cutgrass, regrows in 1440 DS s, 20 cycles then barren; dig (shovel) → cutgrass if ripe + `dug_grass` |
 | Sapling | `sapling` (twig bush, `sapling.lua:141`) | `sapling` block, pickable: twigs every 1920 DS s, unlimited; dig → twigs if ripe + `dug_sapling` |
-| Evergreen | `evergreen` (`evergreens.lua`) | worldgen tree from vanilla spruce blocks (user-approved exception), DS silhouette; leaves drop nothing on the islands. Stages, stumps, pinecones: not ported |
+| Evergreen | `evergreen`, `evergreen_sparse` (`evergreens.lua`) | own blocks: trunk column with the growable stage (short/normal/tall/old), crown, burnt tree, stump; worldgen places random stages; sapling blocks for pinecones. Placeholder spruce textures. Leif, regrowth and petrification: not ported |
 | Boulder | `rock1`, `rock2` (`rocks.lua:65-85`) | `rock1`/`rock2` blocks (pickaxe): rocks ×3, nitre/gold, flint + chance rolls; the island's flint source (no gravel) |
 | Spider den | `spiderden` (`spiderden.lua`) | `spider_den` tier 1: childspawner, 3 spiders, regen 90 DS s, releases only at night, hit → 2 defenders, destroyed → all out; loot silk ×2. Tiers 2-3/queen not ported |
 | Spider | `spider` (`spider.lua`) | own `spider` mob (placeholder vanilla look): 100→13.3 HP, 20→2.7 dmg, 3 s period, target radius 4, homeless sleep by day, den spiders go home at dawn |

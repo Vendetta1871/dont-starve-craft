@@ -77,7 +77,7 @@ intermediates are crafted first, health/sanity ingredients, structures are paid 
 min_spacing kept. Science Machine, Alchemy Engine, Prestihatitator, Shadow Manipulator
 with their PROTOTYPER_TREES; Cut Stone, Rope, Electrical Doodad. Vanilla equivalents:
 DST `goldnugget`, `flint`, `log` are the vanilla gold nugget, flint and logs.
-Known gaps: blueprints (with their loot sources), hammering structures (DS-3), the
+Known gaps: blueprints (with their loot sources), the
 Prestihatitator and Shadow Manipulator recipes appear with rabbits, top hats, living
 logs, gems and nightmare fuel; build animations and DS sounds (placeholders).
 The sky-portal escape follows DST: the Moon Rock Idol is the DST recipe (moon rock +
@@ -90,6 +90,24 @@ purple moon eye and 20 moon rocks), and becomes buildable with the moon content.
 - Science Machine, Alchemy Engine, Prestihatitator, Shadow Manipulator. **A**, **S**.
 
 ### DS-3. Tools, fire, basic resources
+
+Done: DST work (`workable.lua`): one filled mining bar is one hit with the right tool,
+targets take their DST number of hits (boulders MINE 6, prototypers HAMMER 4, plants
+DIG 1, evergreens CHOP by size); tools wear per use and per attack (`finiteuses.lua`,
+golden tools 1/4, pitchfork 1/8) and break when used up. Axe, Pickaxe, Shovel, Hammer,
+Pitchfork (golden variants) and Razor. Hammering returns half the recipe, a quarter of
+it for burnt structures. Evergreens (normal and lumpy) grow through short/normal/tall,
+drop logs and pinecones, leave stumps, burn into burnt trees (charcoal); pinecones plant
+saplings. Berry bushes, carrots, flowers (the rose pricks), reeds with DST pick, regrow,
+transplant barrenness and cycles; dug plants replant. The regrowth manager respawns
+carrots, flowers and reeds away from players; loose flint lies on the meadows.
+Fire after `burnable.lua`/`propagator.lua`: small/medium/large burnables and
+propagators, heat, smouldering, spread, fire damage, burnt wrecks, ash; campfire (burns
+out, ash or charcoal) and fire pit with DST fuel values and four fuel sections, light
+and warmth; the torch lights burnables. The meteorite is the DST `rock_moon` boulder.
+Known gaps: rain and wetness (flowers regrow only on wet ground, torch rain burn rate),
+fertilizer items, reeds in worldgen (with the marsh), Treeguards (leif), cooking on
+fire (DS-4), birchnut trees (RoG).
 - Axe, Pickaxe, Shovel, Hammer, Razor, Pitchfork with DS durability. **A**.
 - Evergreen lifecycle (sizes, stumps, pinecones, burnt trees, charcoal), lumpy
   evergreens, birchnut/deciduous later in RoG; berry bushes, carrots, reeds, flowers,

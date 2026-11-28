@@ -150,6 +150,13 @@ public final class DSTorch {
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         if (inIslands(event.getEntity()) && isTorch(event.getItemStack())) {
             event.setUseItem(TriState.FALSE);
+            // ACTIONS.LIGHT (lighter.lua Light): the torch lights a burnable block that can be lit.
+            if (event.getLevel() instanceof ServerLevel level
+                    && net.celestiald.dontstarve.fire.DSFire.light(level, event.getPos(), event.getEntity())) {
+                event.getEntity().swing(event.getHand(), true);
+                event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+                event.setCanceled(true);
+            }
         }
     }
 

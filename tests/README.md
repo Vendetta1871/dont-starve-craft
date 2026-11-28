@@ -71,7 +71,10 @@ not collide with real runs use high island indices (`ds island goto 900`).
 | `clockview.txt` | PLAYER: the run clock runs with a member present; screenshots of day, dusk, night, torch at night, full moon |
 | `crafting.txt` | PLAYER: vanilla grid off on the islands; DS recipe states (known / hint / prototype), Science Machine built buffered and placed, prototyping (+15 sanity), auto-crafted intermediates, health as an ingredient, MAGIC tech at a Prestihatitator, min_spacing; screenshots of the menu and the placement preview |
 | `stats.txt` | PLAYER: hunger burn, starvation, sanity by light (torch vs dark), the grue, freezing, eating, ghost stats; HUD and frost screenshots |
+| `trees.txt` | PLAYER: DST evergreens — chops and loot per stage (short 5 / normal 10 / tall 15 / old 1), a crown block works the same tree, stump digging, lumpy build without pinecones, growth steps and loop, burning (burnt tree, stump, sapling), pinecone planting and natural growth via `#ds-wait` |
 | `perish.txt` | PLAYER: food spoilage carried and on the ground, stale/spoiled food values, rot, merging stacks |
+| `flora.txt` | PLAYER: forest flora — pick by hand (berry bush, carrot, flower, rose, reeds), food values and spoilage, transplant barrenness, fertilize and cycles, dig loot, ground flint, regrowth manager (night/winter/player range), berry regrow time, worldgen scatter |
+| `fire.txt` | PLAYER: DST fire — campfire/fire pit build, fuel sections over `#ds-wait`, fuel items, light and warmth, campfire burns out to ash (charcoal when queued), fire pit stays and relights, hammering; prototyper burning, heat spread with smouldering, fire damage, burnt wreck, torch LIGHT |
 | `wipe.txt` | PLAYER, SLOW: full all-ghost wipe — countdown, island advance, ejection home |
 
 ## Test-only commands
@@ -85,5 +88,10 @@ wave at once; `/ds shot <player> <name> [hud]` makes that client save a screensh
 `/ds clock [set <day> day|dusk|night [ticks]]` reads or jumps the run clock; `/ds stats <player>
 [set hunger|sanity|temperature <v>]`, `/ds eat <player>` and `/ds perish <player> [percent]` drive
 the DS stats and spoilage; `/ds hound pause on|off` keeps hound waves away from clock jumps.
+`/ds work <player> <pos> [hits|swing]` works a block with the held tool; `/ds tree place|stump|sapling|grow|burn|info|sweep|plant ...`
+builds and drives evergreens (`TreeCommands`); `/ds pick <player> <pos>` picks a plant by hand, `/ds fertilize <pos>`
+fertilizes a barren plant, `/ds regrow status|advance <ds seconds>` reads or advances the flora regrowth manager;
+`/ds fire ignite|extinguish|smoulder|check <pos>`, `heat <pos> <amount>`, `light <player> <pos>` (torch LIGHT action),
+`feed <player> <pos>` (main-hand item as fuel) and `fuel <pos> set|add <ds seconds>` drive and read the fire engine.
 They exist for these scenarios and manual
 probing, not for gameplay.

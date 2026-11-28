@@ -11,7 +11,7 @@ export JAVA_HOME="${DST_JAVA_HOME:-/usr/lib/jvm/java-21-openjdk}"
 port=${PORT:-25699}
 # Server-only scenarios first (no player around), wipe last (it ends the run); smoke
 # must stay first, it checks the fresh world's island 0.
-all="smoke grave meteorite island speed clock ghost run codex harness clockview stats perish crafting wipe"
+all="smoke grave meteorite island speed clock ghost run codex harness clockview stats perish crafting tools trees flora fire wipe"
 for s in "$@"; do
     [[ " $all " == *" $s "* ]] || { echo "unknown scenario: $s" >&2; exit 2; }
 done

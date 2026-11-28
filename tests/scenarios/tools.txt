@@ -1,0 +1,82 @@
+// PLAYER: DS work (components/workable.lua, tool.lua, finiteuses.lua): a target takes
+// a number of hits with the right tool, each hit uses the tool, and the tool breaks when
+// used up. Boulders MINE 6, prototypers HAMMER 4 (half the recipe back), plants DIG 1.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock set 1 day 100
+ds island current
+execute in dontstarve:islands run fill {X+18} 76 {Z-8} {X+32} 100 {Z+8} minecraft:air
+execute in dontstarve:islands run fill {X+18} 75 {Z-8} {X+32} 75 {Z+8} minecraft:stone
+// Loose worldgen flint that fell onto the platform would mix into the item checks.
+execute in dontstarve:islands run kill @e[type=item,x={X+18},y=70,z={Z-8},dx=14,dy=31,dz=16]
+execute in dontstarve:islands run tp {P} {X+25} 76 {Z} 0 30
+#sleep 2
+ds check dsrecipe axe
+#expect OK
+ds check dsrecipe hammer
+#expect OK
+// A boulder: bare hands do nothing; a pickaxe takes 6 hits and wears 1 per hit.
+execute in dontstarve:islands run setblock {X+27} 76 {Z} dontstarve:rock1
+ds island current
+ds work {P} {X+27} 76 {Z}
+#expect wrong tool for dontstarve:rock1
+item replace entity {P} weapon.mainhand with dontstarve:pickaxe
+ds work {P} {X+27} 76 {Z} swing
+#expect swing dontstarve:rock1 left 5
+ds work {P} {X+27} 76 {Z} 4
+#expect worked dontstarve:rock1 hits 4 left 1
+ds work {P} {X+27} 76 {Z}
+#expect finished dontstarve:rock1 hits 1
+data get entity {P} SelectedItem.components
+#expect "minecraft:damage": 6
+execute in dontstarve:islands run kill @e[type=item,x={X+27},y=76,z={Z},distance=..4]
+#expect Killed [2-9]
+// The last use breaks the tool (PICKAXE_USES 33).
+execute in dontstarve:islands run setblock {X+27} 76 {Z} dontstarve:rock_moon
+ds island current
+item replace entity {P} weapon.mainhand with dontstarve:pickaxe[damage=32]
+ds work {P} {X+27} 76 {Z}
+#expect worked dontstarve:rock_moon hits 1 left 5
+data get entity {P} SelectedItem
+#expect Found no elements
+ds work {P} {X+27} 76 {Z}
+#expect wrong tool for dontstarve:rock_moon
+// Golden tools wear a quarter per action: 33 uses = 132 hits.
+item replace entity {P} weapon.mainhand with dontstarve:goldenpickaxe
+ds work {P} {X+27} 76 {Z} 5
+#expect finished dontstarve:rock_moon hits 5
+data get entity {P} SelectedItem.components
+#expect "minecraft:damage": 5
+execute in dontstarve:islands run kill @e[type=item,x={X+27},y=76,z={Z},distance=..4]
+// A Science Machine: an axe cannot touch it, 4 hammer hits bring it down and return
+// half the recipe (1 gold nugget, 4 logs, 4 rocks -> 1, 2, 2).
+// Stand clear of the drops: a survival player picks up items that land next to them.
+execute in dontstarve:islands run tp {P} {X+20} 76 {Z-6} 0 30
+execute in dontstarve:islands run setblock {X+27} 76 {Z} dontstarve:researchlab
+ds island current
+item replace entity {P} weapon.mainhand with dontstarve:axe
+ds work {P} {X+27} 76 {Z}
+#expect wrong tool for dontstarve:researchlab
+item replace entity {P} weapon.mainhand with dontstarve:hammer
+ds work {P} {X+27} 76 {Z} 3
+#expect left 1
+ds work {P} {X+27} 76 {Z}
+#expect finished dontstarve:researchlab
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"minecraft:gold_nugget",count:1}},x={X+27},y=76,z={Z},distance=..4]
+#expect Killed Gold Nugget
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:rocks",count:2}},x={X+27},y=76,z={Z},distance=..4]
+#expect Killed Rocks
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"minecraft:spruce_log",count:2}},x={X+27},y=76,z={Z},distance=..4]
+#expect Killed Spruce Log
+// A grass tuft: one shovel hit digs it up (tuft + its cut grass).
+execute in dontstarve:islands run setblock {X+27} 76 {Z} dontstarve:grass
+ds island current
+item replace entity {P} weapon.mainhand with dontstarve:shovel
+ds work {P} {X+27} 76 {Z}
+#expect finished dontstarve:grass hits 1
+execute in dontstarve:islands run kill @e[type=item,x={X+27},y=76,z={Z},distance=..4]
+#expect Killed 2

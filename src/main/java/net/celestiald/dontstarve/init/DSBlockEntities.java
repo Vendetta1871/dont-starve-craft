@@ -27,6 +27,11 @@ public final class DSBlockEntities {
                     () -> BlockEntityType.Builder.of(SpiderDenBlock.SpiderDenBlockEntity::new,
                             DSBlocks.SPIDER_DEN.get()).build(null));
 
+    public static final Supplier<BlockEntityType<net.celestiald.dontstarve.fire.FueledFireBlockEntity>> FUELED_FIRE =
+            BLOCK_ENTITIES.register("fueled_fire",
+                    () -> BlockEntityType.Builder.of(net.celestiald.dontstarve.fire.FueledFireBlockEntity::new,
+                            DSBlocks.CAMPFIRE.get(), DSBlocks.FIREPIT.get()).build(null));
+
     private DSBlockEntities() {
     }
 }

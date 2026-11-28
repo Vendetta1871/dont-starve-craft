@@ -67,6 +67,18 @@ public final class DSAttachments {
                     .copyOnDeath()
                     .build());
 
+    /** Chunk data: workable.lua workleft of partly worked targets, by packed block position. */
+    public static final Supplier<AttachmentType<java.util.Map<String, Integer>>> WORK_LEFT = ATTACHMENTS.register("work_left",
+            () -> AttachmentType.<java.util.Map<String, Integer>>builder(() -> java.util.Map.of())
+                    .serialize(Codec.unboundedMap(Codec.STRING, Codec.INT))
+                    .build());
+
+    /** Chunk data: the DST ground flint of this chunk has been scattered (GroundFlint). */
+    public static final Supplier<AttachmentType<Boolean>> FLINT_SCATTERED = ATTACHMENTS.register("flint_scattered",
+            () -> AttachmentType.builder(() -> false)
+                    .serialize(Codec.BOOL)
+                    .build());
+
     private DSAttachments() {
     }
 }

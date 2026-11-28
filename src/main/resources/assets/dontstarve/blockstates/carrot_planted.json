@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "picked=false": {
+      "model": "dontstarve:block/carrot_planted"
+    },
+    "picked=true": {
+      "model": "dontstarve:block/carrot_planted"
+    }
+  }
+}

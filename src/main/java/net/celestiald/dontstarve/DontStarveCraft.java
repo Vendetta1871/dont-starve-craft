@@ -58,11 +58,16 @@ public final class DontStarveCraft {
 
         NeoForge.EVENT_BUS.addListener(ReviveHandler::onInteractWithGhost);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.craft.CraftCommands::register);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.work.WorkCommands::register);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.TreeCommands::register);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.FloraCommands::register);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.FloraRegrowth::onServerTick);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.GroundFlint::onChunkLoad);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.GroundFlint::onServerTick);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.craft.CraftEvents::onLoggedIn);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.craft.CraftEvents::onChangedDimension);
 
         NeoForge.EVENT_BUS.addListener(HoundWave::onServerTick);
-        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.world.DSBlockDrops::onBlockDrops);
         NeoForge.EVENT_BUS.addListener(DSTorch::onServerTick);
         NeoForge.EVENT_BUS.addListener(SpeedProbe::onServerTick);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.clock.RunClock::onServerTick);
@@ -76,6 +81,9 @@ public final class DontStarveCraft {
         NeoForge.EVENT_BUS.addListener(DSTorch::onAttack);
         NeoForge.EVENT_BUS.addListener(DSTorch::onLoggedOut);
         NeoForge.EVENT_BUS.addListener(DSTorch::onChangedDimension);
+
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.fire.DSFire::onServerTick);
+        NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.fire.FireCommands::register);
     }
 
     public static ResourceLocation rl(String path) {

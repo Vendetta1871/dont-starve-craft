@@ -41,6 +41,14 @@ public final class DSCreativeTabs {
                         output.accept(DSBlocks.ROCK1.get());
                         output.accept(DSBlocks.ROCK2.get());
                         output.accept(DSBlocks.ROCK_MOON.get());
+                        output.accept(DSItems.ASH.get());
+                        output.accept(DSItems.PINECONE.get());
+                        output.accept(DSItems.CHARCOAL.get());
+                        for (var tool : java.util.List.of(DSItems.AXE, DSItems.GOLDENAXE, DSItems.PICKAXE,
+                                DSItems.GOLDENPICKAXE, DSItems.SHOVEL, DSItems.GOLDENSHOVEL, DSItems.HAMMER,
+                                DSItems.PITCHFORK, DSItems.GOLDENPITCHFORK, DSItems.RAZOR)) {
+                            output.accept(tool.get());
+                        }
                         output.accept(DSItems.ROCKS.get());
                         output.accept(DSItems.NITRE.get());
                         output.accept(DSBlocks.SPIDER_DEN.get());
@@ -51,6 +59,19 @@ public final class DSCreativeTabs {
                         output.accept(DSBlocks.RESEARCHLAB2.get());
                         output.accept(DSBlocks.RESEARCHLAB4.get());
                         output.accept(DSBlocks.RESEARCHLAB3.get());
+                        output.accept(DSItems.BERRYBUSH.get());
+                        output.accept(DSItems.BERRYBUSH2.get());
+                        output.accept(DSItems.DUG_BERRYBUSH.get());
+                        output.accept(DSItems.DUG_BERRYBUSH2.get());
+                        output.accept(DSItems.BERRIES.get());
+                        output.accept(DSItems.CARROT_PLANTED.get());
+                        output.accept(DSItems.CARROT.get());
+                        output.accept(DSItems.FLOWER.get());
+                        output.accept(DSItems.PETALS.get());
+                        output.accept(DSItems.REEDS.get());
+                        output.accept(DSItems.CUTREEDS.get());
+                        output.accept(DSBlocks.CAMPFIRE.get());
+                        output.accept(DSBlocks.FIREPIT.get());
                     })
                     .build());
 

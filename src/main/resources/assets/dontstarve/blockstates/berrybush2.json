@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "barren=true": {
+      "model": "dontstarve:block/berrybush_barren"
+    },
+    "barren=false,picked=true": {
+      "model": "dontstarve:block/berrybush_picked"
+    },
+    "barren=false,picked=false": {
+      "model": "dontstarve:block/berrybush"
+    }
+  }
+}

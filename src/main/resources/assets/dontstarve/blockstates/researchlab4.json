@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "burnt=false": {
       "model": "dontstarve:block/researchlab4"
+    },
+    "burnt=true": {
+      "model": "dontstarve:block/researchlab_burnt"
     }
   }
 }

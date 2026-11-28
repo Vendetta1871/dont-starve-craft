@@ -14,9 +14,11 @@ ds codex {P}
 #sleep 3
 ds clock set 1 day 100
 ds island current
-execute in dontstarve:islands run fill {X+18} 75 {Z-8} {X+32} 75 {Z+8} minecraft:stone
-// Open to the sky (the island under the platform differs per run): no grue in daylight.
 execute in dontstarve:islands run fill {X+18} 76 {Z-8} {X+32} 100 {Z+8} minecraft:air
+// Open to the sky (the island under the platform differs per run): no grue in daylight.
+execute in dontstarve:islands run fill {X+18} 75 {Z-8} {X+32} 75 {Z+8} minecraft:stone
+// Loose worldgen flint that fell onto the platform would mix into the item checks.
+execute in dontstarve:islands run kill @e[type=item,x={X+18},y=70,z={Z-8},dx=14,dy=31,dz=16]
 execute in dontstarve:islands run tp {P} {X+25} 76 {Z} 0 30
 #sleep 2
 ds grid {P}

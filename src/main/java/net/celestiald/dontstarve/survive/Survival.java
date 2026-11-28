@@ -162,9 +162,11 @@ public final class Survival {
             float rate = lightDelta + auraDelta + ghostDelta;
             stats = stats.withSanity(stats.sanity() + rate * dt);
 
-            // Temperature (temperature.lua OnUpdate; no heaters or insulation yet).
+            // Temperature (temperature.lua OnUpdate; fires are the heaters, no insulation yet).
             float ambient = (float) net.celestiald.dontstarve.clock.WorldTemperature.at(clock, island.islandIndex());
-            stats = stats.withTemperature(stats.temperature() + temperatureRate(stats.temperature(), ambient) * dt);
+            float heaters = (float) net.celestiald.dontstarve.fire.DSFire.heaterDelta(player.serverLevel(),
+                    player.position(), stats.temperature());
+            stats = stats.withTemperature(stats.temperature() + temperatureRate(stats.temperature(), ambient, heaters) * dt);
             set(player, stats);
             if (stats.temperature() < 0.0F) {
                 hurtOverTime(player, TEMPERATURE_DEBT, FREEZE_HEALTH_PER_SECOND * dt, player.damageSources().freeze());
@@ -181,7 +183,12 @@ public final class Survival {
 
     /** temperature.lua: the rate towards the ambient temperature without insulation. */
     static float temperatureRate(float current, float ambient) {
-        float delta = ambient - current;
+        return temperatureRate(current, ambient, 0.0F);
+    }
+
+    /** As above with the pull of the heaters around the player (heater delta, temperature.lua). */
+    static float temperatureRate(float current, float ambient, float heaters) {
+        float delta = ambient - current + heaters;
         if (ambient >= DSStats.STARTING_TEMP) {
             return delta > 0.0F ? Math.min(delta, 1.0F)
                     : Math.max(delta, current >= DSStats.OVERHEAT_TEMP ? -THAW_DEGREES_PER_SEC : -WARM_DEGREES_PER_SEC);

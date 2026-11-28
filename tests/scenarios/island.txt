@@ -25,11 +25,11 @@ execute in dontstarve:islands run fill 7454740 70 12 7454763 92 35 minecraft:air
 // No gravel stand-in any more: flint comes from boulders.
 execute in dontstarve:islands run fill 7454704 70 -40 7454735 95 -9 minecraft:air replace minecraft:gravel
 #expect No blocks were filled
-// Evergreens (vanilla spruce blocks) on both island halves; the north window
+// Evergreens (DS evergreen trunk blocks, normal or lumpy) on both island halves; the north window
 // holds 3 trees of island 910: (742,-59), (747,-69), (748,-54).
-execute in dontstarve:islands run fill 7454736 70 8 7454767 95 39 minecraft:air replace minecraft:spruce_log
+execute in dontstarve:islands run fill 7454736 70 8 7454767 95 39 minecraft:air replace #dontstarve:evergreen_trunks
 #expect Successfully filled [1-9][0-9]* block
-execute in dontstarve:islands run fill 7454736 70 -72 7454767 95 -41 minecraft:air replace minecraft:spruce_log
+execute in dontstarve:islands run fill 7454736 70 -72 7454767 95 -41 minecraft:air replace #dontstarve:evergreen_trunks
 #expect Successfully filled [1-9][0-9]* block
 // Digging a ripe tuft with a shovel: its cut grass plus the dug tuft (grass.lua:68-86).
 execute in dontstarve:islands run setblock 7454720 76 4 dontstarve:grass

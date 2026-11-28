@@ -22,6 +22,7 @@ public final class DSClient {
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.StatsHud::onRenderLayer);
         modBus.addListener(DSClient::onRegisterDimensionEffects);
         modBus.addListener(DSClient::onRegisterGuiLayers);
+        modBus.addListener(DSClient::onRegisterBlockColors);
         modBus.addListener(net.celestiald.dontstarve.client.FreshnessDisplay::onRegisterDecorations);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.FreshnessDisplay::onTooltip);
         NeoForge.EVENT_BUS.addListener(net.celestiald.dontstarve.client.CraftingScreen::onScreenOpening);
@@ -39,6 +40,12 @@ public final class DSClient {
     private static void onRegisterDimensionEffects(
             net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent event) {
         event.register(DontStarveCraft.rl("islands"), new net.celestiald.dontstarve.client.IslandsEffects());
+    }
+
+    /** Placeholder spruce_leaves art is grayscale: tint the evergreen crowns (spruce green; the lumpy build a bit yellower). */
+    private static void onRegisterBlockColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) {
+        event.register((state, level, pos, tint) -> 0x619961, net.celestiald.dontstarve.init.DSBlocks.EVERGREEN_CROWN.get());
+        event.register((state, level, pos, tint) -> 0x7a9a4e, net.celestiald.dontstarve.init.DSBlocks.EVERGREEN_SPARSE_CROWN.get());
     }
 
     private static void onRegisterGuiLayers(net.neoforged.neoforge.client.event.RegisterGuiLayersEvent event) {

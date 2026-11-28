@@ -1,0 +1,199 @@
+// PLAYER: DS forest flora (pickable.lua, berrybush.lua, carrot.lua, flower.lua, regrowthmanager.lua):
+// picking by hand, regrow time, transplant barrenness and cycles, digging, the food values,
+// ground flint and the regrowth manager. Plants are tested on a grass platform out in the void
+// east of the island (no natural plants around), the density checks come last because they
+// remove natural carrots and flowers, which start regrowth timers.
+#wait-player {P} 180
+gamemode survival {P}
+ds hound pause on
+ds codex {P}
+#expect read the Codex Umbra
+#sleep 3
+ds clock set 1 day 100
+ds island current
+// Ground flint (worldgen distributeprefabs flint): loose flint items lie on the island.
+execute in dontstarve:islands positioned {X} 76 {Z} if entity @e[type=item,nbt={Item:{id:"minecraft:flint"}},distance=..90]
+#expect Test passed, count: [1-9]\d+
+// The platform: 49 x 61 grass blocks, 112..160 blocks east of the island centre.
+execute in dontstarve:islands run forceload add {X+112} {Z-30} {X+160} {Z+30}
+#sleep 4
+execute in dontstarve:islands run fill {X+112} 75 {Z-30} {X+160} 75 {Z+30} minecraft:grass_block
+#expect Successfully filled 2989 block
+execute in dontstarve:islands run tp {P} {X+130} 76 {Z}
+ds island current
+#sleep 2
+// A wild berry bush (berrybush.lua): one pick gives berries; picks of a wild plant use up no cycles.
+execute in dontstarve:islands run setblock {X+120} 76 {Z} dontstarve:berrybush
+ds island current
+ds pick {P} {X+120} 76 {Z}
+#expect picked dontstarve:berrybush
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:berries"}},x={X+120},y=76,z={Z},distance=..4]
+#expect Killed Berries
+execute in dontstarve:islands if block {X+120} 76 {Z} dontstarve:berrybush[picked=true,barren=false,transplanted=false,cycles=3]
+#expect Test passed
+ds pick {P} {X+120} 76 {Z}
+#expect not pickable dontstarve:berrybush
+// Berries (veggies.lua): CALORIES_TINY 9.375 hunger, no health, PERISH_FAST 2880 s.
+item replace entity {P} weapon.mainhand with dontstarve:berries 1
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger 59\.3\d
+item replace entity {P} weapon.mainhand with dontstarve:berries 1
+#sleep 1
+#ds-wait 144
+ds perish {P}
+#expect Berries x1 fresh 9[45]\.\d%
+// Carrot (carrot.lua): picked it is gone; the carrot gives CALORIES_SMALL 12.5 hunger, PERISH_MED 4800 s.
+execute in dontstarve:islands run setblock {X+136} 76 {Z} dontstarve:carrot_planted
+ds island current
+ds pick {P} {X+136} 76 {Z}
+#expect picked dontstarve:carrot_planted
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:carrot"}},x={X+136},y=76,z={Z},distance=..4]
+#expect Killed Carrot
+execute in dontstarve:islands if block {X+136} 76 {Z} minecraft:air
+#expect Test passed
+item replace entity {P} weapon.mainhand with dontstarve:carrot 1
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger (62\.4\d|62\.50)
+item replace entity {P} weapon.mainhand with dontstarve:carrot 1
+#sleep 1
+#ds-wait 240
+ds perish {P}
+#expect Carrot x1 fresh 9[45]\.\d%
+// Flower (flower.lua): picking gives petals and SANITY_TINY 5 sanity, the flower is gone.
+ds stats {P} set sanity 100
+execute in dontstarve:islands run setblock {X+124} 76 {Z} dontstarve:flower[variant=3]
+ds island current
+ds pick {P} {X+124} 76 {Z}
+#expect picked dontstarve:flower
+ds stats {P}
+#expect sanity (104\.9\d|105\.00)
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:petals"}},x={X+124},y=76,z={Z},distance=..4]
+#expect Killed Petals
+execute in dontstarve:islands if block {X+124} 76 {Z} minecraft:air
+#expect Test passed
+// The rose pricks for ROSE_DAMAGE 1 (health 150 -> 149).
+execute in dontstarve:islands run setblock {X+126} 76 {Z} dontstarve:flower[variant=10]
+ds island current
+ds pick {P} {X+126} 76 {Z}
+#expect picked dontstarve:flower
+ds stats {P}
+#expect health 14[89]\.\d+ hunger [\d.]+ sanity (109\.[89]\d|110\.00)
+execute in dontstarve:islands run kill @e[type=item,x={X+126},y=76,z={Z},distance=..4]
+// Petals (petals.lua): HEALING_TINY 1 health, no hunger.
+item replace entity {P} weapon.mainhand with dontstarve:petals 1
+ds stats {P} set hunger 50
+ds eat {P}
+#expect hunger (49\.9\d|50\.00)
+// Transplanting (pickable.lua OnTransplant): a replanted bush is barren and cannot be picked ...
+execute in dontstarve:islands run setblock {X+122} 76 {Z} dontstarve:berrybush2[transplanted=true,picked=true,barren=true,cycles=0]
+ds island current
+ds pick {P} {X+122} 76 {Z}
+#expect not pickable dontstarve:berrybush2
+// ... until fertilized (cycles back to the maximum 4-5, then it regrows).
+ds fertilize {X+122} 76 {Z}
+#expect fertilized dontstarve:berrybush2
+execute in dontstarve:islands if block {X+122} 76 {Z} dontstarve:berrybush2[transplanted=true,picked=true,barren=false]
+#expect Test passed
+// A transplanted bush uses a cycle per pick and is barren after the last one.
+execute in dontstarve:islands run setblock {X+122} 76 {Z} dontstarve:berrybush2[transplanted=true,picked=false,barren=false,cycles=2]
+ds island current
+ds pick {P} {X+122} 76 {Z}
+#expect picked dontstarve:berrybush2
+execute in dontstarve:islands if block {X+122} 76 {Z} dontstarve:berrybush2[picked=true,barren=false,cycles=1]
+#expect Test passed
+execute in dontstarve:islands run setblock {X+122} 76 {Z} dontstarve:berrybush2[transplanted=true,picked=false,barren=false,cycles=1]
+ds island current
+ds pick {P} {X+122} 76 {Z}
+#expect picked dontstarve:berrybush2
+execute in dontstarve:islands if block {X+122} 76 {Z} dontstarve:berrybush2[picked=true,barren=true,cycles=0]
+#expect Test passed
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:berries"}},x={X+122},y=76,z={Z},distance=..4]
+// Digging (berrybush.lua dig_up_common): a ripe bush gives its berries and the dug bush ...
+item replace entity {P} weapon.mainhand with dontstarve:shovel
+execute in dontstarve:islands run setblock {X+128} 76 {Z+4} dontstarve:berrybush
+ds island current
+ds work {P} {X+128} 76 {Z+4}
+#expect finished dontstarve:berrybush hits 1
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:berries"}},x={X+128},y=76,z={Z+4},distance=..4]
+#expect Killed Berries
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:dug_berrybush"}},x={X+128},y=76,z={Z+4},distance=..4]
+#expect Killed Berry Bush
+// ... a barren one only two twigs.
+execute in dontstarve:islands run setblock {X+128} 76 {Z+4} dontstarve:berrybush2[transplanted=true,picked=true,barren=true,cycles=0]
+ds island current
+ds work {P} {X+128} 76 {Z+4}
+#expect finished dontstarve:berrybush2 hits 1
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:twigs",count:2}},x={X+128},y=76,z={Z+4},distance=..4]
+#expect Killed Twigs
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:dug_berrybush2"}},x={X+128},y=76,z={Z+4},distance=..4]
+#expect No entity was found
+// Reeds cannot be dug (reeds.lua has no workable).
+execute in dontstarve:islands run setblock {X+128} 76 {Z+4} dontstarve:reeds
+ds island current
+ds work {P} {X+128} 76 {Z+4}
+#expect not workable dontstarve:reeds
+ds pick {P} {X+128} 76 {Z+4}
+#expect picked dontstarve:reeds
+execute in dontstarve:islands run kill @e[type=item,nbt={Item:{id:"dontstarve:cutreeds"}},x={X+128},y=76,z={Z+4},distance=..4]
+#expect Killed Cut Reeds
+// Regrowth manager (regrowthmanager.lua): the carrot picked above and the two flowers wait for
+// the world to grow new ones (clearing the picked reeds starts a timer too). Clear the platform first.
+execute in dontstarve:islands run fill {X+112} 76 {Z-30} {X+160} 80 {Z+30} minecraft:air
+ds regrow advance 1
+#expect carrot_planted 1 flower 2 reeds 1
+// Carrots grow only by day and outside winter ...
+ds clock set 1 night 100
+ds regrow advance 7000
+#expect carrot_planted 1
+ds clock set 21 day 100
+ds regrow advance 7000
+#expect carrot_planted 1
+// ... flowers need wet ground (no weather yet) ...
+ds clock set 1 day 100
+ds regrow advance 100000
+#expect flower 2
+// ... and after CARROT_REGROWTH_TIME 6000 s of growing weather, with no player within 76.8 blocks,
+// a new carrot appears within 20 blocks of the old one.
+gamemode spectator {P}
+execute in dontstarve:islands run tp {P} {X+136} 300 {Z}
+ds island current
+#sleep 1
+// A try fails (and restarts the timer) when the random spot is crowded, so allow three tries.
+ds regrow advance 6000
+ds regrow advance 6000
+ds regrow advance 6000
+#expect carrot_planted 0
+execute in dontstarve:islands run fill {X+112} 76 {Z-30} {X+160} 80 {Z+30} minecraft:air replace dontstarve:carrot_planted
+#expect filled 1 block
+// A picked wild bush regrows after BERRY_REGROW_TIME 1440 s + up to 960 s (never before 1440),
+// a barren one never does.
+gamemode creative {P}
+execute in dontstarve:islands run tp {P} {X+130} 76 {Z}
+ds island current
+execute in dontstarve:islands run setblock {X+120} 76 {Z} dontstarve:berrybush
+execute in dontstarve:islands run setblock {X+122} 76 {Z} dontstarve:berrybush2[transplanted=true,picked=true,barren=true,cycles=0]
+ds island current
+ds pick {P} {X+120} 76 {Z}
+#expect picked dontstarve:berrybush
+#ds-wait 1400
+execute in dontstarve:islands if block {X+120} 76 {Z} dontstarve:berrybush[picked=true]
+#expect Test passed
+#ds-wait 1100
+execute in dontstarve:islands if block {X+120} 76 {Z} dontstarve:berrybush[picked=false]
+#expect Test passed
+execute in dontstarve:islands if block {X+122} 76 {Z} dontstarve:berrybush2[picked=true,barren=true]
+#expect Test passed
+execute in dontstarve:islands run forceload remove all
+// Worldgen scatter (rooms BGGrass, scaled to the island grass density): berry bushes, carrots and
+// flowers lie on the meadow. Last, because removing them starts regrowth timers.
+execute in dontstarve:islands run forceload add {X-112} {Z-112} {X+112} {Z+112}
+#sleep 5
+execute in dontstarve:islands run fill {X-52} 70 {Z+8} {X-21} 95 {Z+39} minecraft:air replace dontstarve:berrybush
+#expect Successfully filled [1-9][0-9]* block
+execute in dontstarve:islands run fill {X-52} 70 {Z+8} {X-21} 95 {Z+39} minecraft:air replace dontstarve:carrot_planted
+#expect Successfully filled [1-9][0-9]* block
+execute in dontstarve:islands run fill {X-52} 70 {Z+8} {X-21} 95 {Z+39} minecraft:air replace dontstarve:flower
+#expect Successfully filled [1-9][0-9]* block
+execute in dontstarve:islands run forceload remove all

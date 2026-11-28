@@ -26,7 +26,8 @@ public final class TechTrees {
         double best = RESEARCH_MACHINE_DIST * RESEARCH_MACHINE_DIST;
         Access found = Access.NONE;
         for (BlockPos p : BlockPos.betweenClosed(centre.offset(-r, -r, -r), centre.offset(r, r, r))) {
-            if (level.getBlockState(p).getBlock() instanceof PrototyperBlock proto) {
+            if (level.getBlockState(p).getBlock() instanceof PrototyperBlock proto
+                    && !level.getBlockState(p).getValue(PrototyperBlock.BURNT)) {
                 double d = pos.distanceToSqr(Vec3.atBottomCenterOf(p));
                 if (d <= best) {
                     best = d;
